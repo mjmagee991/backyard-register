@@ -37,7 +37,6 @@ public class TransactionHistoryActivity extends AppCompatActivity {
     private TextView transactionHistoryTextView;
     private Button sendFileButton;
     private Button resetFileButton;
-    private ResetDialogFragment resetDialogFragment = new ResetDialogFragment(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,7 @@ public class TransactionHistoryActivity extends AppCompatActivity {
         backButton = findViewById(R.id.b_back);
         transactionHistoryTextView = findViewById(R.id.tv_file_contents);
         sendFileButton = findViewById(R.id.b_send_file);
-        // resetFileButton = findViewById(R.id.b_reset_file);
+        resetFileButton = findViewById(R.id.b_reset_file);
 
         // Back Button setup
         View.OnClickListener backListener = new View.OnClickListener() {
@@ -73,38 +72,47 @@ public class TransactionHistoryActivity extends AppCompatActivity {
         };
         sendFileButton.setOnClickListener(SendFileListener);
 
-        /* Reset File Button setup
+        // Reset File Button setup
         View.OnClickListener resetFileListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 // Reset Dialog setup
-                resetDialogFragment.show();
+                new AlertDialog.Builder(TransactionHistoryActivity.this)
+                    .setTitle("Reset")
+                    .setMessage("Are you sure you would like to reset the stored data?\nThis action cannot be undone.")
+                    .setPositiveButton("Reset", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            FileOutputStream fos = null;
 
-
-                FileOutputStream fos = null;
-
-                try {
-                    fos = openFileOutput("record.txt", MODE_PRIVATE);
-                    fos.write("".getBytes());
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    if(fos != null) {
-                        try {
-                            fos.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                            try {
+                                fos = new FileOutputStream(DataStorage.record, false);
+                                fos.write("".getBytes());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } finally {
+                                if(fos != null) {
+                                    try {
+                                        fos.close();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                            updateTextView();
                         }
-                    }
-                }
-                updateTextView();
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
             }
         };
         resetFileButton.setOnClickListener(resetFileListener);
-        */
 
     }
 
@@ -191,16 +199,4 @@ public class TransactionHistoryActivity extends AppCompatActivity {
         intent.setType("message/rfc822");
         startActivity(Intent.createChooser(intent, "Choose an email client"));
     }
-
-    private boolean isExternalStorageReadable() {
-        return (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()));
-    }
-
-    public boolean checkPermission(String permission) {
-        int check = ContextCompat.checkSelfPermission(this, permission);
-        Log.d("output", String.valueOf(check));
-        Log.d("output", String.valueOf(PackageManager.PERMISSION_GRANTED));
-        return (check == PackageManager.PERMISSION_GRANTED);
-    }
-
 }
