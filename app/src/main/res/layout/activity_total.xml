@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".TotalActivity" >
+
+    <LinearLayout
+        android:id="@+id/ll_common_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorPrimary"
+        android:layout_margin="0dp"
+        android:paddingLeft="5dp"
+        android:paddingStart="5dp">
+
+        <TextView
+            android:id="@+id/tv_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/file_name_weight"
+            android:textSize="@dimen/standard_text_size"
+            android:ellipsize="end"
+            android:maxLines="1" />
+
+        <Button
+            android:id="@+id/b_back"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/back_button_weight"
+            android:text="Back"
+            android:textSize="@dimen/standard_text_size"
+            android:textColor="@color/colorButtonText"
+            android:background="@color/colorButton"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_sold_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_total"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/ll_common_header"
+        app:layout_constraintTop_toBottomOf="@id/ll_common_header"
+        app:layout_constraintVertical_bias="1.0"
+        android:layout_margin="0dp"
+        android:paddingLeft="5dp"
+        android:paddingStart="5dp"/>
+
+
+
+    <TextView
+        android:id="@+id/tv_total"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/ll_amount_paid"
+        android:gravity="right"/>
+
+    <LinearLayout
+        android:id="@+id/ll_amount_paid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/ll_bottom_buttons"
+        android:background="@color/colorPrimary">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"/>
+
+        <TextView
+            android:id="@+id/tv_amount_paid"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/standard_text_size"
+            android:text="Amount Paid:"
+            android:textColor="@color/colorWhite"
+            android:layout_weight="3"/>
+
+        <EditText
+            android:id="@+id/et_amount_paid"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/standard_text_size"
+            android:textColor="@color/colorWhite"
+            android:inputType="numberDecimal"
+            android:maxLength="5"
+            android:layout_gravity="end"
+            android:layout_weight="2"/>
+        
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_bottom_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/b_exact_change"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="Exact Change"
+            android:textSize="@dimen/standard_text_size"
+            android:textColor="@color/colorButtonText"
+            android:background="@color/colorButton" />
+
+        <Button
+            android:id="@+id/b_calculate_change"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="Calculate"
+            android:textSize="@dimen/standard_text_size"
+            android:textColor="@color/colorButtonText"
+            android:background="@color/colorButton" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="backyardregister.fallfestregister.ChangeActivity"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_common_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorPrimary"
+        android:layout_margin="0dp"
+        android:paddingLeft="5dp"
+        android:paddingStart="5dp">
+
+        <TextView
+            android:id="@+id/tv_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/file_name_weight"
+            android:textSize="@dimen/standard_text_size"
+            android:ellipsize="end"
+            android:maxLines="1" />
+
+        <Button
+            android:id="@+id/b_back"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/back_button_weight"
+            android:text="Back"
+            android:textSize="@dimen/standard_text_size"
+            android:textColor="@color/colorButtonText"
+            android:background="@color/colorButton" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_change_calculation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/ll_common_header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="30sp"/>
+
+    <TextView
+        android:id="@+id/tv_donation_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_change_calculation"
+        android:gravity="center"
+        android:textSize="30sp"
+        android:text="Donation"/>
+
+
+    <LinearLayout
+        android:id="@+id/ll_keep_the_change"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_donation_header">
+
+        <TextView
+            android:id="@+id/tv_keep_the_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:layout_gravity="center_vertical"
+            android:text="Keep the Change:"
+            android:textSize="@dimen/standard_text_size" />
+
+        <ToggleButton
+            android:id="@+id/tb_keep_the_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:textOff="No"
+            android:textOn="Yes"
+            android:textSize="@dimen/standard_text_size"
+            android:textColor="@drawable/keep_the_change_toggle_text_color_selector"
+            android:background="@drawable/keep_the_change_toggle_background_color_selector"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_additional_donation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_keep_the_change">
+        
+        <TextView
+            android:id="@+id/tv_additional_donation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/standard_text_size"
+            android:text="Additional Donation:"/>
+        
+        <EditText
+            android:id="@+id/et_additional_donation"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:textSize="@dimen/standard_text_size"/>
+        
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/ll_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/colorPrimary">
+
+        <Button
+            android:id="@+id/b_start_menu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="Start Menu"
+            android:textSize="@dimen/standard_text_size"
+            android:textColor="@color/colorButtonText"
+            android:background="@color/colorButton" />
+
+        <Button
+            android:id="@+id/b_new_order"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="New Order"
+            android:textSize="@dimen/standard_text_size"
+            android:textColor="@color/colorButtonText"
+            android:background="@color/colorButton" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

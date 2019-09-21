@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+        android:id="@+id/tv_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="@integer/price_weight"
+        android:textSize="@dimen/standard_text_size"
+        app:fontFamily="monospace"
+        android:gravity="center" />
+
+        <TextView
+            android:id="@+id/tv_item"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/item_weight"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textSize="@dimen/standard_text_size"
+            app:fontFamily="monospace"
+            android:gravity="start" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="@integer/count_weight">
+
+            <Button
+                android:id="@+id/b_minus"
+                android:layout_width="12dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="0dp"
+                android:text="-"
+                android:textSize="@dimen/standard_text_size"
+                android:textStyle="bold"
+                android:textColor="@color/colorButtonText"
+                android:background="@color/colorButton" />
+
+
+            <TextView
+                android:id="@+id/tv_count"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:textSize="@dimen/standard_text_size"
+                app:fontFamily="monospace"
+                android:gravity="center" />
+
+            <Button
+                android:id="@+id/b_plus"
+                android:layout_width="12dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="0dp"
+                android:text="+"
+                android:textSize="@dimen/standard_text_size"
+                android:textStyle="bold"
+                android:textColor="@color/colorButtonText"
+                android:background="@color/colorButton" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+<!--
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/textview_border"
+        android:contentDescription="black line"/>
+
+-->
+</LinearLayout>

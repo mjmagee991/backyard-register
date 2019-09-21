@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="price_weight">4</integer>
+    <integer name="item_weight">8</integer>
+    <integer name="count_weight">3</integer>
+    <integer name="file_name_weight">4</integer>
+    <integer name="back_button_weight">1</integer>
+</resources>

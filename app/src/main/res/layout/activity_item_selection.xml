@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_common_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorPrimary"
+        android:paddingLeft="5dp"
+        android:paddingStart="5dp" >
+
+        <TextView
+            android:id="@+id/tv_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/file_name_weight"
+            android:textSize="@dimen/standard_text_size"
+            android:ellipsize="end"
+            android:maxLines="1" />
+
+        <Button
+            android:id="@+id/b_back"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/back_button_weight"
+            android:text="Back"
+            android:textSize="@dimen/standard_text_size"
+            android:textColor="@color/colorButtonText"
+            android:background="@color/colorButton" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/headers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/ll_common_header">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/price_weight"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="Price"
+            android:textSize="@dimen/standard_text_size" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/item_weight"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="Item"
+            android:textSize="@dimen/standard_text_size" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/count_weight"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="Count"
+            android:textSize="@dimen/standard_text_size" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_sale_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_buttons"
+        app:layout_constraintTop_toBottomOf="@+id/headers">
+    </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:id="@+id/bottom_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/b_reset"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="Reset"
+            android:textSize="@dimen/standard_text_size"
+            android:textColor="@color/colorButtonText"
+            android:background="@color/colorButton" />
+
+        <Button
+            android:id="@+id/b_done"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="Done"
+            android:textSize="@dimen/standard_text_size"
+            android:textColor="@color/colorButtonText"
+            android:background="@color/colorButton" />
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>
+
+
