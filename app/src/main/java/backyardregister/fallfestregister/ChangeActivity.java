@@ -3,6 +3,7 @@ package backyardregister.fallfestregister;
 import android.Manifest;
 import android.app.AlertDialog.Builder;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -24,10 +25,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.text.DateFormat;
@@ -36,6 +41,7 @@ import java.text.SimpleDateFormat;
 public class ChangeActivity extends AppCompatActivity
         implements ActivityCompat.OnRequestPermissionsResultCallback {
 
+    private Context context;
     private int STORAGE_PERMISSION_CODE = 1;
     private TextView header;
     private Button backButton;
@@ -57,6 +63,7 @@ public class ChangeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change);
 
+        context = getApplicationContext();
         header = findViewById(R.id.tv_header);
         backButton = findViewById(R.id.b_back);
         changeCalculation = findViewById(R.id.tv_change_calculation);
@@ -175,17 +182,41 @@ public class ChangeActivity extends AppCompatActivity
         Log.d(TAG, keepTheChangeString);
         Log.d(TAG, currencyFormat.format(totalDonation));
         Log.d(TAG, "");
-        String finalSaveString = date + "|" + listName + "|" + purchases + total + "|" + keepTheChangeString + "|" + totalDonationString + "\n\n";
+        String finalSaveString = date + "|" + listName + "|" + purchases + total + "|" + keepTheChangeString + "|" + totalDonationString + "\n";
 
 
         if(isExternalStorageWritable() && checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             Log.d("permission", "granted");
+
+
+            // Save all the old data into a string
+            StringBuilder sb = new StringBuilder();
+            try {
+                FileInputStream fis = new FileInputStream(DataStorage.record);
+                DataInputStream in = new DataInputStream(fis);
+                BufferedReader br = new BufferedReader(new InputStreamReader(in));
+                String line;
+
+                Log.d("output", "while loop runs");
+                while((line = br.readLine()) != null) {
+                    Log.d("output", line);
+                    sb.append(line).append("\n");
+                }
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             FileOutputStream fos = null;
 
             try {
                 Log.d("save", "save runs");
-                fos = new FileOutputStream(DataStorage.record, true);
+                // Overwrite the new data over the text file
+                fos = new FileOutputStream(DataStorage.record, false);
                 fos.write(finalSaveString.getBytes());
+                // Write the old data below the new data in the text file
+                fos = new FileOutputStream(DataStorage.record, true);
+                fos.write(sb.toString().getBytes());
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {

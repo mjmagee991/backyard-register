@@ -21,7 +21,9 @@ public class ItemListAdapter
 
 
     public void resetCounts() {
+        // For each item in the RecyclerView
         for(int pos = 0; pos < numItems; pos += 1) {
+            // Reset the count variable of the item
             DataStorage.listInUse.getList()[pos].reset();
             notifyItemChanged(pos);
         }

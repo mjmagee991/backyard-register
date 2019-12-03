@@ -3,10 +3,18 @@ package backyardregister.fallfestregister;
 
 import android.content.Intent;
 import android.os.Environment;
+import android.util.Log;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class DataStorage {
+    
 
     public static File record = new File(Environment.getExternalStorageDirectory(), "record.txt");
 
@@ -51,5 +59,29 @@ public class DataStorage {
             saleListNames[i] = saleLists[i].getName();
         }
         return saleListNames;
+    }
+
+    public static ArrayList<String> getSaleRecord() {
+
+        ArrayList<String> saleRecord = new ArrayList<>();
+
+        try {
+            FileInputStream fis = new FileInputStream(record);
+            DataInputStream in = new DataInputStream(fis);
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            String line;
+
+            Log.d("output", "while loop runs");
+            while((line = br.readLine()) != null) {
+                Log.d("output", line);
+                // Adds line to
+                saleRecord.add(line);
+            }
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return saleRecord;
     }
 }

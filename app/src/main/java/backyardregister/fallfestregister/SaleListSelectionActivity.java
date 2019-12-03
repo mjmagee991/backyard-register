@@ -33,6 +33,7 @@ public class SaleListSelectionActivity extends AppCompatActivity
         };
         backButton.setOnClickListener(backListener);
 
+        // RecyclerView setup
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         saleListNamesList.setLayoutManager(layoutManager);
         saleListNamesList.setHasFixedSize(true);

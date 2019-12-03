@@ -23,9 +23,12 @@
                 android:resource="@xml/provider_paths"/>
         </provider>
 
-        <activity android:name=".TransactionHistoryActivity" />
-        <activity android:name=".ChangeActivity" />
-        <activity android:name=".SaleListSelectionActivity" />
+        <activity android:name=".TransactionHistoryActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ChangeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SaleListSelectionActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".StartMenuActivity"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -48,10 +51,12 @@
         <activity
             android:name=".TotalActivity"
             android:label="@string/title_activity_total"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ItemSelectionActivity"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

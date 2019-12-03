@@ -15,6 +15,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,20 +33,24 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class TransactionHistoryActivity extends AppCompatActivity {
+public class TransactionHistoryActivity extends AppCompatActivity
+        implements SaleRecordListAdapter.ListClickListener {
 
     private Button backButton;
-    private TextView transactionHistoryTextView;
+    private SaleRecordListAdapter adapter;
+    private RecyclerView saleRecord;
     private Button sendFileButton;
     private Button resetFileButton;
+    private static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_history);
 
+        context = getApplicationContext();
         backButton = findViewById(R.id.b_back);
-        transactionHistoryTextView = findViewById(R.id.tv_file_contents);
+        saleRecord = findViewById(R.id.rv_sale_record_list);
         sendFileButton = findViewById(R.id.b_send_file);
         resetFileButton = findViewById(R.id.b_reset_file);
 
@@ -59,8 +65,13 @@ public class TransactionHistoryActivity extends AppCompatActivity {
         };
         backButton.setOnClickListener(backListener);
 
-        // Transaction History TextView setup
-        updateTextView();
+        // Transaction History RecyclerView setup
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        saleRecord.setLayoutManager(layoutManager);
+        saleRecord.setHasFixedSize(true);
+
+        adapter = new SaleRecordListAdapter(this);
+        saleRecord.setAdapter(adapter);
 
 
         // Send File Button setup
@@ -100,7 +111,9 @@ public class TransactionHistoryActivity extends AppCompatActivity {
                                     }
                                 }
                             }
-                            updateTextView();
+                            Intent intent = new Intent(TransactionHistoryActivity.this, TransactionHistoryActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                            startActivity(intent);
                         }
                     })
                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -115,6 +128,12 @@ public class TransactionHistoryActivity extends AppCompatActivity {
         resetFileButton.setOnClickListener(resetFileListener);
 
     }
+
+    @Override
+    public void onListClick(int clickedListIndex) {
+
+    }
+
 
     void updateTextView() {
 
@@ -135,7 +154,7 @@ public class TransactionHistoryActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        transactionHistoryTextView.setText(sb.toString());
+        //transactionHistoryTextView.setText(sb.toString());
 
         /*
         Log.d("output", Boolean.toString(checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)));
@@ -198,5 +217,9 @@ public class TransactionHistoryActivity extends AppCompatActivity {
 
         intent.setType("message/rfc822");
         startActivity(Intent.createChooser(intent, "Choose an email client"));
+    }
+
+    public static Context getContext() {
+        return context;
     }
 }
