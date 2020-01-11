@@ -1,7 +1,6 @@
 package backyardregister.fallfestregister;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -43,7 +42,7 @@ public class StartMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    startActivity(new Intent(StartMenuActivity.this, TransactionHistoryActivity.class));
+                    startActivity(new Intent(StartMenuActivity.this, TransactionHistoryActionActivity.class));
                 } else {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(StartMenuActivity.this,
                             Manifest.permission.READ_EXTERNAL_STORAGE)) {

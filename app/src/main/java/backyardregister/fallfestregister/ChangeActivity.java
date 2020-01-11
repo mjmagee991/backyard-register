@@ -192,7 +192,7 @@ public class ChangeActivity extends AppCompatActivity
             // Save all the old data into a string
             StringBuilder sb = new StringBuilder();
             try {
-                FileInputStream fis = new FileInputStream(DataStorage.record);
+                FileInputStream fis = new FileInputStream(DataStorage.listInUse.getRecord());
                 DataInputStream in = new DataInputStream(fis);
                 BufferedReader br = new BufferedReader(new InputStreamReader(in));
                 String line;
@@ -212,10 +212,10 @@ public class ChangeActivity extends AppCompatActivity
             try {
                 Log.d("save", "save runs");
                 // Overwrite the new data over the text file
-                fos = new FileOutputStream(DataStorage.record, false);
+                fos = new FileOutputStream(DataStorage.listInUse.getRecord(), false);
                 fos.write(finalSaveString.getBytes());
                 // Write the old data below the new data in the text file
-                fos = new FileOutputStream(DataStorage.record, true);
+                fos = new FileOutputStream(DataStorage.listInUse.getRecord(), true);
                 fos.write(sb.toString().getBytes());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -228,7 +228,7 @@ public class ChangeActivity extends AppCompatActivity
                     }
                 }
             }
-            Log.d("Save", "File saved properly");
+            Log.d("Save", "File saved properly to " + DataStorage.listInUse.getRecord());
         }
 
     }

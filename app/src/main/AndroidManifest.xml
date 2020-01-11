@@ -13,23 +13,32 @@
         android:roundIcon="@drawable/cash_register"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ViewTransactionHistorySelectionActivity"></activity>
+        <activity android:name=".DeleteTransactionHistorySelectionActivity" />
+        <activity android:name=".ExportTransactionHistorySelectionActivity" />
+        <activity android:name=".TransactionHistoryActionActivity" />
+
         <provider
-            android:authorities="${applicationId}.provider"
             android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".TransactionHistoryActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ChangeActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".SaleListSelectionActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".StartMenuActivity"
+        <activity
+            android:name=".ViewTransactionHistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ChangeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SaleListSelectionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".StartMenuActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,20 +52,20 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="http"
                     android:host="mywebsite.com"
-                    android:pathPattern="/app" />
+                    android:pathPattern="/app"
+                    android:scheme="http" />
             </intent-filter>
         </activity>
         <activity
             android:name=".TotalActivity"
             android:label="@string/title_activity_total"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ItemSelectionActivity"
             android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

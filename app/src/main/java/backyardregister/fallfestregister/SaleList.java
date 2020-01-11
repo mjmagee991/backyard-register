@@ -1,14 +1,20 @@
 package backyardregister.fallfestregister;
 
 
+import android.os.Environment;
+
+import java.io.File;
+
 public class SaleList {
 
-    String name;
-    SaleItem[] list;
+    private String name;
+    private SaleItem[] list;
+    private File record;
 
     public SaleList(String inName, backyardregister.fallfestregister.SaleItem[] inList) {
         name = inName;
         list = inList;
+        record = new File(Environment.getExternalStorageDirectory(), "BReg" + name.replaceAll("\\s+","") + "record.txt");
     }
 
     public String getName() {
@@ -17,5 +23,9 @@ public class SaleList {
 
     public backyardregister.fallfestregister.SaleItem[] getList() {
         return list;
+    }
+
+    public File getRecord() {
+        return record;
     }
 }

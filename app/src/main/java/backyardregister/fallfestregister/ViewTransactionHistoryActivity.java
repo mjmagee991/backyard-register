@@ -1,17 +1,9 @@
 package backyardregister.fallfestregister;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog.Builder;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.ContactsContract;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,22 +14,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.io.BufferedReader;
 import java.io.DataInputStream;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class TransactionHistoryActivity extends AppCompatActivity
-        implements SaleRecordListAdapter.ListClickListener {
+public class ViewTransactionHistoryActivity extends AppCompatActivity
+        implements ViewSaleRecordListAdapter.ListClickListener {
 
+    private TextView headerTextView;
     private Button backButton;
-    private SaleRecordListAdapter adapter;
+    private ViewSaleRecordListAdapter adapter;
     private RecyclerView saleRecord;
     private Button sendFileButton;
     private Button resetFileButton;
@@ -49,16 +38,20 @@ public class TransactionHistoryActivity extends AppCompatActivity
         setContentView(R.layout.activity_transaction_history);
 
         context = getApplicationContext();
+        headerTextView = findViewById(R.id.tv_header);
         backButton = findViewById(R.id.b_back);
         saleRecord = findViewById(R.id.rv_sale_record_list);
         sendFileButton = findViewById(R.id.b_send_file);
         resetFileButton = findViewById(R.id.b_reset_file);
 
+        // Header setup
+        headerTextView.setText(DataStorage.listInUse.getName());
+
         // Back Button setup
         View.OnClickListener backListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TransactionHistoryActivity.this, StartMenuActivity.class);
+                Intent intent = new Intent(ViewTransactionHistoryActivity.this, ViewTransactionHistorySelectionActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
             }
@@ -70,7 +63,7 @@ public class TransactionHistoryActivity extends AppCompatActivity
         saleRecord.setLayoutManager(layoutManager);
         saleRecord.setHasFixedSize(true);
 
-        adapter = new SaleRecordListAdapter(this);
+        adapter = new ViewSaleRecordListAdapter(this);
         saleRecord.setAdapter(adapter);
 
 
@@ -89,7 +82,7 @@ public class TransactionHistoryActivity extends AppCompatActivity
             public void onClick(View v) {
 
                 // Reset Dialog setup
-                new AlertDialog.Builder(TransactionHistoryActivity.this)
+                new AlertDialog.Builder(ViewTransactionHistoryActivity.this)
                     .setTitle("Reset")
                     .setMessage("Are you sure you would like to reset the stored data?\nThis action cannot be undone.")
                     .setPositiveButton("Reset", new DialogInterface.OnClickListener() {
@@ -98,7 +91,7 @@ public class TransactionHistoryActivity extends AppCompatActivity
                             FileOutputStream fos = null;
 
                             try {
-                                fos = new FileOutputStream(DataStorage.record, false);
+                                fos = new FileOutputStream(DataStorage.listInUse.getRecord(), false);
                                 fos.write("".getBytes());
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -111,7 +104,7 @@ public class TransactionHistoryActivity extends AppCompatActivity
                                     }
                                 }
                             }
-                            Intent intent = new Intent(TransactionHistoryActivity.this, TransactionHistoryActivity.class);
+                            Intent intent = new Intent(ViewTransactionHistoryActivity.this, ViewTransactionHistoryActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                             startActivity(intent);
                         }
@@ -134,13 +127,13 @@ public class TransactionHistoryActivity extends AppCompatActivity
 
     }
 
-
+/*
     void updateTextView() {
 
         Log.d("output", "update runs");
         StringBuilder sb = new StringBuilder();
         try {
-            FileInputStream fis = new FileInputStream(DataStorage.record);
+            FileInputStream fis = new FileInputStream(DataStorage.listInUse.getRecord());
             DataInputStream in = new DataInputStream(fis);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line;
@@ -164,7 +157,7 @@ public class TransactionHistoryActivity extends AppCompatActivity
             FileInputStream fis = null;
             try {
 
-                fis = new FileInputStream(DataStorage.record);
+                fis = new FileInputStream(DataStorage.listInUse.getRecord());
                 InputStreamReader isr = new InputStreamReader(fis);
                 BufferedReader br = new BufferedReader(isr);
                 StringBuilder sb = new StringBuilder();
@@ -189,14 +182,14 @@ public class TransactionHistoryActivity extends AppCompatActivity
                 }
             }
         }
-        */
-    }
+
+    }*/
 
     void sendFile(String recipient) {
         String[] recipientList = {recipient};
         String subject = "Fall Fest Sales Data";
         String message = "Test";
-        String fileLocation = DataStorage.record.getAbsolutePath();
+        String fileLocation = DataStorage.listInUse.getRecord().getAbsolutePath();
         Log.d("output", fileLocation);
 
         Intent intent = new Intent(Intent.ACTION_SEND);
@@ -212,8 +205,7 @@ public class TransactionHistoryActivity extends AppCompatActivity
         intent.putExtra(android.content.Intent.EXTRA_STREAM, Uri.parse("file://" + attachmentUri));
          */
 
-        Context context = getApplicationContext();
-        intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(TransactionHistoryActivity.this, BuildConfig.APPLICATION_ID + ".provider", DataStorage.record));
+        intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(ViewTransactionHistoryActivity.this, BuildConfig.APPLICATION_ID + ".provider", DataStorage.listInUse.getRecord()));
 
         intent.setType("message/rfc822");
         startActivity(Intent.createChooser(intent, "Choose an email client"));

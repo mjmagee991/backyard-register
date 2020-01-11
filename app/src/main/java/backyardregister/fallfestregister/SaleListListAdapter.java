@@ -10,8 +10,8 @@ import android.widget.TextView;
 public class SaleListListAdapter
         extends RecyclerView.Adapter<SaleListListAdapter.SaleListNameViewHolder>  {
 
-    private int numItems = DataStorage.getSaleListNames().length;
     private String[] saleListNames = DataStorage.getSaleListNames();
+    private int numItems = saleListNames.length;
     final private ListClickListener listClickListener;
 
     public interface ListClickListener {

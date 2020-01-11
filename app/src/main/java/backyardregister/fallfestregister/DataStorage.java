@@ -16,8 +16,6 @@ import java.util.ArrayList;
 public class DataStorage {
     
 
-    public static File record = new File(Environment.getExternalStorageDirectory(), "record.txt");
-
     public static SaleList listInUse;
 
     private static SaleList[] saleLists = {
@@ -66,7 +64,7 @@ public class DataStorage {
         ArrayList<String> saleRecord = new ArrayList<>();
 
         try {
-            FileInputStream fis = new FileInputStream(record);
+            FileInputStream fis = new FileInputStream(listInUse.getRecord());
             DataInputStream in = new DataInputStream(fis);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line;

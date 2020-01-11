@@ -2,19 +2,18 @@ package backyardregister.fallfestregister;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class SaleRecordListAdapter extends RecyclerView.Adapter<SaleRecordListAdapter.SaleRecordViewHolder> {
+public class ViewSaleRecordListAdapter extends RecyclerView.Adapter<ViewSaleRecordListAdapter.SaleRecordViewHolder> {
+
+    //TODO: Fix bug failing to display record of second sale, could be saving or displaying, needs investigation
 
     private ArrayList<String> saleRecord = DataStorage.getSaleRecord();
     private int numItems = saleRecord.size();
@@ -24,12 +23,12 @@ public class SaleRecordListAdapter extends RecyclerView.Adapter<SaleRecordListAd
         void onListClick(int clickedListIndex);
     }
 
-    public SaleRecordListAdapter(SaleRecordListAdapter.ListClickListener listener) {
+    public ViewSaleRecordListAdapter(ViewSaleRecordListAdapter.ListClickListener listener) {
         listClickListener = listener;
     }
 
     @Override
-    public SaleRecordListAdapter.SaleRecordViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public ViewSaleRecordListAdapter.SaleRecordViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.rv_item_sale_record;
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -42,7 +41,7 @@ public class SaleRecordListAdapter extends RecyclerView.Adapter<SaleRecordListAd
     }
 
     @Override
-    public void onBindViewHolder(SaleRecordListAdapter.SaleRecordViewHolder holder, int pos) {
+    public void onBindViewHolder(ViewSaleRecordListAdapter.SaleRecordViewHolder holder, int pos) {
         holder.load(pos);
     }
 
@@ -82,7 +81,7 @@ public class SaleRecordListAdapter extends RecyclerView.Adapter<SaleRecordListAd
             if(toDelete) {
                 rowLayout.setBackgroundColor(Color.parseColor("#eb5e5e"/*red*/));
             } else {
-                rowLayout.setBackgroundColor(Color.parseColor("#FFFFFF"/*white*/));
+                rowLayout.setBackgroundColor(Color.parseColor("#FFFFFF"/*white*/)); //TODO: Fix white to match default background white
             }
         }
     }
