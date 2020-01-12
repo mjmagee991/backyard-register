@@ -51,9 +51,7 @@ public class ViewTransactionHistoryActivity extends AppCompatActivity
         View.OnClickListener backListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ViewTransactionHistoryActivity.this, ViewTransactionHistorySelectionActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
+                back();
             }
         };
         backButton.setOnClickListener(backListener);
@@ -278,5 +276,16 @@ public class ViewTransactionHistoryActivity extends AppCompatActivity
 
     public static Context getContext() {
         return context;
+    }
+
+    @Override
+    public void onBackPressed() {
+        back();
+    }
+
+    private void back() {
+        Intent intent = new Intent(ViewTransactionHistoryActivity.this, ViewTransactionHistorySelectionActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
     }
 }

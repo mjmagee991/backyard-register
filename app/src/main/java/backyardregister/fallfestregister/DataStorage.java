@@ -52,6 +52,10 @@ public class DataStorage {
         listInUse = saleLists[pos];
     }
 
+    public static SaleList[] getSaleLists() {
+        return saleLists;
+    }
+
     public static String[] getSaleListNames() {
         for(int i = 0; i < saleLists.length; i++) {
             saleListNames[i] = saleLists[i].getName();

@@ -78,4 +78,9 @@ public class StartMenuActivity extends AppCompatActivity {
         int check = ContextCompat.checkSelfPermission(this, permission);
         return (check == PackageManager.PERMISSION_GRANTED);
     }
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }

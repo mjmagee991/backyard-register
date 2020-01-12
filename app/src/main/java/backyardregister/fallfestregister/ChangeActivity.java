@@ -80,9 +80,7 @@ public class ChangeActivity extends AppCompatActivity
         View.OnClickListener backListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ChangeActivity.this, TotalActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
+                back();
             }
         };
         backButton.setOnClickListener(backListener);
@@ -281,5 +279,16 @@ public class ChangeActivity extends AppCompatActivity
                 Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        back();
+    }
+
+    private void back() {
+        Intent intent = new Intent(ChangeActivity.this, TotalActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
     }
 }

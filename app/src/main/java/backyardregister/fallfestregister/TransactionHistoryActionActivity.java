@@ -27,7 +27,7 @@ public class TransactionHistoryActionActivity extends AppCompatActivity {
         View.OnClickListener backListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(TransactionHistoryActionActivity.this, StartMenuActivity.class));
+                back();
             }
         };
         backButton.setOnClickListener(backListener);
@@ -58,5 +58,14 @@ public class TransactionHistoryActionActivity extends AppCompatActivity {
             }
         };
         exportButton.setOnClickListener(exportListener);
+    }
+
+    @Override
+    public void onBackPressed() {
+        back();
+    }
+
+    private void back() {
+        startActivity(new Intent(TransactionHistoryActionActivity.this, StartMenuActivity.class));
     }
 }

@@ -28,7 +28,7 @@ public class SaleListSelectionActivity extends AppCompatActivity
         View.OnClickListener backListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SaleListSelectionActivity.this, StartMenuActivity.class));
+                back();
             }
         };
         backButton.setOnClickListener(backListener);
@@ -46,5 +46,14 @@ public class SaleListSelectionActivity extends AppCompatActivity
     public void onListClick(int clickedListIndex) {
         DataStorage.setListInUse(clickedListIndex);
         startActivity(new Intent(SaleListSelectionActivity.this, ItemSelectionActivity.class));
+    }
+
+    @Override
+    public void onBackPressed() {
+        back();
+    }
+
+    private void back() {
+        startActivity(new Intent(SaleListSelectionActivity.this, StartMenuActivity.class));
     }
 }

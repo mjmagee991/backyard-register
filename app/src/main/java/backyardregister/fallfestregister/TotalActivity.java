@@ -55,9 +55,7 @@ public class TotalActivity extends AppCompatActivity {
         View.OnClickListener backListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TotalActivity.this, ItemSelectionActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
+                back();
             }
         };
         backButton.setOnClickListener(backListener);
@@ -126,6 +124,16 @@ public class TotalActivity extends AppCompatActivity {
             }
         };
         calculateChangeButton.setOnClickListener(calcListener);
+    }
 
+    @Override
+    public void onBackPressed() {
+        back();
+    }
+
+    private void back() {
+        Intent intent = new Intent(TotalActivity.this, ItemSelectionActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
     }
 }

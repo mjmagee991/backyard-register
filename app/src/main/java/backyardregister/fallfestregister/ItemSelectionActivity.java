@@ -43,7 +43,7 @@ public class ItemSelectionActivity extends AppCompatActivity {
         View.OnClickListener backListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ItemSelectionActivity.this, SaleListSelectionActivity.class));
+                back();
             }
         };
         backButton.setOnClickListener(backListener);
@@ -88,5 +88,14 @@ public class ItemSelectionActivity extends AppCompatActivity {
 
     public static Context getContext() {
         return context;
+    }
+
+    @Override
+    public void onBackPressed() {
+        back();
+    }
+
+    private void back() {
+        startActivity(new Intent(ItemSelectionActivity.this, SaleListSelectionActivity.class));
     }
 }
