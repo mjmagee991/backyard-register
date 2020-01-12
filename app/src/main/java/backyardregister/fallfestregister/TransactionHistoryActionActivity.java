@@ -10,7 +10,7 @@ public class TransactionHistoryActionActivity extends AppCompatActivity {
 
     private Button backButton;
     private Button viewButton;
-    private Button deleteButton;
+    private Button resetButton;
     private Button exportButton;
 
     @Override
@@ -20,7 +20,7 @@ public class TransactionHistoryActionActivity extends AppCompatActivity {
 
         backButton = findViewById(R.id.b_back);
         viewButton = findViewById(R.id.b_view);
-        deleteButton = findViewById(R.id.b_delete);
+        resetButton = findViewById(R.id.b_reset);
         exportButton = findViewById(R.id.b_export);
 
         // Back button setup
@@ -42,13 +42,13 @@ public class TransactionHistoryActionActivity extends AppCompatActivity {
         viewButton.setOnClickListener(viewListener);
 
         // Delete button setup
-        View.OnClickListener deleteListener = new View.OnClickListener() {
+        View.OnClickListener resetListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(TransactionHistoryActionActivity.this, DeleteTransactionHistorySelectionActivity.class));
+                startActivity(new Intent(TransactionHistoryActionActivity.this, ResetTransactionHistorySelectionActivity.class));
             }
         };
-        deleteButton.setOnClickListener(deleteListener);
+        resetButton.setOnClickListener(resetListener);
 
         // Export button setup
         View.OnClickListener exportListener = new View.OnClickListener() {

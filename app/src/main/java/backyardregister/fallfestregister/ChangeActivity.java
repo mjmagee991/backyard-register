@@ -214,10 +214,12 @@ public class ChangeActivity extends AppCompatActivity
                 // Overwrite the new data over the text file
                 fos = new FileOutputStream(DataStorage.listInUse.getRecord(), false);
                 fos.write(finalSaveString.getBytes());
+                Log.d("Save", finalSaveString + "..." + DataStorage.listInUse.getRecord());
                 // Write the old data below the new data in the text file
                 fos = new FileOutputStream(DataStorage.listInUse.getRecord(), true);
                 fos.write(sb.toString().getBytes());
             } catch (IOException e) {
+                Log.d("Save", "IOException thrown");
                 e.printStackTrace();
             } finally {
                 if(fos != null) {

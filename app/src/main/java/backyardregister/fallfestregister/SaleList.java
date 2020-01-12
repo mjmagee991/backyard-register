@@ -14,7 +14,8 @@ public class SaleList {
     public SaleList(String inName, backyardregister.fallfestregister.SaleItem[] inList) {
         name = inName;
         list = inList;
-        record = new File(Environment.getExternalStorageDirectory(), "BReg" + name.replaceAll("\\s+","") + "record.txt");
+        // File doesn't like slashes in the file location
+        record = new File(Environment.getExternalStorageDirectory(), "BReg" + name.replaceAll("/","") + "record.txt");
     }
 
     public String getName() {

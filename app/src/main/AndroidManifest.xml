@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ViewTransactionHistorySelectionActivity"></activity>
-        <activity android:name=".DeleteTransactionHistorySelectionActivity" />
+        <activity android:name=".ResetTransactionHistorySelectionActivity" />
         <activity android:name=".ExportTransactionHistorySelectionActivity" />
         <activity android:name=".TransactionHistoryActionActivity" />
 

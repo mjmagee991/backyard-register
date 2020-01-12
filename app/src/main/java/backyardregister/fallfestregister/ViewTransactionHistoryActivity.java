@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,8 +29,8 @@ public class ViewTransactionHistoryActivity extends AppCompatActivity
     private Button backButton;
     private ViewSaleRecordListAdapter adapter;
     private RecyclerView saleRecord;
-    private Button sendFileButton;
-    private Button resetFileButton;
+    private Button voidButton;
+    private boolean voidMode;
     private static Context context;
 
     @Override
@@ -41,8 +42,7 @@ public class ViewTransactionHistoryActivity extends AppCompatActivity
         headerTextView = findViewById(R.id.tv_header);
         backButton = findViewById(R.id.b_back);
         saleRecord = findViewById(R.id.rv_sale_record_list);
-        sendFileButton = findViewById(R.id.b_send_file);
-        resetFileButton = findViewById(R.id.b_reset_file);
+        voidButton = findViewById(R.id.b_void_sales);
 
         // Header setup
         headerTextView.setText(DataStorage.listInUse.getName());
@@ -66,8 +66,69 @@ public class ViewTransactionHistoryActivity extends AppCompatActivity
         adapter = new ViewSaleRecordListAdapter(this);
         saleRecord.setAdapter(adapter);
 
+        // Void Button setup
+        View.OnClickListener voidListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(voidMode) {
+                    // Void Dialog setup
+                    new AlertDialog.Builder(ViewTransactionHistoryActivity.this)
+                            .setTitle("Confirm Voids")
+                            .setMessage("Are you sure you would like to void the selected data?\nThis action cannot be undone.")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    adapter.changeMode();
+                                    Intent intent = new Intent(ViewTransactionHistoryActivity.this, ViewTransactionHistoryActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                    startActivity(intent);
+                                    /*
+                                    voidMode = !voidMode;
+                                    voidButton.setText(getString(R.string.void_sales));
+                                    headerTextView.setTextColor(Color.parseColor("#FFFFFF"/*white)); //TODO: Fix white to match default white
+                                    */
+                                    /*
+                                    FileOutputStream fos = null;
 
-        // Send File Button setup
+                                    try {
+                                        fos = new FileOutputStream(DataStorage.listInUse.getRecord(), false);
+                                        fos.write("".getBytes());
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    } finally {
+                                        if(fos != null) {
+                                            try {
+                                                fos.close();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }
+                                    Intent intent = new Intent(ViewTransactionHistoryActivity.this, ViewTransactionHistoryActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                    startActivity(intent);
+
+                                     */
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .create().show();
+                } else {
+                    adapter.changeMode();
+                    voidMode = true;
+                    voidButton.setText("Confirm Voids");
+                    headerTextView.setTextColor(Color.parseColor("#eb5e5e"/*red*/));
+                }
+            }
+        };
+        voidButton.setOnClickListener(voidListener);
+
+        /* Send File Button setup
         View.OnClickListener SendFileListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +137,9 @@ public class ViewTransactionHistoryActivity extends AppCompatActivity
         };
         sendFileButton.setOnClickListener(SendFileListener);
 
-        // Reset File Button setup
+         */
+
+        /* Reset File Button setup
         View.OnClickListener resetFileListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,6 +182,8 @@ public class ViewTransactionHistoryActivity extends AppCompatActivity
             }
         };
         resetFileButton.setOnClickListener(resetFileListener);
+
+         */
 
     }
 

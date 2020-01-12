@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Fall Fest Register</string>
     <string name="title_activity_total">TotalActivity</string>
+    <string name="void_sales">Void Sales</string>
 </resources>

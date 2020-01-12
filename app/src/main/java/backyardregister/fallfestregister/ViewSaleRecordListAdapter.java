@@ -9,15 +9,18 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ViewSaleRecordListAdapter extends RecyclerView.Adapter<ViewSaleRecordListAdapter.SaleRecordViewHolder> {
 
-    //TODO: Fix bug failing to display record of second sale, could be saving or displaying, needs investigation
 
     private ArrayList<String> saleRecord = DataStorage.getSaleRecord();
     private int numItems = saleRecord.size();
     private final ListClickListener listClickListener;
+    private boolean voidMode = false;
+    private boolean[] voidSelections = new boolean[saleRecord.size()];
 
     public interface ListClickListener {
         void onListClick(int clickedListIndex);
@@ -55,7 +58,6 @@ public class ViewSaleRecordListAdapter extends RecyclerView.Adapter<ViewSaleReco
 
         TextView saleInfoTextView;
         LinearLayout rowLayout;
-        boolean toDelete;
 
         public SaleRecordViewHolder(View itemView) {
 
@@ -63,13 +65,13 @@ public class ViewSaleRecordListAdapter extends RecyclerView.Adapter<ViewSaleReco
 
             saleInfoTextView = itemView.findViewById(R.id.tv_sale_info);
             rowLayout = itemView.findViewById(R.id.ll_rv_item);
-            toDelete = false;
 
             itemView.setOnClickListener(this);
         }
 
         void load(int pos) {
             saleInfoTextView.setText(saleRecord.get(pos));
+            voidSelections[pos] = false;
         }
 
         @Override
@@ -77,12 +79,56 @@ public class ViewSaleRecordListAdapter extends RecyclerView.Adapter<ViewSaleReco
             int clickedPosition = getAdapterPosition();
             listClickListener.onListClick(clickedPosition);
 
-            toDelete = !toDelete;
-            if(toDelete) {
-                rowLayout.setBackgroundColor(Color.parseColor("#eb5e5e"/*red*/));
-            } else {
-                rowLayout.setBackgroundColor(Color.parseColor("#FFFFFF"/*white*/)); //TODO: Fix white to match default background white
+            if(voidMode) {
+                voidSelections[clickedPosition] = !voidSelections[clickedPosition];
+                if (voidSelections[clickedPosition]) {
+                    rowLayout.setBackgroundColor(Color.parseColor("#eb5e5e"/*red*/));
+                } else {
+                    rowLayout.setBackgroundColor(Color.parseColor("#FFFFFF"/*white*/)); //TODO: Fix white to match default background white
+                }
             }
+        }
+    }
+
+    public void changeMode() {
+        if(voidMode) {
+            FileOutputStream fos = null;
+
+            try {
+                fos = new FileOutputStream(DataStorage.listInUse.getRecord(), false);
+                fos.write("".getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if(fos != null) {
+                    try {
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            for(int i = 0; i < voidSelections.length; i++) {
+                if(!voidSelections[i]) {
+                    try {
+                        fos = new FileOutputStream(DataStorage.listInUse.getRecord(), true);
+                        fos.write((saleRecord.get(i) + "\n").getBytes());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        if(fos != null) {
+                            try {
+                                fos.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            voidMode = true;
         }
     }
 }
