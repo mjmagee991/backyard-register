@@ -10,12 +10,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class ResetTransactionHistoryListAdapter
         extends RecyclerView.Adapter<ResetTransactionHistoryListAdapter.TransactionHistoryNameViewHolder>  {
 
-    private String[] transactionHistoryNames = DataStorage.getSaleListNames();
-    private int numItems = transactionHistoryNames.length;
-    private boolean[] resetSelections = new boolean[numItems];
+    private ArrayList<String> transactionHistoryNames = DataStorage.getSaleListNames();
+    private int numItems = transactionHistoryNames.size();
+    private ArrayList<Boolean> resetSelections = new ArrayList<>();
 
 
     @Override
@@ -58,32 +60,30 @@ public class ResetTransactionHistoryListAdapter
         }
 
         void load(int pos) {
-            transactionHistoryName.setText(transactionHistoryNames[pos]);
-            resetSelections[pos] = false;
+            transactionHistoryName.setText(transactionHistoryNames.get(pos));
+            resetSelections.set(pos, false);
         }
 
         @Override
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
 
-            resetSelections[clickedPosition] = !resetSelections[clickedPosition];
+            resetSelections.set(clickedPosition, !resetSelections.get(clickedPosition));
 
-            if (resetSelections[clickedPosition]) {
+            if (resetSelections.get(clickedPosition)) {
                 rowLayout.setBackgroundColor(Color.parseColor("#eb5e5e"/*red*/));
             } else {
                 rowLayout.setBackgroundColor(Color.parseColor("#FFFFFF"/*white*/)); //TODO: Fix white to match default background white
             }
-
-
         }
     }
 
     public int resetRecords() {
         int numReset = 0;
-        SaleList[] saleLists = DataStorage.getSaleLists();
-        for(int i = 0; i < resetSelections.length; i++) {
-            if(resetSelections[i]) {
-                saleLists[i].resetRecord();
+        ArrayList<SaleList> saleLists = DataStorage.getSaleLists();
+        for(int i = 0; i < resetSelections.size(); i++) {
+            if(resetSelections.get(i)) {
+                saleLists.get(i).resetRecord();
                 numReset++;
             }
         }

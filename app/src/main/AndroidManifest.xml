@@ -13,7 +13,9 @@
         android:roundIcon="@drawable/cash_register"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ViewTransactionHistorySelectionActivity"></activity>
+        <activity android:name=".SaleListEditingSelectorActivity"></activity>
+        <activity android:name=".SaleListEditorActivity" />
+        <activity android:name=".ViewTransactionHistorySelectionActivity" />
         <activity android:name=".ResetTransactionHistorySelectionActivity" />
         <activity android:name=".ExportTransactionHistorySelectionActivity" />
         <activity android:name=".TransactionHistoryActionActivity" />

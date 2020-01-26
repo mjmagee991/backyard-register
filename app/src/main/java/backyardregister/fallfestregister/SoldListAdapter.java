@@ -2,13 +2,14 @@ package backyardregister.fallfestregister;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
-
+import java.util.ArrayList;
 
 
 public class SoldListAdapter extends RecyclerView.Adapter<SoldListAdapter.SoldViewHolder> {
@@ -22,14 +23,14 @@ public class SoldListAdapter extends RecyclerView.Adapter<SoldListAdapter.SoldVi
     private DecimalFormat tensMultiplicationFormat = new DecimalFormat("x #");
 
     private int numItems;
-    private SaleItem[] soldItems = new SaleItem[DataStorage.listInUse.getList().length];
+    private ArrayList<SaleItem> soldItems = new ArrayList<>();
     private double grandTotal;
 
     public SoldListAdapter() {
         for(SaleItem item : DataStorage.listInUse.getList()) {
             if(item.getCount() != 0) {
                 numItems += 1;
-                soldItems[numItems - 1] = item;
+                soldItems.add(item);
                 grandTotal += item.getTotal();
             }
         }
@@ -51,7 +52,7 @@ public class SoldListAdapter extends RecyclerView.Adapter<SoldListAdapter.SoldVi
 
     @Override
     public void onBindViewHolder(SoldListAdapter.SoldViewHolder holder, int pos) {
-        holder.load(soldItems[pos]);
+        holder.load(soldItems.get(pos));
     }
 
     @Override
@@ -82,7 +83,6 @@ public class SoldListAdapter extends RecyclerView.Adapter<SoldListAdapter.SoldVi
             double total = loadingItem.getTotal();
             String formattedCount;
             String formattedTotal;
-            String finalMultiplicationText;
 
             if (price >= 10) {
                 priceTextView.setText(tensFirstCurrencyFormat.format(price));

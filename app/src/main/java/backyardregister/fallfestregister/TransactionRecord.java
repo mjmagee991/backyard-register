@@ -2,14 +2,16 @@ package backyardregister.fallfestregister;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+
 public class TransactionRecord {
 
-    public static int[] purchaseList;
+    public static ArrayList<Integer> purchaseList;
     public static String purchaseString;
     public static double total;
     public static double amountPaid;
 
-    public static void setPurchases(int[] inPurchases) {
+    public static void setPurchases(ArrayList<Integer> inPurchases) {
         purchaseList = inPurchases;
     }
     public static String getPurchases() {

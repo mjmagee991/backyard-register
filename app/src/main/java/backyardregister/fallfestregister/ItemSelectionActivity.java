@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 
 
 public class ItemSelectionActivity extends AppCompatActivity {
@@ -71,10 +73,10 @@ public class ItemSelectionActivity extends AppCompatActivity {
         View.OnClickListener doneListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SaleItem[] listInUse = DataStorage.listInUse.getList();
-                int[] purchases = new int[listInUse.length];
-                for(int i = 0; i < listInUse.length; i++) {
-                    purchases[i] = listInUse[i].getCount();
+                ArrayList<SaleItem> listInUse = DataStorage.listInUse.getList();
+                ArrayList<Integer> purchases = new ArrayList<>();
+                for(int i = 0; i < listInUse.size(); i++) {
+                    purchases.add(listInUse.get(i).getCount());
                 }
                 TransactionRecord.setPurchases(purchases);
                 startActivity(new Intent(ItemSelectionActivity.this, TotalActivity.class));

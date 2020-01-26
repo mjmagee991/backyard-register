@@ -6,14 +6,15 @@ import android.os.Environment;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class SaleList {
 
     private String name;
-    private SaleItem[] list;
+    private ArrayList<SaleItem> list;
     private File record;
 
-    public SaleList(String inName, backyardregister.fallfestregister.SaleItem[] inList) {
+    public SaleList(String inName, ArrayList<backyardregister.fallfestregister.SaleItem> inList) {
         name = inName;
         list = inList;
         // File doesn't like slashes in the file location
@@ -24,7 +25,7 @@ public class SaleList {
         return name;
     }
 
-    public backyardregister.fallfestregister.SaleItem[] getList() {
+    public ArrayList<backyardregister.fallfestregister.SaleItem> getList() {
         return list;
     }
 

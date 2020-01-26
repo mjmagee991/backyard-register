@@ -17,14 +17,14 @@ public class ItemListAdapter
     private DecimalFormat onesCurrencyFormat = new DecimalFormat("$ #0.00");
     private DecimalFormat tensCurrencyFormat = new DecimalFormat("$#0.00");
 
-    private int numItems = DataStorage.listInUse.getList().length;
+    private int numItems = DataStorage.listInUse.getList().size();
 
 
     public void resetCounts() {
         // For each item in the RecyclerView
         for(int pos = 0; pos < numItems; pos += 1) {
             // Reset the count variable of the item
-            DataStorage.listInUse.getList()[pos].reset();
+            DataStorage.listInUse.getList().get(pos).reset();
             notifyItemChanged(pos);
         }
     }
@@ -50,18 +50,18 @@ public class ItemListAdapter
         View.OnClickListener plusListener = new View.OnClickListener() {
             @Override
             public void onClick(View plus) {
-                DataStorage.listInUse.getList()[pos].addOne();
+                DataStorage.listInUse.getList().get(pos).addOne();
                 notifyItemChanged(pos);
             }
         };
         View.OnClickListener minusListener = new View.OnClickListener() {
             @Override
             public void onClick(View minus) {
-                DataStorage.listInUse.getList()[pos].subtractOne();
+                DataStorage.listInUse.getList().get(pos).subtractOne();
                 notifyItemChanged(pos);
             }
         };
-        holder.load(DataStorage.listInUse.getList()[position]);
+        holder.load(DataStorage.listInUse.getList().get(position));
         holder.plusButton.setOnClickListener(plusListener);
         holder.minusButton.setOnClickListener(minusListener);
     }

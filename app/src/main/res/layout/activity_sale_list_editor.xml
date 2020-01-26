@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="backyardregister.fallfestregister.SaleListEditorActivity">
+
+    <LinearLayout
+        android:id="@+id/ll_common_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorPrimary"
+        android:paddingLeft="5dp">
+
+        <EditText
+            android:id="@+id/et_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/file_name_weight"
+            android:textSize="@dimen/standard_text_size"/>
+
+        <Button
+            android:id="@+id/b_back"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="@integer/back_button_weight"
+            android:text="Back"
+            android:textColor="@color/colorButtonText"
+            android:textSize="@dimen/standard_text_size"
+            android:background="@color/colorButton"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_sale_item_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/ll_common_header"
+        app:layout_constraintBottom_toTopOf="@+id/ll_bottom_buttons"
+        android:paddingLeft="5dp"
+        android:paddingStart="5dp">
+    </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:id="@+id/ll_bottom_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/b_save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="Save"
+            android:textSize="@dimen/standard_text_size"
+            android:textColor="@color/colorButtonText"
+            android:background="@color/colorButton"/>
+
+        <Button
+            android:id="@+id/b_new_item"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:text="New Item"
+            android:textSize="@dimen/standard_text_size"
+            android:textColor="@color/colorButtonText"
+            android:background="@color/colorButton" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

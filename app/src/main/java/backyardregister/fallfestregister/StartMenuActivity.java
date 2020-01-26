@@ -4,11 +4,13 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -17,6 +19,7 @@ import android.widget.Button;
 public class StartMenuActivity extends AppCompatActivity {
 
     private Button sellButton;
+    private Button createEditListsButton;
     private Button transactionHistoryButton;
     int STORAGE_PERMISSION_CODE = 1;
 
@@ -26,6 +29,7 @@ public class StartMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start_menu);
 
         sellButton = findViewById(R.id.b_sell);
+        createEditListsButton = findViewById(R.id.b_create_edit_lists);
         transactionHistoryButton = findViewById(R.id.b_transaction_history);
 
         // Sell button setup
@@ -36,6 +40,15 @@ public class StartMenuActivity extends AppCompatActivity {
             }
         };
         sellButton.setOnClickListener(sellListener);
+
+        // Create / Edit button setup
+        View.OnClickListener createEditListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(StartMenuActivity.this, SaleListEditingSelectorActivity.class));
+            }
+        };
+        createEditListsButton.setOnClickListener(createEditListener);
 
         // Transaction History button setup
         View.OnClickListener transactionHistoryListener = new View.OnClickListener() {
@@ -72,6 +85,10 @@ public class StartMenuActivity extends AppCompatActivity {
             }
         };
         transactionHistoryButton.setOnClickListener(transactionHistoryListener);
+
+        // Load SaleLists
+        DataStorage.loadSaleLists(getSharedPreferences("Sale Lists", MODE_PRIVATE));
+        //DataStorage.saveSaleListList(getSharedPreferences("Sale Lists", MODE_PRIVATE));
     }
 
     public boolean checkPermission(String permission) {

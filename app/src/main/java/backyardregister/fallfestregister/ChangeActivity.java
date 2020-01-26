@@ -180,7 +180,7 @@ public class ChangeActivity extends AppCompatActivity
         Log.d(TAG, keepTheChangeString);
         Log.d(TAG, currencyFormat.format(totalDonation));
         Log.d(TAG, "");
-        String finalSaveString = date + "|" + listName + "|" + purchases + total + "|" + keepTheChangeString + "|" + totalDonationString + "\n";
+        String finalSaveString = date + "|" /*+ listName */+ "|" + purchases + total + "|" + keepTheChangeString + "|" + totalDonationString + "\n";
 
 
         if(isExternalStorageWritable() && checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {

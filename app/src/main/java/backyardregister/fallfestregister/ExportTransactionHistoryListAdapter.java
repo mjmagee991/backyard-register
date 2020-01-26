@@ -17,9 +17,9 @@ public class ExportTransactionHistoryListAdapter
         extends RecyclerView.Adapter<ExportTransactionHistoryListAdapter.TransactionHistoryNameViewHolder>{
 
 
-    private String[] transactionHistoryNames = DataStorage.getSaleListNames();
-    private int numItems = transactionHistoryNames.length;
-    private boolean[] exportSelections = new boolean[numItems];
+    private ArrayList<String> transactionHistoryNames = DataStorage.getSaleListNames();
+    private int numItems = transactionHistoryNames.size();
+    private ArrayList<Boolean> exportSelections = new ArrayList<>();
 
 
     @Override
@@ -62,17 +62,17 @@ public class ExportTransactionHistoryListAdapter
         }
 
         void load(int pos) {
-            transactionHistoryName.setText(transactionHistoryNames[pos]);
-            exportSelections[pos] = false;
+            transactionHistoryName.setText(transactionHistoryNames.get(pos));
+            exportSelections.set(pos, false);
         }
 
         @Override
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
 
-            exportSelections[clickedPosition] = !exportSelections[clickedPosition];
+            exportSelections.set(clickedPosition, !exportSelections.get(clickedPosition));
 
-            if (exportSelections[clickedPosition]) {
+            if (exportSelections.get(clickedPosition)) {
                 rowLayout.setBackgroundColor(Color.parseColor("#48e497"/*green*/));
             } else {
                 rowLayout.setBackgroundColor(Color.parseColor("#FFFFFF"/*white*/)); //TODO: Fix white to match default background white
@@ -81,12 +81,12 @@ public class ExportTransactionHistoryListAdapter
     }
 
     public ArrayList<File> getExportList(boolean onlySelected) {
-        SaleList[] saleLists = DataStorage.getSaleLists();
+        ArrayList<SaleList> saleLists = DataStorage.getSaleLists();
         ArrayList<File> exportList = new ArrayList<>();
         if(onlySelected) {
-            for (int i = 0; i < exportSelections.length; i++) {
-                if (exportSelections[i]) {
-                    exportList.add(saleLists[i].getRecord());
+            for (int i = 0; i < exportSelections.size(); i++) {
+                if (exportSelections.get(i)) {
+                    exportList.add(saleLists.get(i).getRecord());
 
                 }
             }
@@ -95,7 +95,6 @@ public class ExportTransactionHistoryListAdapter
                 exportList.add(saleList.getRecord());
             }
         }
-        Log.d("asnding", exportList.toString());
         return exportList;
     }
 }
