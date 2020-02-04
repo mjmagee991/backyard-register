@@ -77,7 +77,8 @@ public class DataStorage {
         saleLists = gson.fromJson(json, type);
 
         if(saleLists == null) {
-            saleLists = new ArrayList<>(Arrays.asList(new SaleList[]{
+            saleLists = new ArrayList<>();
+            /*saleLists = new ArrayList<>(Arrays.asList(new SaleList[]{
                     new SaleList("Ethnic Food", new ArrayList<>(Arrays.asList(
                             new SaleItem[]{
                                     new SaleItem("Hamburger", 6),
@@ -99,9 +100,9 @@ public class DataStorage {
                                     new SaleItem("Cheeseburger", 3.5),
                                     new SaleItem("Hot Dog", 2),
                                     new SaleItem("Cheese Dog", 2.5),
-                                    new SaleItem("Pulled Pork Sandwich", 4.5),
+                                    new SaleItem("Pulled Pork Sandwich", 4.5)
                             })))
-            }));
+            }));*/
         }
     }
 

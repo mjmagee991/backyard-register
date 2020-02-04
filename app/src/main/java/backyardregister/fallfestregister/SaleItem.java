@@ -10,6 +10,12 @@ public class SaleItem {
     private int count;
     private double total;
 
+    public SaleItem() {
+        price = 0;
+        name = "";
+        count = 0;
+    }
+
     public SaleItem(String inName, double inPrice) {
         price = inPrice;
         name = inName;
@@ -19,9 +25,15 @@ public class SaleItem {
     public double getPrice() {
         return price;
     }
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
     public String getName() {
         return name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getCount() {

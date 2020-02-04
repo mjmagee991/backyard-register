@@ -124,7 +124,7 @@ public class ChangeActivity extends AppCompatActivity
 
 
 
-    // New Order button setup
+        // New Order button setup
 
         View.OnClickListener newOrderListener = new View.OnClickListener() {
             @Override
@@ -161,7 +161,7 @@ public class ChangeActivity extends AppCompatActivity
 
 
         String date = dateFormat.format(Calendar.getInstance().getTime());
-        String listName = DataStorage.listInUse.getName();
+        //String listName = DataStorage.listInUse.getName();
         String purchases = TransactionRecord.getPurchases();
         String total = currencyFormat.format(TransactionRecord.getTotal());
         if(keepTheChangeBoolean) {
@@ -180,7 +180,7 @@ public class ChangeActivity extends AppCompatActivity
         Log.d(TAG, keepTheChangeString);
         Log.d(TAG, currencyFormat.format(totalDonation));
         Log.d(TAG, "");
-        String finalSaveString = date + "|" /*+ listName */+ "|" + purchases + total + "|" + keepTheChangeString + "|" + totalDonationString + "\n";
+        String finalSaveString = date + "|" /*+ listName + "|"*/ + purchases + total + "|" + keepTheChangeString + "|" + totalDonationString + "\n";
 
 
         if(isExternalStorageWritable() && checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {

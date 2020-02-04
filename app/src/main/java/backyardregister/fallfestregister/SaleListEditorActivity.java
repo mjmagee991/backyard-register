@@ -1,13 +1,23 @@
 package backyardregister.fallfestregister;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class SaleListEditorActivity extends AppCompatActivity {
 
@@ -17,6 +27,8 @@ public class SaleListEditorActivity extends AppCompatActivity {
     private RecyclerView saleItemList;
     private Button saveButton;
     private Button newItemButton;
+    private SaleList instanceList;
+    private ArrayList<Integer> removeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +40,11 @@ public class SaleListEditorActivity extends AppCompatActivity {
         saleItemList = findViewById(R.id.rv_sale_item_list);
         saveButton = findViewById(R.id.b_save);
         newItemButton = findViewById(R.id.b_new_item);
+        instanceList = new SaleList(DataStorage.listInUse);
+        removeList = new ArrayList<>();
+
+        // Header setup
+        headerEditText.setText(instanceList.getName());
 
         // Back button setup
         View.OnClickListener backListener = new View.OnClickListener() {
@@ -43,14 +60,68 @@ public class SaleListEditorActivity extends AppCompatActivity {
         saleItemList.setLayoutManager(layoutManager);
         saleItemList.setHasFixedSize(true);
 
-        adapter = new SaleListEditingAdapter();
+        adapter = new SaleListEditingAdapter(instanceList.getList(), this);
         saleItemList.setAdapter(adapter);
 
         // Save button setup
         View.OnClickListener saveListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Save stuff
+
+                new AlertDialog.Builder(SaleListEditorActivity.this)
+                    .setTitle("Are you sure you want to save these changes?")
+                    .setMessage("Transaction history for this list will be reset.")
+                    .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            SaleList saleList = DataStorage.listInUse;
+                            ArrayList<SaleItem> itemArrayList = saleList.getList();
+
+                            // Check if name is valid
+                            String newName = headerEditText.getText().toString();
+                            for(SaleList otherList : DataStorage.getSaleLists()) {
+                                if(saleList != otherList && otherList.getName().equals(newName)) {
+                                    Toast.makeText(getApplicationContext(), "Must have different name than all other lists", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                    return;
+                                }
+                            }
+
+                            // Delete old history
+                            saleList.resetRecord();
+
+                            // Set new name
+                            saleList.setName(newName);
+
+                            // Remove any deleted items
+                            for(int pos : removeList) {
+                                itemArrayList.remove(pos);
+                            }
+
+                            // Lengthen Arraylist to hold all new items
+                            while(itemArrayList.size() < adapter.getItemCount()) {
+                                itemArrayList.add(new SaleItem());
+                            }
+
+                            // Iterate through the ViewHolders to get the names and prices
+                            for(int i = 0; i < adapter.getItemCount(); i ++) {
+                                Log.d("cheese", "dur" + i);
+                                SaleListEditingAdapter.SaleItemViewHolder holder = (SaleListEditingAdapter.SaleItemViewHolder) saleItemList.findViewHolderForAdapterPosition(i);
+                                itemArrayList.get(i).setName(holder.getName());
+                                itemArrayList.get(i).setPrice(holder.getPrice());
+                            }
+
+                            // Save changes to SharedPreferences and put up Toast as confirmation
+                            DataStorage.saveSaleListList(getSharedPreferences("Sale Lists", MODE_PRIVATE));
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
             }
         };
         saveButton.setOnClickListener(saveListener);
@@ -59,10 +130,24 @@ public class SaleListEditorActivity extends AppCompatActivity {
         View.OnClickListener newItemListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Create a new SaleItem
+                instanceList.getList().add(new SaleItem());
+                adapter = new SaleListEditingAdapter(instanceList.getList(), getContext());
+                saleItemList.setAdapter(adapter);
             }
         };
         newItemButton.setOnClickListener(newItemListener);
+    }
+
+    public void deleteViewHolder(int pos) {
+        removeList.add(pos);
+        instanceList.getList().remove(pos);
+        adapter = new SaleListEditingAdapter(instanceList.getList(), this);
+        saleItemList.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    public Context getContext() {
+        return this;
     }
 
     @Override
@@ -71,7 +156,22 @@ public class SaleListEditorActivity extends AppCompatActivity {
     }
 
     private void back() {
-        startActivity(new Intent(SaleListEditorActivity.this, SaleListEditingSelectorActivity.class));
+        new AlertDialog.Builder(SaleListEditorActivity.this)
+                .setTitle("Are you sure you want to leave?")
+                .setMessage("Any changes not saved will be lost.")
+                .setPositiveButton("Leave", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(SaleListEditorActivity.this, SaleListEditingSelectorActivity.class));
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
     }
 
 }

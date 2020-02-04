@@ -14,13 +14,23 @@ public class SaleList {
     private ArrayList<SaleItem> list;
     private File record;
 
+    public SaleList(SaleList other) {
+        name = new String(other.name);
+        list = new ArrayList<>(other.list);
+        // Not sure if this matters
+        record = other.record;
+    }
+
     public SaleList(String inName, ArrayList<backyardregister.fallfestregister.SaleItem> inList) {
         name = inName;
         list = inList;
-        // File doesn't like slashes in the file location
-        record = new File(Environment.getExternalStorageDirectory(), "BReg" + name.replaceAll("/","") + "record.txt");
+        record = new File(Environment.getExternalStorageDirectory(), "BReg" + /*File doesn't like slashes in the file location*/ name.replaceAll("/","") + "record.txt");
     }
 
+    public void setName(String n) {
+        name = n;
+        record = new File(Environment.getExternalStorageDirectory(), "BReg" + /*File doesn't like slashes in the file location*/ name.replaceAll("/","") + "record.txt");
+    }
     public String getName() {
         return name;
     }
