@@ -25,6 +25,7 @@ public class StartMenuActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("coding", "ignition");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_menu);
 

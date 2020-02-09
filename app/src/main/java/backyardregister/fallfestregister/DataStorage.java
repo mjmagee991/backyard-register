@@ -114,8 +114,18 @@ public class DataStorage {
     public static void saveSaleListList(SharedPreferences sharedPreferences) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(saleLists);
+        Log.d("coding", "esa far");
+        Log.d("coding", saleLists.toString());
+        //try {
+        String json = gson.toJson(saleLists); // TODO: Fix Gson error on HTC One M9; debug tag "coding"
         editor.putString(SALE_LIST_SAVE_STRING, json);
         editor.apply();
+            /*
+        } catch (Exception e) {
+            Log.d("coding","" + e);
+        }
+
+             */
+
     }
 }

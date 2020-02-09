@@ -63,7 +63,7 @@ public class ExportTransactionHistoryListAdapter
 
         void load(int pos) {
             transactionHistoryName.setText(transactionHistoryNames.get(pos));
-            exportSelections.set(pos, false);
+            exportSelections.add(false);
         }
 
         @Override

@@ -39,7 +39,7 @@ public class SaleListSelectionActivity extends AppCompatActivity
         saleListNamesList.setLayoutManager(layoutManager);
         saleListNamesList.setHasFixedSize(true);
 
-        adapter = new SaleListListAdapter(this);
+        adapter = new SaleListListAdapter(this, getApplicationContext());
         saleListNamesList.setAdapter(adapter);
     }
 

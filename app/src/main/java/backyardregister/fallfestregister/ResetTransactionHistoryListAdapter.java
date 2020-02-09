@@ -3,6 +3,7 @@ package backyardregister.fallfestregister;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +62,7 @@ public class ResetTransactionHistoryListAdapter
 
         void load(int pos) {
             transactionHistoryName.setText(transactionHistoryNames.get(pos));
-            resetSelections.set(pos, false);
+            resetSelections.add(false);
         }
 
         @Override

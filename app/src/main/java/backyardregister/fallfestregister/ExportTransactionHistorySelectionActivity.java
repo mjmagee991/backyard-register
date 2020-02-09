@@ -93,12 +93,11 @@ public class ExportTransactionHistorySelectionActivity extends AppCompatActivity
             //intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(ExportTransactionHistorySelectionActivity.this, BuildConfig.APPLICATION_ID + ".provider", records.get(i)));
             //uriList.add(Uri.fromFile(records.get(i)));
             uriList.add(FileProvider.getUriForFile(ExportTransactionHistorySelectionActivity.this, BuildConfig.APPLICATION_ID + ".provider", records.get(i)));
-            Log.d("asnding", records.get(i).toString());
         }
         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
 
         intent.setType("message/rfc822");
-        startActivityForResult(Intent.createChooser(intent, "Choose an email client"), 12345);
+
     }
 
     @Override

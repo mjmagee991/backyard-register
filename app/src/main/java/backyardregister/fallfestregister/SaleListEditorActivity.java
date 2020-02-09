@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 public class SaleListEditorActivity extends AppCompatActivity {
 
+    private Button deleteListButton;
     private EditText headerEditText;
     private Button backButton;
     private SaleListEditingAdapter adapter;
@@ -35,6 +36,7 @@ public class SaleListEditorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sale_list_editor);
 
+        deleteListButton = findViewById(R.id.b_delete_list);
         headerEditText = findViewById(R.id.et_header);
         backButton = findViewById(R.id.b_back);
         saleItemList = findViewById(R.id.rv_sale_item_list);
@@ -42,6 +44,39 @@ public class SaleListEditorActivity extends AppCompatActivity {
         newItemButton = findViewById(R.id.b_new_item);
         instanceList = new SaleList(DataStorage.listInUse);
         removeList = new ArrayList<>();
+
+        // Delete List button setup
+        View.OnClickListener deleteListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                new AlertDialog.Builder(SaleListEditorActivity.this)
+                        .setTitle("Are delete this list?")
+                        .setMessage("This action cannot be undone.")
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Delete SaleList
+                                SaleList saleList = DataStorage.listInUse;
+                                saleList.getRecord().delete();
+                                DataStorage.getSaleLists().remove(saleList);
+
+                                // Save changes to SharedPreferences and put up Toast as confirmation
+                                DataStorage.saveSaleListList(getSharedPreferences("Sale Lists", MODE_PRIVATE));
+
+                                startActivity(new Intent(SaleListEditorActivity.this, SaleListEditingSelectorActivity.class));
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create().show();
+            }
+        };
+        deleteListButton.setOnClickListener(deleteListener);
 
         // Header setup
         headerEditText.setText(instanceList.getName());

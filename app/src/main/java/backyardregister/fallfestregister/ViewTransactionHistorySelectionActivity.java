@@ -37,7 +37,7 @@ public class ViewTransactionHistorySelectionActivity extends AppCompatActivity
         saleRecordNamesList.setLayoutManager(layoutManager);
         saleRecordNamesList.setHasFixedSize(true);
 
-        adapter = new SaleListListAdapter(this);
+        adapter = new SaleListListAdapter(this, getApplicationContext());
         saleRecordNamesList.setAdapter(adapter);
     }
 

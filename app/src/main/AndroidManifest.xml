@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -13,7 +14,18 @@
         android:roundIcon="@drawable/cash_register"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SaleListEditingSelectorActivity"></activity>
+        <activity android:name=".SaleListEditingSelectorActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND_MULTIPLE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+        </activity>
         <activity android:name=".SaleListEditorActivity" />
         <activity android:name=".ViewTransactionHistorySelectionActivity" />
         <activity android:name=".ResetTransactionHistorySelectionActivity" />

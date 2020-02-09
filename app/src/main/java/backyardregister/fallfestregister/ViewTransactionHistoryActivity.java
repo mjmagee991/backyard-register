@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -25,6 +26,7 @@ import java.io.InputStreamReader;
 public class ViewTransactionHistoryActivity extends AppCompatActivity
         implements ViewSaleRecordListAdapter.ListClickListener {
 
+    private LinearLayout header;
     private TextView headerTextView;
     private Button backButton;
     private ViewSaleRecordListAdapter adapter;
@@ -39,6 +41,7 @@ public class ViewTransactionHistoryActivity extends AppCompatActivity
         setContentView(R.layout.activity_transaction_history);
 
         context = getApplicationContext();
+        header = findViewById(R.id.ll_common_header);
         headerTextView = findViewById(R.id.tv_header);
         backButton = findViewById(R.id.b_back);
         saleRecord = findViewById(R.id.rv_sale_record_list);
@@ -120,7 +123,7 @@ public class ViewTransactionHistoryActivity extends AppCompatActivity
                     adapter.changeMode();
                     voidMode = true;
                     voidButton.setText("Confirm Voids");
-                    headerTextView.setTextColor(Color.parseColor("#eb5e5e"/*red*/));
+                    header.setBackgroundColor(Color.parseColor("#eb5e5e"/*red*/));
                 }
             }
         };
@@ -247,7 +250,7 @@ public class ViewTransactionHistoryActivity extends AppCompatActivity
         }
 
     }*/
-
+/*
     void sendFile(String recipient) {
         String[] recipientList = {recipient};
         String subject = "Fall Fest Sales Data";
@@ -267,12 +270,14 @@ public class ViewTransactionHistoryActivity extends AppCompatActivity
         Uri attachmentUri = Uri.parse(targetFilePath);
         intent.putExtra(android.content.Intent.EXTRA_STREAM, Uri.parse("file://" + attachmentUri));
          */
-
+        /*
         intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(ViewTransactionHistoryActivity.this, BuildConfig.APPLICATION_ID + ".provider", DataStorage.listInUse.getRecord()));
 
         intent.setType("message/rfc822");
         startActivity(Intent.createChooser(intent, "Choose an email client"));
     }
+
+         */
 
     public static Context getContext() {
         return context;
