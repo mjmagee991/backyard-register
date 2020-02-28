@@ -14,7 +14,8 @@
         android:roundIcon="@drawable/cash_register"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SaleListEditingSelectorActivity">
+        <activity android:name=".SaleListEditingSelectorActivity"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -26,11 +27,16 @@
                 <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
-        <activity android:name=".SaleListEditorActivity" />
-        <activity android:name=".ViewTransactionHistorySelectionActivity" />
-        <activity android:name=".ResetTransactionHistorySelectionActivity" />
-        <activity android:name=".ExportTransactionHistorySelectionActivity" />
-        <activity android:name=".TransactionHistoryActionActivity" />
+        <activity android:name=".SaleListEditorActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ViewTransactionHistorySelectionActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ResetTransactionHistorySelectionActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ExportTransactionHistorySelectionActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".TransactionHistoryActionActivity"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
