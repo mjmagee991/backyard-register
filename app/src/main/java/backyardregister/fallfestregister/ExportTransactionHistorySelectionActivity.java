@@ -73,6 +73,7 @@ public class ExportTransactionHistorySelectionActivity extends AppCompatActivity
 
     void sendFiles(ArrayList<File> records) {
         //String[] recipientList = {recipient};
+        Log.d("Sending", "attempted");
         String subject = "Sales Data";
         //String message = "Test";
 
@@ -92,12 +93,15 @@ public class ExportTransactionHistorySelectionActivity extends AppCompatActivity
         for(int i = 0; i < records.size(); i++) {
             //intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(ExportTransactionHistorySelectionActivity.this, BuildConfig.APPLICATION_ID + ".provider", records.get(i)));
             //uriList.add(Uri.fromFile(records.get(i)));
+            Log.d("Sending", "Loop run:" + i);
             uriList.add(FileProvider.getUriForFile(ExportTransactionHistorySelectionActivity.this, BuildConfig.APPLICATION_ID + ".provider", records.get(i)));
         }
+        Log.d("Sending", "uriList: " + uriList);
         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
 
         intent.setType("message/rfc822");
 
+        startActivityForResult(Intent.createChooser(intent, "Choose an email client"), 12345);
     }
 
     @Override
