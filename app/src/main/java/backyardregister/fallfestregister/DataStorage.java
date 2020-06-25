@@ -71,14 +71,14 @@ public class DataStorage {
     }
 
     public static void loadSaleLists(SharedPreferences sharedPreferences) {
-        /*
+
         Gson gson = new Gson();
         String json = sharedPreferences.getString(SALE_LIST_SAVE_STRING, null);
         Type type = new TypeToken<ArrayList<SaleList>>() {}.getType();
         saleLists = gson.fromJson(json, type);
 
-         */
 
+        /*
         if(saleLists == null) {
             saleLists = new ArrayList<>();
             saleLists = new ArrayList<>(Arrays.asList(new SaleList[]{
@@ -117,6 +117,7 @@ public class DataStorage {
                             })))
             }));
         }
+         */
     }
 
     public static void addSaleList(SaleList saleList, SharedPreferences sharedPreferences) {
@@ -127,10 +128,8 @@ public class DataStorage {
     public static void saveSaleListList(SharedPreferences sharedPreferences) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
-        Log.d("coding", "esa far");
-        Log.d("coding", saleLists.toString());
         try {
-            String json = gson.toJson(saleLists); // TODO: Fix Gson error on HTC One M9; debug tag "coding"
+            String json = gson.toJson(saleLists);
             editor.putString(SALE_LIST_SAVE_STRING, json);
             editor.apply();
         } catch (Exception e) {

@@ -4,7 +4,7 @@ import android.widget.Toast;
 
 
 public class SaleItem {
-    private Toast outOfBoundsToast;
+    private transient Toast outOfBoundsToast;
     private double price;
     private String name;
     private int count;
