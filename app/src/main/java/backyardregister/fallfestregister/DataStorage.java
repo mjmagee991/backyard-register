@@ -29,6 +29,8 @@ public class DataStorage {
 
     private static ArrayList<String> saleListNames;
 
+    private static String TAG = "Ok";
+
 
     public static void setListInUse(int pos) {
         listInUse = saleLists.get(pos);
@@ -71,6 +73,7 @@ public class DataStorage {
     }
 
     public static void loadSaleLists(SharedPreferences sharedPreferences) {
+        Log.d(TAG, "loadSaleLists: ");
 
         Gson gson = new Gson();
         String json = sharedPreferences.getString(SALE_LIST_SAVE_STRING, null);
@@ -78,7 +81,7 @@ public class DataStorage {
         saleLists = gson.fromJson(json, type);
 
 
-        /*
+
         if(saleLists == null) {
             saleLists = new ArrayList<>();
             saleLists = new ArrayList<>(Arrays.asList(new SaleList[]{
@@ -117,7 +120,6 @@ public class DataStorage {
                             })))
             }));
         }
-         */
     }
 
     public static void addSaleList(SaleList saleList, SharedPreferences sharedPreferences) {
