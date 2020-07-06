@@ -79,7 +79,7 @@ public class ViewTransactionHistoryActivity extends AppCompatActivity
                                     /*
                                     voidMode = !voidMode;
                                     voidButton.setText(getString(R.string.void_sales));
-                                    headerTextView.setTextColor(Color.parseColor("#FFFFFF"/*white)); //TODO: Fix white to match default white
+                                    headerTextView.setTextColor(Color.parseColor("#FAFAFA"/*white));
                                     */
                                     /*
                                     FileOutputStream fos = null;

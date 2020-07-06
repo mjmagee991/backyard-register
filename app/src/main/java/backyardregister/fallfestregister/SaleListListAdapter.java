@@ -7,6 +7,7 @@ import android.os.Environment;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,14 +103,14 @@ public class SaleListListAdapter
                 if(exportSelections[clickedPosition]) {
                     rowLayout.setBackgroundColor(Color.parseColor("#48e497"/*green*/));
                 } else {
-                    rowLayout.setBackgroundColor(Color.parseColor("#FFFFFF"/*white*/)); //TODO: Fix white to match default background white
+                    rowLayout.setBackgroundColor(Color.parseColor("#FAFAFA"/*white*/));
                 }
             }
         }
 
         public void reset(int pos) {
             exportSelections[pos] = false;
-            rowLayout.setBackgroundColor(Color.parseColor("#FFFFFF"/*white*/)); //TODO: Fix white to match default background white
+            rowLayout.setBackgroundColor(Color.parseColor("#FAFAFA"/*white*/));
         }
     }
 

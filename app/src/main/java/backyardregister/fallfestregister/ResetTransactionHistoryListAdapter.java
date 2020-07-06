@@ -73,7 +73,7 @@ public class ResetTransactionHistoryListAdapter
             if (resetSelections.get(clickedPosition)) {
                 rowLayout.setBackgroundColor(Color.parseColor("#eb5e5e"/*red*/));
             } else {
-                rowLayout.setBackgroundColor(Color.parseColor("#FFFFFF"/*white*/)); //TODO: Fix white to match default background white
+                rowLayout.setBackgroundColor(Color.parseColor("#FAFAFA"/*white*/));
             }
         }
     }

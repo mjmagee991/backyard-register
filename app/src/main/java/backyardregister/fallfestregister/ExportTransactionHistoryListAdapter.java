@@ -75,7 +75,7 @@ public class ExportTransactionHistoryListAdapter
             if (exportSelections.get(clickedPosition)) {
                 rowLayout.setBackgroundColor(Color.parseColor("#48e497"/*green*/));
             } else {
-                rowLayout.setBackgroundColor(Color.parseColor("#FFFFFF"/*white*/)); //TODO: Fix white to match default background white
+                rowLayout.setBackgroundColor(Color.parseColor("#FAFAFA"/*white*/));
             }
         }
     }
