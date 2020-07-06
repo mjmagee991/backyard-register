@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="backyardregister.fallfestregister.ViewTransactionHistoryActivity">
+    tools:context="backyardRegister.fallfestregister.transactionhistorybranch.ViewTransactionHistoryActivity">
 
     <LinearLayout
         android:id="@+id/ll_common_header"
