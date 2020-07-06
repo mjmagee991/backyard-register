@@ -29,6 +29,8 @@ public class DataStorage {
 
     private static ArrayList<String> saleListNames;
 
+    private static String TAG = "Ok";
+
 
     public static void setListInUse(int pos) {
         listInUse = saleLists.get(pos);
@@ -71,14 +73,18 @@ public class DataStorage {
     }
 
     public static void loadSaleLists(SharedPreferences sharedPreferences) {
+        Log.d(TAG, "loadSaleLists: ");
+
         Gson gson = new Gson();
         String json = sharedPreferences.getString(SALE_LIST_SAVE_STRING, null);
         Type type = new TypeToken<ArrayList<SaleList>>() {}.getType();
         saleLists = gson.fromJson(json, type);
 
+
+
         if(saleLists == null) {
             saleLists = new ArrayList<>();
-            /*saleLists = new ArrayList<>(Arrays.asList(new SaleList[]{
+            saleLists = new ArrayList<>(Arrays.asList(new SaleList[]{
                     new SaleList("Ethnic Food", new ArrayList<>(Arrays.asList(
                             new SaleItem[]{
                                     new SaleItem("Hamburger", 6),
@@ -101,8 +107,18 @@ public class DataStorage {
                                     new SaleItem("Hot Dog", 2),
                                     new SaleItem("Cheese Dog", 2.5),
                                     new SaleItem("Pulled Pork Sandwich", 4.5)
+                            }))),
+                    new SaleList("Drink Stand", new ArrayList<>(Arrays.asList(
+                            new SaleItem[]{
+                                    new SaleItem("Tea", 5),
+                                    new SaleItem("Coffee", 6)
+                            }))),
+                    new SaleList("Taco Stand", new ArrayList<>(Arrays.asList(
+                            new SaleItem[]{
+                                    new SaleItem("Taco", 3),
+                                    new SaleItem("Walking Taco", 4)
                             })))
-            }));*/
+            }));
         }
     }
 
@@ -114,18 +130,12 @@ public class DataStorage {
     public static void saveSaleListList(SharedPreferences sharedPreferences) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
-        Log.d("coding", "esa far");
-        Log.d("coding", saleLists.toString());
-        //try {
-        String json = gson.toJson(saleLists); // TODO: Fix Gson error on HTC One M9; debug tag "coding"
-        editor.putString(SALE_LIST_SAVE_STRING, json);
-        editor.apply();
-            /*
+        try {
+            String json = gson.toJson(saleLists);
+            editor.putString(SALE_LIST_SAVE_STRING, json);
+            editor.apply();
         } catch (Exception e) {
             Log.d("coding","" + e);
         }
-
-             */
-
     }
 }

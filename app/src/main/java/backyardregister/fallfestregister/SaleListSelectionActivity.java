@@ -17,8 +17,11 @@ public class SaleListSelectionActivity extends AppCompatActivity
     private SaleListListAdapter adapter;
     private Button backButton;
 
+    String TAG = "tag";
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate: 1");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sale_list_selection);
 
@@ -39,7 +42,15 @@ public class SaleListSelectionActivity extends AppCompatActivity
         saleListNamesList.setLayoutManager(layoutManager);
         saleListNamesList.setHasFixedSize(true);
 
-        adapter = new SaleListListAdapter(this, getApplicationContext());
+        Log.d(TAG, "onCreate: 2");
+        try {
+            adapter = new SaleListListAdapter(this, getApplicationContext());
+        } catch(Exception e) {
+            Log.d(TAG, "onCreate: " + e);
+            Log.d(TAG, "onCreate: " + this);
+            Log.d(TAG, "onCreate: " + getApplicationContext());
+        }
+        Log.d(TAG, "onCreate: 3");
         saleListNamesList.setAdapter(adapter);
     }
 

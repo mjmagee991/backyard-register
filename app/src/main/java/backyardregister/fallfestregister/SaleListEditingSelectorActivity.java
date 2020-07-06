@@ -55,9 +55,11 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity
     private Button exportButton;
     private Button newListButton;
     private int INTERNET_PERMISSION_CODE = 5;
+    private String TAG = "Thoma";
 
     @Override
     protected void onCreate(Bundle exportdInstanceState) {
+        Log.d(TAG, "onCreate: ");
 
         DataStorage.loadSaleLists(getSharedPreferences("Sale Lists", MODE_PRIVATE));
         Log.d("reelTest", "opened");
@@ -66,7 +68,7 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity
         String action = intent.getAction();
         String intentType = intent.getType();
 
-        // TODO: Deal with edge case when name of import is the same as a current List
+
         if(Intent.ACTION_SEND.equals(action) && intentType != null && getInternetPermission()) {
             // Deal with single incoming SaleList
             Uri fileUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
@@ -100,14 +102,17 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity
             }
         };
         backButton.setOnClickListener(backListener);
-
+        Log.d(TAG, "onCreate: 2");
+        
         // RecyclerView setup
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         saleListNamesList.setLayoutManager(layoutManager);
         saleListNamesList.setHasFixedSize(true);
-
+        Log.d(TAG, "onCreate: 2.5");
         adapter = new SaleListListAdapter(this, getApplicationContext());
+        Log.d(TAG, "onCreate: 2.7");
         saleListNamesList.setAdapter(adapter);
+        Log.d(TAG, "onCreate: 3");
 
         // Export button setup
         View.OnClickListener exportListener = new View.OnClickListener() {
@@ -505,6 +510,7 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity
 
         File saleListFile = new File(getPathFromUri(getApplicationContext(), fileUri));
 
+        // TODO: Deal with edge case when name of import is the same as a current List
 
         Log.d("reelTest", "single");
         try {
@@ -529,6 +535,39 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity
         } catch (Exception e) {
             Log.d("reelTest", "End Exception: " + e);
             e.printStackTrace();
+        }
+    }
+
+    public boolean checkPermission(String permission) {
+        int check = ContextCompat.checkSelfPermission(this, permission);
+        return (check == PackageManager.PERMISSION_GRANTED);
+    }
+
+
+    private void requestStoragePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+            new AlertDialog.Builder(this)
+                    .setTitle("Permission needed")
+                    .setMessage("This permission is needed to save the data onto this phone.")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(SaleListEditingSelectorActivity.this,
+                                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
         }
     }
 }

@@ -36,7 +36,9 @@ public class StartMenuActivity extends AppCompatActivity {
         View.OnClickListener sellListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(StartMenuActivity.this, SaleListSelectionActivity.class));
+                if (getAllPermissions()) {
+                    startActivity(new Intent(StartMenuActivity.this, SaleListSelectionActivity.class));
+                }
             }
         };
         sellButton.setOnClickListener(sellListener);
@@ -45,7 +47,9 @@ public class StartMenuActivity extends AppCompatActivity {
         View.OnClickListener createEditListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(StartMenuActivity.this, SaleListEditingSelectorActivity.class));
+                if(getAllPermissions()) {
+                    startActivity(new Intent(StartMenuActivity.this, SaleListEditingSelectorActivity.class));
+                }
             }
         };
         createEditListsButton.setOnClickListener(createEditListener);
@@ -54,33 +58,8 @@ public class StartMenuActivity extends AppCompatActivity {
         View.OnClickListener transactionHistoryListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                if(getAllPermissions()) {
                     startActivity(new Intent(StartMenuActivity.this, TransactionHistoryActionActivity.class));
-                } else {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(StartMenuActivity.this,
-                            Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
-                        new AlertDialog.Builder(StartMenuActivity.this)
-                                .setTitle("Permission needed")
-                                .setMessage("This permission is needed to save the data onto this phone.")
-                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        ActivityCompat.requestPermissions(StartMenuActivity.this,
-                                                new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
-                                    }
-                                })
-                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .create().show();
-                    } else {
-                        ActivityCompat.requestPermissions(StartMenuActivity.this,
-                                new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
-                    }
                 }
             }
         };
@@ -89,6 +68,65 @@ public class StartMenuActivity extends AppCompatActivity {
         // Load SaleLists
         DataStorage.loadSaleLists(getSharedPreferences("Sale Lists", MODE_PRIVATE));
         //DataStorage.saveSaleListList(getSharedPreferences("Sale Lists", MODE_PRIVATE));
+    }
+
+    public boolean getAllPermissions() {
+        //Check permission to read external storage
+        if(!checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(StartMenuActivity.this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                new AlertDialog.Builder(StartMenuActivity.this)
+                        .setTitle("Permission needed")
+                        .setMessage("This permission is needed to save the data onto this phone.")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ActivityCompat.requestPermissions(StartMenuActivity.this,
+                                        new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create().show();
+            } else {
+                ActivityCompat.requestPermissions(StartMenuActivity.this,
+                        new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+            }
+        }
+        // Check permission to write to external storage
+        if(!checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(StartMenuActivity.this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+                new AlertDialog.Builder(StartMenuActivity.this)
+                        .setTitle("Permission needed")
+                        .setMessage("This permission is needed to save the data onto this phone.")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ActivityCompat.requestPermissions(StartMenuActivity.this,
+                                        new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create().show();
+            } else {
+                ActivityCompat.requestPermissions(StartMenuActivity.this,
+                        new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+            }
+        }
+
+        return checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE) && checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
     public boolean checkPermission(String permission) {
