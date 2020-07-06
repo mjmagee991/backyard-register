@@ -2,51 +2,58 @@ package backyardRegister.recyclerViewAdapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.io.File;
 import java.util.ArrayList;
 
-import backyardRegister.supportClasses.DataStorage;
 import backyardRegister.fallfestregister.R;
+import backyardRegister.supportClasses.DataStorage;
 import backyardRegister.supportClasses.SaleList;
 
-public class ExportTransactionHistoryListAdapter
-        extends RecyclerView.Adapter<ExportTransactionHistoryListAdapter.TransactionHistoryNameViewHolder>{
-
+public class TransactionHistorySelectionAdapter
+        extends RecyclerView.Adapter<TransactionHistorySelectionAdapter.TransactionHistoryNameViewHolder>{
 
     private ArrayList<String> transactionHistoryNames = DataStorage.getSaleListNames();
     private int numItems = transactionHistoryNames.size();
-    private ArrayList<Boolean> exportSelections = new ArrayList<>();
+    private ArrayList<Boolean> selectedList = new ArrayList<>();
+    private String colorStr;
 
+    public TransactionHistorySelectionAdapter(String color) {
+        colorStr = color;
+    }
 
     @Override
-    public ExportTransactionHistoryListAdapter.TransactionHistoryNameViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public TransactionHistorySelectionAdapter.TransactionHistoryNameViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.rv_item_sale_list;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
 
         View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
-        ExportTransactionHistoryListAdapter.TransactionHistoryNameViewHolder viewHolder = new ExportTransactionHistoryListAdapter.TransactionHistoryNameViewHolder(view);
+        TransactionHistorySelectionAdapter.TransactionHistoryNameViewHolder viewHolder = new TransactionHistorySelectionAdapter.TransactionHistoryNameViewHolder(view);
 
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ExportTransactionHistoryListAdapter.TransactionHistoryNameViewHolder holder, int pos) {
+    public void onBindViewHolder(TransactionHistorySelectionAdapter.TransactionHistoryNameViewHolder holder, int pos) {
         holder.load(pos);
     }
 
     @Override
     public int getItemCount() {
         return numItems;
+    }
+
+    public ArrayList<Boolean> getSelected() {
+        return selectedList;
     }
 
     class TransactionHistoryNameViewHolder extends RecyclerView.ViewHolder
@@ -67,38 +74,20 @@ public class ExportTransactionHistoryListAdapter
 
         void load(int pos) {
             transactionHistoryName.setText(transactionHistoryNames.get(pos));
-            exportSelections.add(false);
+            selectedList.add(false);
         }
 
         @Override
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
 
-            exportSelections.set(clickedPosition, !exportSelections.get(clickedPosition));
+            selectedList.set(clickedPosition, !selectedList.get(clickedPosition));
 
-            if (exportSelections.get(clickedPosition)) {
-                rowLayout.setBackgroundColor(Color.parseColor("#48e497"/*green*/));
+            if (selectedList.get(clickedPosition)) {
+                rowLayout.setBackgroundColor(Color.parseColor(colorStr));
             } else {
                 rowLayout.setBackgroundColor(Color.parseColor("#FAFAFA"/*white*/));
             }
         }
-    }
-
-    public ArrayList<File> getExportList(boolean onlySelected) {
-        ArrayList<SaleList> saleLists = DataStorage.getSaleLists();
-        ArrayList<File> exportList = new ArrayList<>();
-        if(onlySelected) {
-            for (int i = 0; i < exportSelections.size(); i++) {
-                if (exportSelections.get(i)) {
-                    exportList.add(saleLists.get(i).getRecord());
-
-                }
-            }
-        } else {
-            for(SaleList saleList : saleLists) {
-                exportList.add(saleList.getRecord());
-            }
-        }
-        return exportList;
     }
 }

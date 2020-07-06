@@ -11,13 +11,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import backyardRegister.fallfestregister.R;
-import backyardRegister.recyclerViewAdapters.ResetTransactionHistoryListAdapter;
+import backyardRegister.recyclerViewAdapters.TransactionHistorySelectionAdapter;
+import backyardRegister.supportClasses.DataStorage;
+import backyardRegister.supportClasses.SaleList;
 
 public class ResetTransactionHistorySelectionActivity extends AppCompatActivity {
 
     private Button backButton;
-    private ResetTransactionHistoryListAdapter adapter;
+    private TransactionHistorySelectionAdapter adapter;
     private RecyclerView saleRecords;
     private Button resetButton;
 
@@ -46,7 +50,7 @@ public class ResetTransactionHistorySelectionActivity extends AppCompatActivity 
         saleRecords.setLayoutManager(layoutManager);
         saleRecords.setHasFixedSize(true);
 
-        adapter = new ResetTransactionHistoryListAdapter();
+        adapter = new TransactionHistorySelectionAdapter("#eb5e5e"/*red*/);
         saleRecords.setAdapter(adapter);
 
         // Reset Button setup
@@ -59,7 +63,7 @@ public class ResetTransactionHistorySelectionActivity extends AppCompatActivity 
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(getApplicationContext(), adapter.resetRecords() + " records reset", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), resetRecords() + " records reset", Toast.LENGTH_LONG).show();
                                 startActivity(new Intent(ResetTransactionHistorySelectionActivity.this, ResetTransactionHistorySelectionActivity.class).setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                             }
                         })
@@ -73,6 +77,19 @@ public class ResetTransactionHistorySelectionActivity extends AppCompatActivity 
             }
         };
         resetButton.setOnClickListener(resetListener);
+    }
+
+    int resetRecords() {
+        ArrayList<Boolean> resetSelections = adapter.getSelected();
+        int numReset = 0;
+        ArrayList<SaleList> saleLists = DataStorage.getSaleLists();
+        for(int i = 0; i < resetSelections.size(); i++) {
+            if(resetSelections.get(i)) {
+                saleLists.get(i).resetRecord();
+                numReset++;
+            }
+        }
+        return numReset;
     }
 
     @Override

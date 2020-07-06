@@ -16,14 +16,16 @@ import java.io.File;
 import java.util.ArrayList;
 
 import backyardRegister.fallfestregister.BuildConfig;
-import backyardRegister.recyclerViewAdapters.ExportTransactionHistoryListAdapter;
 import backyardRegister.fallfestregister.R;
+import backyardRegister.recyclerViewAdapters.TransactionHistorySelectionAdapter;
+import backyardRegister.supportClasses.DataStorage;
+import backyardRegister.supportClasses.SaleList;
 
 public class ExportTransactionHistorySelectionActivity extends AppCompatActivity {
 
     private Button backButton;
     private RecyclerView saleRecords;
-    private ExportTransactionHistoryListAdapter adapter;
+    private TransactionHistorySelectionAdapter adapter;
     private Button exportSelectedButton;
     private Button exportAllButton;
 
@@ -51,14 +53,14 @@ public class ExportTransactionHistorySelectionActivity extends AppCompatActivity
         saleRecords.setLayoutManager(layoutManager);
         saleRecords.setHasFixedSize(true);
 
-        adapter = new ExportTransactionHistoryListAdapter();
+        adapter = new TransactionHistorySelectionAdapter("#48e497"/*green*/);
         saleRecords.setAdapter(adapter);
 
         // Export Selected Button setup
         View.OnClickListener exportSListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<File> exportList = adapter.getExportList(true);
+                ArrayList<File> exportList = getExportList(true);
                 if(exportList.size() > 0) {
                     sendFiles(exportList);
                 }
@@ -70,7 +72,7 @@ public class ExportTransactionHistorySelectionActivity extends AppCompatActivity
         View.OnClickListener exportAListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendFiles(adapter.getExportList(false));
+                sendFiles(getExportList(false));
             }
         };
         exportAllButton.setOnClickListener(exportAListener);
@@ -116,5 +118,24 @@ public class ExportTransactionHistorySelectionActivity extends AppCompatActivity
 
     private void back() {
         startActivity(new Intent(ExportTransactionHistorySelectionActivity.this, TransactionHistoryActionActivity.class));
+    }
+
+    ArrayList<File> getExportList(boolean onlySelected) {
+        ArrayList<Boolean> selectedList = adapter.getSelected();
+        ArrayList<SaleList> saleLists = DataStorage.getSaleLists();
+        ArrayList<File> exportList = new ArrayList<>();
+        if(onlySelected) {
+            for (int i = 0; i < selectedList.size(); i++) {
+                if (selectedList.get(i)) {
+                    exportList.add(saleLists.get(i).getRecord());
+
+                }
+            }
+        } else {
+            for(SaleList saleList : saleLists) {
+                exportList.add(saleList.getRecord());
+            }
+        }
+        return exportList;
     }
 }
