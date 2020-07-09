@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="backyardregister.fallfestregister">
+    package="backyardRegister.fallfestregister">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -14,7 +14,8 @@
         android:roundIcon="@drawable/cash_register"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SaleListEditingSelectorActivity">
+        <activity android:name="backyardRegister.editBranch.SaleListEditingSelectorActivity"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -26,14 +27,19 @@
                 <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
-        <activity android:name=".SaleListEditorActivity" />
-        <activity android:name=".ViewTransactionHistorySelectionActivity" />
-        <activity android:name=".ResetTransactionHistorySelectionActivity" />
-        <activity android:name=".ExportTransactionHistorySelectionActivity" />
-        <activity android:name=".TransactionHistoryActionActivity" />
+        <activity android:name="backyardRegister.editBranch.SaleListEditorActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="backyardRegister.transactionHistoryBranch.ViewTransactionHistorySelectionActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="backyardRegister.transactionHistoryBranch.ResetTransactionHistorySelectionActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="backyardRegister.transactionHistoryBranch.ExportTransactionHistorySelectionActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="backyardRegister.transactionHistoryBranch.TransactionHistoryActionActivity"
+            android:screenOrientation="portrait" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -43,16 +49,16 @@
         </provider>
 
         <activity
-            android:name=".ViewTransactionHistoryActivity"
+            android:name="backyardRegister.transactionHistoryBranch.ViewTransactionHistoryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ChangeActivity"
+            android:name="backyardRegister.sellBranch.ChangeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SaleListSelectionActivity"
+            android:name="backyardRegister.sellBranch.SaleListSelectionActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".StartMenuActivity"
+            android:name="backyardRegister.StartMenuActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -72,12 +78,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TotalActivity"
+            android:name="backyardRegister.sellBranch.TotalActivity"
             android:label="@string/title_activity_total"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ItemSelectionActivity"
+            android:name="backyardRegister.sellBranch.ItemSelectionActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
     </application>
