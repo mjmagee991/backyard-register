@@ -61,29 +61,27 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity
     private RecyclerView saleListNamesList;
     private Button exportButton;
     private Button newListButton;
-    private int INTERNET_PERMISSION_CODE = 5;
-    private String TAG = "Thoma";
+    private int INTERNET_PERMISSION_CODE = 1; // Doesn't really do anything
 
     @Override
     protected void onCreate(Bundle exportdInstanceState) {
-        Log.d(TAG, "onCreate: ");
 
+        // Loads SaleLists from SharedPreferences
         DataStorage.loadSaleLists(getSharedPreferences("Sale Lists", MODE_PRIVATE));
-        Log.d("reelTest", "opened");
+
+
         // Accept imports from files from the phone
         Intent intent = getIntent();
         String action = intent.getAction();
         String intentType = intent.getType();
 
-
+        // Deal with single incoming SaleList
         if(Intent.ACTION_SEND.equals(action) && intentType != null && getInternetPermission()) {
-            // Deal with single incoming SaleList
             Uri fileUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-            saveListFromUri(fileUri);
 
+            saveListFromUri(fileUri);
+         // Deal with multiple incoming SaleLists
         } else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && intentType != null && getInternetPermission()) {
-            Log.d("reelTest", "multiple");
-            // Deal with multiple incoming SaleLists
             ArrayList<Uri> fileUriList = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
 
             for(Uri fileUri : fileUriList) {
@@ -102,84 +100,73 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity
         newListButton = findViewById(R.id.b_new_list);
 
         // Back button setup
-        View.OnClickListener backListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                back();
-            }
-        };
+        View.OnClickListener backListener = v -> back();
         backButton.setOnClickListener(backListener);
-        Log.d(TAG, "onCreate: 2");
         
         // RecyclerView setup
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         saleListNamesList.setLayoutManager(layoutManager);
         saleListNamesList.setHasFixedSize(true);
-        Log.d(TAG, "onCreate: 2.5");
+
         adapter = new SaleListListAdapter(this, getApplicationContext());
-        Log.d(TAG, "onCreate: 2.7");
         saleListNamesList.setAdapter(adapter);
-        Log.d(TAG, "onCreate: 3");
 
         // Export button setup
-        View.OnClickListener exportListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: Setup exporting of SaleLists; Make sure to check for permissions
-                sendFiles(adapter.changeMode());
-                if(adapter.getMode()) {
-                    exportButton.setText("Confirm");
-                    header.setBackgroundColor(Color.parseColor("#48e497"/*green*/));
-                } else {
-                    for(int i = 0; i < adapter.getItemCount(); i++) {
-                        ((SaleListListAdapter.SaleListNameViewHolder) saleListNamesList.findViewHolderForAdapterPosition(i)).reset(i);
-                    }
-                    exportButton.setText("Export");
-                    header.setBackgroundColor(Color.parseColor("#00574B")/*primary dark*/);
+        View.OnClickListener exportListener = v -> {
+            // The first time this is clicked, sendFile() does nothing because adapter.changeMode() returns null
+            // The second time it's clicked, if any lists have been selected, sendFiles exports them to email
+            sendFiles(adapter.changeMode());
+            // If the adapter is in now in export mode,
+            if(adapter.getMode()) {
+                // Change the rest of the Activity to reflect export mode
+                exportButton.setText("Confirm");
+                header.setBackgroundColor(Color.parseColor("#48e497"/*green*/));
+            } else {
+                // Reset the color of each list back to white
+                for(int i = 0; i < adapter.getItemCount(); i++) {
+                    ((SaleListListAdapter.SaleListNameViewHolder) saleListNamesList.findViewHolderForAdapterPosition(i)).reset(i);
                 }
+                // Change the rest of the Activity to reflect selection mode
+                exportButton.setText("Export");
+                header.setBackgroundColor(Color.parseColor("#00574B")/*primary dark*/);
             }
         };
         exportButton.setOnClickListener(exportListener);
 
         // New List button setup
-        View.OnClickListener newListListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final EditText newListNameEditText = new EditText(SaleListEditingSelectorActivity.this);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
-                newListNameEditText.setLayoutParams(lp);
+        View.OnClickListener newListListener = v -> {
+            final EditText newListNameEditText = new EditText(SaleListEditingSelectorActivity.this);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT);
+            newListNameEditText.setLayoutParams(lp);
 
-                new AlertDialog.Builder(SaleListEditingSelectorActivity.this)
-                        .setTitle("Create New List")
-                        .setMessage("Input name for the new list below")
-                        .setView(newListNameEditText)
-                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String newListName = newListNameEditText.getText().toString();
-                                // Check if name is same as others
-                                for(String saleListName : DataStorage.getSaleListNames()) {
-                                    if(saleListName.replaceAll("/","").equals(newListName.replaceAll("/",""))) {
-                                        Toast.makeText(SaleListEditingSelectorActivity.this, "List must have a different name than all other lists", Toast.LENGTH_SHORT).show();
-                                        return;
-                                    }
+            new AlertDialog.Builder(SaleListEditingSelectorActivity.this)
+                    .setTitle("Create New List")
+                    .setMessage("Input name for the new list below")
+                    .setView(newListNameEditText)
+                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String newListName = newListNameEditText.getText().toString();
+                            // Check if name is same as others
+                            for(String saleListName : DataStorage.getSaleListNames()) {
+                                if(saleListName.replaceAll("/","").equals(newListName.replaceAll("/",""))) {
+                                    Toast.makeText(SaleListEditingSelectorActivity.this, "List must have a different name than all other lists", Toast.LENGTH_SHORT).show();
+                                    return;
                                 }
-                                Log.d("coding","that far");
-                                // Create and save a new list
-                                DataStorage.addSaleList(new SaleList(newListName, new ArrayList<SaleItem>()), getSharedPreferences("Sale Lists", MODE_PRIVATE));
-                                Log.d("coding","this far");
-                                // Restart the Activity
-                                startActivity(new Intent(SaleListEditingSelectorActivity.this, SaleListEditingSelectorActivity.class).setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                             }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .create().show();
-            }
+                            // Create and save a new list
+                            DataStorage.addSaleList(new SaleList(newListName, new ArrayList<SaleItem>()), getSharedPreferences("Sale Lists", MODE_PRIVATE));
+                            // Restart the Activity
+                            startActivity(new Intent(SaleListEditingSelectorActivity.this, SaleListEditingSelectorActivity.class).setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
         };
         newListButton.setOnClickListener(newListListener);
     }
@@ -203,25 +190,17 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        back();
-    }
 
-    private void back() {
-        startActivity(new Intent(SaleListEditingSelectorActivity.this, StartMenuActivity.class));
-    }
-
+    // Lines 206 - 450 are functions I found online to get file paths on phones
+    // I don't really know how they work, but all the other functions help the one I used, getPathFromUri()
     public static String getPathFromUri(final Context context, final Uri uri) {
 
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
         // DocumentProvider
         if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
-            Log.d("reelTest", "DocumentProvider");
             // ExternalStorageProvider
             if (isExternalStorageDocument(uri)) {
-                Log.d("reelTest", "isExternalStorageDocument");
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
                 final String type = split[0];
@@ -234,14 +213,12 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity
             }
             // DownloadsProvider
             else if (isDownloadsDocument(uri)) {
-                Log.d("reelTest", "isDownloadsDocument");
 
 
                 final String id = DocumentsContract.getDocumentId(uri);
                 final Uri contentUri = ContentUris.withAppendedId(
                         Uri.parse("content://downloads/my_downloads"), Long.valueOf(id));
 
-                Log.d("reelTest", "getDataColumn(): " + getDataColumn(context, contentUri, null, null));
                 if(getDataColumn(context, contentUri, null, null) != null)
                     return getDataColumn(context, contentUri, null, null);
                 else {
@@ -301,30 +278,25 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity
     public static String getDataColumn(Context context, Uri uri, String selection,
                                        String[] selectionArgs) {
 
-        Log.d("reelTest", "start");
         Cursor cursor = null;
         final String column = "_data";
         final String[] projection = {
                 column
         };
-        Log.d("reelTest", "trycatch");
         try {
             cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
                     null);
             if (cursor != null && cursor.moveToFirst()) {
                 final int index = cursor.getColumnIndexOrThrow(column);
-                Log.d("reelTest", "getDataColumn() Return: " + cursor.getString(index));
                 return cursor.getString(index);
             }
         } catch (Exception e) {
-            Log.d("reelTest", "getDataColumn() Exception: " + e);
         } finally {
             if (cursor != null)
                 cursor.close();
         }
         return null;
     }
-
 
     /**
      * @param uri The Uri to check.
@@ -358,46 +330,13 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
 
-    private boolean getInternetPermission() {
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
-            Log.d("reelTest", "permission not granted");
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.INTERNET)) {
-
-                new AlertDialog.Builder(this)
-                        .setTitle("Permission needed")
-                        .setMessage("This permission is needed to save the data onto this phone.")
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions(SaleListEditingSelectorActivity.this,
-                                        new String[] {Manifest.permission.INTERNET}, INTERNET_PERMISSION_CODE);
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .create().show();
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[] {Manifest.permission.INTERNET}, INTERNET_PERMISSION_CODE);
-            }
-        }
-        Log.d("reelTest", "permission granted: " + (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED));
-        return (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED);
-    }
-
-
     public static final String DOCUMENTS_DIR = "documents";
 
     public static String getFileName(@NonNull Context context, Uri uri) {
         String mimeType = context.getContentResolver().getType(uri);
         String filename = null;
 
-        if (mimeType == null && context != null) {
+        if (mimeType == null) {
             String path = uri.getPath();
             if (path == null) {
                 filename = getName(uri.toString());
@@ -500,81 +439,96 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity
         }
     }
 
-    private String cleanString(String inString) {
+    private void saveListFromUri(Uri fileUri) {
+
+        // Get the File from the given Uri
+        File saleListFile = new File(getPathFromUri(getApplicationContext(), fileUri));
+
+        // TODO: Deal with edge case when name of import is the same as a current List
+
+        try {
+            // Construct the reader for the File
+            FileInputStream  fis = new FileInputStream(saleListFile);
+            DataInputStream in = new DataInputStream(fis);
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            //Read 1 line from the file
+            String line = br.readLine();
+
+            // If there is text on the line
+            if(line != null) {
+                Gson gson = new Gson();
+                Type type = new TypeToken<SaleList>() {}.getType();
+                // Construct the object from the JSON String
+                SaleList saleList = gson.fromJson(cleanString(line), type);
+                // Add the new SaleList object to SharedPreferences
+                DataStorage.addSaleList(saleList, getSharedPreferences("Sale Lists", MODE_PRIVATE));
+            }
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // Gets rid of any characters not in the acceptableCharacters String
+    String cleanString(String inString) {
         String outStr = "";
+        String acceptableCharacters = "`1234567890-=~!@#$%^&*()_+qwertyuiop[]\\QWERTYUIOP{}|asdfghjkl;'ASDFGHJKL:\"zzzxcvbnmn,./ZXCVBNM<>? ";
         for(int i = 0; i < inString.length(); i++) {
+            // Gets the character at position i
             String let = inString.substring(i, i + 1);
-            if("`1234567890-=~!@#$%^&*()_+qwertyuiop[]\\QWERTYUIOP{}|asdfghjkl;'ASDFGHJKL:\"zzzxcvbnmn,./ZXCVBNM<>? ".contains(let)) {
+            // Adds the character to the output String if it is acceptable
+            if(acceptableCharacters.contains(let)) {
                 outStr += let;
             }
         }
         return outStr;
     }
 
-    private void saveListFromUri(Uri fileUri) {
-        Log.d("reelTest", "MIME type: " + getContentResolver().getType(fileUri));
-        Log.d("reelTest", "fileUri: " + fileUri);
 
-        File saleListFile = new File(getPathFromUri(getApplicationContext(), fileUri));
+    // Checks permission to access the internet, which is required to import SaleLists off the phone
+    private boolean getInternetPermission() {
+        // If the permission hasn't been granted,
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+            // If the permission was initially denied, this decides to show an pop-up explaining why the permission is needed
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.INTERNET)) {
 
-        // TODO: Deal with edge case when name of import is the same as a current List
-
-        Log.d("reelTest", "single");
-        try {
-            // Read single line from the file
-            FileInputStream  fis = new FileInputStream(saleListFile);
-            DataInputStream in = new DataInputStream(fis);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            String line = br.readLine();
-            Log.d("reelTest", "here");
-
-            // If there is text, parse and save the object
-            if(line != null) {
-                Log.d("reelTest", "Line: " + cleanString(line));
-                Gson gson = new Gson();
-                Type type = new TypeToken<SaleList>() {}.getType();
-                Log.d("reelTest", "Json attempted");
-                SaleList saleList = gson.fromJson(cleanString(line), type);
-                Log.d("reelTest", "Json Succeeded");
-                DataStorage.addSaleList(saleList, getSharedPreferences("Sale Lists", MODE_PRIVATE));
+                // Creates the pop-up
+                new AlertDialog.Builder(this)
+                        .setTitle("Permission needed")
+                        .setMessage("This permission is needed to save the data onto this phone.")
+                        // If this button is pressed, the app requests the permission again
+                        .setPositiveButton("Ok", (dialog, which) -> ActivityCompat.requestPermissions(SaleListEditingSelectorActivity.this,
+                                new String[] {Manifest.permission.INTERNET}, INTERNET_PERMISSION_CODE))
+                        // If this button is pressed, the app cancels the previous action
+                        .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                        .create().show();
+            } else {
+                // If permission wasn't already denied, this just requests the permission normally
+                ActivityCompat.requestPermissions(this,
+                        new String[] {Manifest.permission.INTERNET}, INTERNET_PERMISSION_CODE);
             }
-            in.close();
-        } catch (Exception e) {
-            Log.d("reelTest", "End Exception: " + e);
-            e.printStackTrace();
         }
+
+        return checkPermission(Manifest.permission.INTERNET);
     }
 
+    // Checks if the user has given this permission to the app
     public boolean checkPermission(String permission) {
         int check = ContextCompat.checkSelfPermission(this, permission);
         return (check == PackageManager.PERMISSION_GRANTED);
     }
 
 
-    private void requestStoragePermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)) {
+    // Sets the back button on the bottom of the screen to do the same thing as my back button
+    @Override
+    public void onBackPressed() {
+        back();
+    }
 
-            new AlertDialog.Builder(this)
-                    .setTitle("Permission needed")
-                    .setMessage("This permission is needed to save the data onto this phone.")
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions(SaleListEditingSelectorActivity.this,
-                                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
-                        }
-                    })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .create().show();
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
-        }
+    // Moves to the previous Activity in the hierarchy
+    private void back() {
+        startActivity(new Intent(SaleListEditingSelectorActivity.this, StartMenuActivity.class));
     }
 }

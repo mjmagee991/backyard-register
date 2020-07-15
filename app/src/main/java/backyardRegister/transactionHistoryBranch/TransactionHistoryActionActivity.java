@@ -63,11 +63,14 @@ public class TransactionHistoryActionActivity extends AppCompatActivity {
         exportButton.setOnClickListener(exportListener);
     }
 
+
+    // Sets the back button on the bottom of the screen to do the same thing as my back button
     @Override
     public void onBackPressed() {
         back();
     }
 
+    // Moves to the previous Activity in the hierarchy
     private void back() {
         startActivity(new Intent(TransactionHistoryActionActivity.this, StartMenuActivity.class));
     }

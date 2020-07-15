@@ -136,7 +136,6 @@ public class ChangeActivity extends AppCompatActivity
                 if(ContextCompat.checkSelfPermission(ChangeActivity.this,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     // Run the save and move on
-                    Log.d("permission", "granted");
                     save();
                     startActivity(new Intent(ChangeActivity.this, ItemSelectionActivity.class));
                 } else {
@@ -187,7 +186,6 @@ public class ChangeActivity extends AppCompatActivity
 
 
         if(isExternalStorageWritable() && checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            Log.d("permission", "granted");
 
 
             // Save all the old data into a string
@@ -198,9 +196,7 @@ public class ChangeActivity extends AppCompatActivity
                 BufferedReader br = new BufferedReader(new InputStreamReader(in));
                 String line;
 
-                Log.d("output", "while loop runs");
                 while((line = br.readLine()) != null) {
-                    Log.d("output", line);
                     sb.append(line).append("\n");
                 }
                 in.close();
@@ -211,16 +207,13 @@ public class ChangeActivity extends AppCompatActivity
             FileOutputStream fos = null;
 
             try {
-                Log.d("save", "save runs");
                 // Overwrite the new data over the text file
                 fos = new FileOutputStream(DataStorage.listInUse.getRecord(), false);
                 fos.write(finalSaveString.getBytes());
-                Log.d("Save", finalSaveString + "..." + DataStorage.listInUse.getRecord());
                 // Write the old data below the new data in the text file
                 fos = new FileOutputStream(DataStorage.listInUse.getRecord(), true);
                 fos.write(sb.toString().getBytes());
             } catch (IOException e) {
-                Log.d("Save", "IOException thrown");
                 e.printStackTrace();
             } finally {
                 if(fos != null) {
@@ -231,9 +224,7 @@ public class ChangeActivity extends AppCompatActivity
                     }
                 }
             }
-            Log.d("Save", "File saved properly to " + DataStorage.listInUse.getRecord());
         }
-
     }
 
     private boolean isExternalStorageWritable() {
@@ -284,11 +275,14 @@ public class ChangeActivity extends AppCompatActivity
         }
     }
 
+
+    // Sets the back button on the bottom of the screen to do the same thing as my back button
     @Override
     public void onBackPressed() {
         back();
     }
 
+    // Moves to the previous Activity in the hierarchy without losing the saved data
     private void back() {
         Intent intent = new Intent(ChangeActivity.this, TotalActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

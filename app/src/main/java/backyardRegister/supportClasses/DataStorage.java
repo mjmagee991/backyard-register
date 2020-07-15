@@ -55,9 +55,7 @@ public class DataStorage {
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line;
 
-            Log.d("output", "while loop runs");
             while((line = br.readLine()) != null) {
-                Log.d("output", line);
                 // Adds line to
                 saleRecord.add(line);
             }
@@ -70,7 +68,6 @@ public class DataStorage {
     }
 
     public static void loadSaleLists(SharedPreferences sharedPreferences) {
-        Log.d(TAG, "loadSaleLists: ");
 
         Gson gson = new Gson();
         String json = sharedPreferences.getString(SALE_LIST_SAVE_STRING, null);
@@ -131,8 +128,6 @@ public class DataStorage {
             String json = gson.toJson(saleLists);
             editor.putString(SALE_LIST_SAVE_STRING, json);
             editor.apply();
-        } catch (Exception e) {
-            Log.d("coding","" + e);
-        }
+        } catch (Exception ignored) {}
     }
 }

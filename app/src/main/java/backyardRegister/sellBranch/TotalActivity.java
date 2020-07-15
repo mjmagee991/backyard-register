@@ -129,11 +129,14 @@ public class TotalActivity extends AppCompatActivity {
         calculateChangeButton.setOnClickListener(calcListener);
     }
 
+
+    // Sets the back button on the bottom of the screen to do the same thing as my back button
     @Override
     public void onBackPressed() {
         back();
     }
 
+    //Moves to the previous Activity in the hierarchy without losing the saved data
     private void back() {
         Intent intent = new Intent(TotalActivity.this, ItemSelectionActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

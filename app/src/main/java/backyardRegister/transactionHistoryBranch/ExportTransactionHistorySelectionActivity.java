@@ -80,7 +80,6 @@ public class ExportTransactionHistorySelectionActivity extends AppCompatActivity
 
     void sendFiles(ArrayList<File> records) {
         //String[] recipientList = {recipient};
-        Log.d("Sending", "attempted");
         String subject = "Sales Data";
         //String message = "Test";
 
@@ -92,7 +91,6 @@ public class ExportTransactionHistorySelectionActivity extends AppCompatActivity
 
         /*
         String targetFilePath = Environment.getExternalStorageDirectory().getPath() + File.separator + "tmp" + File.separator + "record.txt";
-        Log.d("output", targetFilePath);
         Uri attachmentUri = Uri.parse(targetFilePath);
         intent.putExtra(android.content.Intent.EXTRA_STREAM, Uri.parse("file://" + attachmentUri));
          */
@@ -100,10 +98,8 @@ public class ExportTransactionHistorySelectionActivity extends AppCompatActivity
         for(int i = 0; i < records.size(); i++) {
             //intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(ExportTransactionHistorySelectionActivity.this, BuildConfig.APPLICATION_ID + ".provider", records.get(i)));
             //uriList.add(Uri.fromFile(records.get(i)));
-            Log.d("Sending", "Loop run:" + i);
             uriList.add(FileProvider.getUriForFile(ExportTransactionHistorySelectionActivity.this, BuildConfig.APPLICATION_ID + ".provider", records.get(i)));
         }
-        Log.d("Sending", "uriList: " + uriList);
         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
 
         intent.setType("message/rfc822");
@@ -111,14 +107,6 @@ public class ExportTransactionHistorySelectionActivity extends AppCompatActivity
         startActivityForResult(Intent.createChooser(intent, "Choose an email client"), 12345);
     }
 
-    @Override
-    public void onBackPressed() {
-        back();
-    }
-
-    private void back() {
-        startActivity(new Intent(ExportTransactionHistorySelectionActivity.this, TransactionHistoryActionActivity.class));
-    }
 
     ArrayList<File> getExportList(boolean onlySelected) {
         ArrayList<Boolean> selectedList = adapter.getSelected();
@@ -137,5 +125,17 @@ public class ExportTransactionHistorySelectionActivity extends AppCompatActivity
             }
         }
         return exportList;
+    }
+
+
+    // Sets the back button on the bottom of the screen to do the same thing as my back button
+    @Override
+    public void onBackPressed() {
+        back();
+    }
+
+    // Moves to the previous Activity in the hierarchy
+    private void back() {
+        startActivity(new Intent(ExportTransactionHistorySelectionActivity.this, TransactionHistoryActionActivity.class));
     }
 }

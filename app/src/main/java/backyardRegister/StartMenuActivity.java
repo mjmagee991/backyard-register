@@ -2,14 +2,12 @@ package backyardRegister;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -25,11 +23,10 @@ public class StartMenuActivity extends AppCompatActivity {
     private Button sellButton;
     private Button createEditListsButton;
     private Button transactionHistoryButton;
-    int STORAGE_PERMISSION_CODE = 1;
+    int STORAGE_PERMISSION_CODE = 1; // Doesn't really do anything
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("coding", "ignition");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_menu);
 
@@ -41,6 +38,7 @@ public class StartMenuActivity extends AppCompatActivity {
         View.OnClickListener sellListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Checks permissions and goes to the start of the Sell Branch
                 if (getAllPermissions()) {
                     startActivity(new Intent(StartMenuActivity.this, SaleListSelectionActivity.class));
                 }
@@ -52,6 +50,7 @@ public class StartMenuActivity extends AppCompatActivity {
         View.OnClickListener createEditListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Checks permissions and goes to the start of the Edit Branch
                 if(getAllPermissions()) {
                     startActivity(new Intent(StartMenuActivity.this, SaleListEditingSelectorActivity.class));
                 }
@@ -63,6 +62,7 @@ public class StartMenuActivity extends AppCompatActivity {
         View.OnClickListener transactionHistoryListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Checks permissions and goes to the start of the Transaction History Branch
                 if(getAllPermissions()) {
                     startActivity(new Intent(StartMenuActivity.this, TransactionHistoryActionActivity.class));
                 }
@@ -70,62 +70,51 @@ public class StartMenuActivity extends AppCompatActivity {
         };
         transactionHistoryButton.setOnClickListener(transactionHistoryListener);
 
-        // Load SaleLists
+        // Load SaleLists from SharedPreferences
         DataStorage.loadSaleLists(getSharedPreferences("Sale Lists", MODE_PRIVATE));
-        //DataStorage.saveSaleListList(getSharedPreferences("Sale Lists", MODE_PRIVATE));
     }
 
     public boolean getAllPermissions() {
         //Check permission to read external storage
         if(!checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            // If the permission was initially denied, this decides to show an pop-up explaining why the permission is needed
             if (ActivityCompat.shouldShowRequestPermissionRationale(StartMenuActivity.this,
                     Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
+                // Creates the pop-up
                 new AlertDialog.Builder(StartMenuActivity.this)
                         .setTitle("Permission needed")
                         .setMessage("This permission is needed to save the data onto this phone.")
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions(StartMenuActivity.this,
-                                        new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
+                        // If this button is pressed, the app requests the permission again
+                        .setPositiveButton("Ok", (dialog, which) -> ActivityCompat.requestPermissions(StartMenuActivity.this,
+                                new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE))
+                        // If this button is pressed, the app cancels the previous action
+                        .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
                         .create().show();
             } else {
+                // If permission wasn't already denied, this just requests the permission normally
                 ActivityCompat.requestPermissions(StartMenuActivity.this,
                         new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
             }
         }
         // Check permission to write to external storage
         if(!checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            // If the permission was initially denied, this decides to show an pop-up explaining why the permission is needed
             if (ActivityCompat.shouldShowRequestPermissionRationale(StartMenuActivity.this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
+                // Creates the pop-up
                 new AlertDialog.Builder(StartMenuActivity.this)
                         .setTitle("Permission needed")
                         .setMessage("This permission is needed to save the data onto this phone.")
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions(StartMenuActivity.this,
-                                        new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
+                        // If this button is pressed, the app requests the permission again
+                        .setPositiveButton("Ok", (dialog, which) -> ActivityCompat.requestPermissions(StartMenuActivity.this,
+                                new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE))
+                        // If this button is pressed, the app cancels the previous action
+                        .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
                         .create().show();
             } else {
+                // If permission wasn't already denied, this just requests the permission normally
                 ActivityCompat.requestPermissions(StartMenuActivity.this,
                         new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
             }
@@ -134,11 +123,13 @@ public class StartMenuActivity extends AppCompatActivity {
         return checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE) && checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
+    // Returns whether or not a permission has been granted
     public boolean checkPermission(String permission) {
         int check = ContextCompat.checkSelfPermission(this, permission);
         return (check == PackageManager.PERMISSION_GRANTED);
     }
 
+    // Sets the back button action to nothing because you can't go further back than the Start Menu
     @Override
     public void onBackPressed() {
 

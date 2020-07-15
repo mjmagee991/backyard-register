@@ -43,14 +43,12 @@ public class SaleListListAdapter
     }
 
     public SaleListListAdapter(ListClickListener listener, Context inContext) {
-        Log.d(TAG, "SaleListListAdapter: ");
         listClickListener = listener;
         context = inContext;
     }
 
     @Override
     public SaleListNameViewHolder  onCreateViewHolder(ViewGroup viewGroup, int i) {
-        Log.d(TAG, "onCreateViewHolder: ");
         Context context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.rv_item_sale_list;
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -64,7 +62,6 @@ public class SaleListListAdapter
 
     @Override
     public void onBindViewHolder(SaleListListAdapter.SaleListNameViewHolder holder, int pos) {
-        Log.d(TAG, "onBindViewHolder: ");
         holder.load(pos);
     }
 
@@ -83,8 +80,6 @@ public class SaleListListAdapter
         public SaleListNameViewHolder(View itemView) {
 
             super(itemView);
-
-            String TAG = "tag";
 
             saleListName = itemView.findViewById(R.id.tv_sale_list_name);
             rowLayout = itemView.findViewById(R.id.ll_rv_item_sale_list);
