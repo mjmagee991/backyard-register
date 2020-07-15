@@ -276,18 +276,20 @@ public class ViewTransactionHistoryActivity extends AppCompatActivity
 
          */
 
+
     public static Context getContext() {
         return context;
     }
 
+
+    // Sets the back button on the bottom of the screen to do the same thing as my back button
     @Override
     public void onBackPressed() {
         back();
     }
 
+    // Moves to the previous Activity in the hierarchy
     private void back() {
-        Intent intent = new Intent(ViewTransactionHistoryActivity.this, ViewTransactionHistorySelectionActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent);
+        startActivity(new Intent(ViewTransactionHistoryActivity.this, ViewTransactionHistorySelectionActivity.class));
     }
 }

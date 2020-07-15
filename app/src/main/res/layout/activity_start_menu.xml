@@ -20,9 +20,9 @@
         android:id="@+id/logo"
         android:layout_width="200dp"
         android:layout_height="150dp"
-        android:src="@drawable/cash_register"
+        android:layout_gravity="center"
         android:layout_marginVertical="10dp"
-        android:layout_gravity="center"/>
+        android:src="@drawable/cash_register" />
 
     <Button
         android:id="@+id/b_sell"
@@ -52,12 +52,12 @@
         android:id="@+id/b_transaction_history"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="Transaction\nHistory"
-        android:textSize="@dimen/standard_text_size"
-        android:layout_marginVertical="10dp"
-        android:paddingVertical="20dp"
         android:layout_gravity="center"
+        android:layout_marginVertical="10dp"
+        android:background="@color/colorButton"
+        android:paddingVertical="20dp"
+        android:text="Transaction\nHistory"
         android:textColor="@color/colorButtonText"
-        android:background="@color/colorButton"/>
+        android:textSize="@dimen/standard_text_size" />
 
 </LinearLayout>

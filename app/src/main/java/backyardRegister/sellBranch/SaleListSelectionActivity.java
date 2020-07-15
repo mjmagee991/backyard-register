@@ -23,11 +23,9 @@ public class SaleListSelectionActivity extends AppCompatActivity
     private SaleListListAdapter adapter;
     private Button backButton;
 
-    String TAG = "tag";
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate: 1");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sale_list_selection);
 
@@ -48,15 +46,10 @@ public class SaleListSelectionActivity extends AppCompatActivity
         saleListNamesList.setLayoutManager(layoutManager);
         saleListNamesList.setHasFixedSize(true);
 
-        Log.d(TAG, "onCreate: 2");
         try {
             adapter = new SaleListListAdapter(this, getApplicationContext());
         } catch(Exception e) {
-            Log.d(TAG, "onCreate: " + e);
-            Log.d(TAG, "onCreate: " + this);
-            Log.d(TAG, "onCreate: " + getApplicationContext());
         }
-        Log.d(TAG, "onCreate: 3");
         saleListNamesList.setAdapter(adapter);
     }
 
@@ -66,11 +59,14 @@ public class SaleListSelectionActivity extends AppCompatActivity
         startActivity(new Intent(SaleListSelectionActivity.this, ItemSelectionActivity.class));
     }
 
+
+    // Sets the back button on the bottom of the screen to do the same thing as my back button
     @Override
     public void onBackPressed() {
         back();
     }
 
+    // Moves to the previous Activity in the hierarchy
     private void back() {
         startActivity(new Intent(SaleListSelectionActivity.this, StartMenuActivity.class));
     }

@@ -35,12 +35,7 @@ public class ResetTransactionHistorySelectionActivity extends AppCompatActivity 
         resetButton = findViewById(R.id.b_reset_records);
 
         // Back Button setup
-        View.OnClickListener backListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                back();
-            }
-        };
+        View.OnClickListener backListener = v -> back();
         backButton.setOnClickListener(backListener);
 
 
@@ -54,28 +49,23 @@ public class ResetTransactionHistorySelectionActivity extends AppCompatActivity 
         saleRecords.setAdapter(adapter);
 
         // Reset Button setup
-        View.OnClickListener resetListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AlertDialog.Builder(ResetTransactionHistorySelectionActivity.this)
-                        .setTitle("Confirm Reset")
-                        .setMessage("Are you sure you would like to reset the selected records?\nThis action cannot be undone.")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(getApplicationContext(), resetRecords() + " records reset", Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(ResetTransactionHistorySelectionActivity.this, ResetTransactionHistorySelectionActivity.class).setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .create().show();
-            }
-        };
+        View.OnClickListener resetListener = v -> new AlertDialog.Builder(ResetTransactionHistorySelectionActivity.this)
+                .setTitle("Confirm Reset")
+                .setMessage("Are you sure you would like to reset the selected records?\nThis action cannot be undone.")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), resetRecords() + " records reset", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(ResetTransactionHistorySelectionActivity.this, ResetTransactionHistorySelectionActivity.class).setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
         resetButton.setOnClickListener(resetListener);
     }
 
@@ -92,14 +82,15 @@ public class ResetTransactionHistorySelectionActivity extends AppCompatActivity 
         return numReset;
     }
 
+
+    // Sets the back button on the bottom of the screen to do the same thing as my back button
     @Override
     public void onBackPressed() {
         back();
     }
 
+    // Moves to the previous Activity in the hierarchy
     private void back() {
-        Intent intent = new Intent(ResetTransactionHistorySelectionActivity.this, TransactionHistoryActionActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent);
+        startActivity(new Intent(ResetTransactionHistorySelectionActivity.this, TransactionHistoryActionActivity.class));
     }
 }
