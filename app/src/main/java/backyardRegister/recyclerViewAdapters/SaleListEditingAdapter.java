@@ -23,16 +23,20 @@ public class SaleListEditingAdapter
 
     private DecimalFormat currencyFormat = new DecimalFormat("#0.00");
 
+    private int numItems; // Number of items in the RecyclerView
     private ArrayList<SaleItem> itemList;
-    private int numItems;
     private Context context;
 
-    public SaleListEditingAdapter(ArrayList<SaleItem> list, Context context) {
+
+    // Constructor
+    public SaleListEditingAdapter(ArrayList<SaleItem> list, Context inContext) {
         itemList = list;
         numItems = itemList.size();
-        this.context = context;
+        context = inContext;
     }
 
+
+    // Puts the layout into each ViewHolder when it is created
     @Override
     public SaleItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();
@@ -41,27 +45,32 @@ public class SaleListEditingAdapter
         boolean shouldAttachToParentImmediately = false;
 
         View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
-        SaleItemViewHolder viewHolder = new SaleItemViewHolder(view);
-
-        return viewHolder;
+        return new SaleItemViewHolder(view);
     }
 
+    // Fills the ViewHolder with content after it has been created
     @Override
     public void onBindViewHolder( SaleItemViewHolder holder, int pos) {
+        // Loads information into the ViewHolder
         holder.load(pos);
     }
 
+    // Returns the number of items in the RecyclerView
+    // This method is used by the Adapter code in the imported library
     @Override
     public int getItemCount() {
         return numItems;
     }
 
+
+    // This class holds the Views that populate the RecyclerView
     public class SaleItemViewHolder extends RecyclerView.ViewHolder {
 
         EditText itemNameEditText;
         EditText itemPriceEditText;
         Button deleteButton;
 
+        // Constructor
         public SaleItemViewHolder(View itemView) {
             super(itemView);
 
@@ -73,26 +82,27 @@ public class SaleListEditingAdapter
         }
 
         void load(final int pos) {
+            // Fill EditTexts
             SaleItem saleItem = itemList.get(pos);
             itemNameEditText.setText(saleItem.getName());
             itemPriceEditText.setText(currencyFormat.format(saleItem.getPrice()));
 
             // Delete button setup
-            View.OnClickListener deleteListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Call back to Activity to make a new adapter (because I can't make notifyDataSetHasChanged work any other way)
-                    if(context instanceof SaleListEditorActivity) {
-                        ((SaleListEditorActivity)context).deleteViewHolder(pos);
-                    }
+            View.OnClickListener deleteListener = v -> {
+                // Call back to Activity to make a new adapter (because I can't make notifyDataSetHasChanged work any other way)
+                if(context instanceof SaleListEditorActivity) {
+                    ((SaleListEditorActivity)context).deleteViewHolder(pos);
                 }
             };
             deleteButton.setOnClickListener(deleteListener);
         }
 
+
+        // Returns the information written into the EditTexts
         public String getName() {
             return itemNameEditText.getText().toString();
         }
+
         public double getPrice() {
             return Double.parseDouble(itemPriceEditText.getText().toString());
         }

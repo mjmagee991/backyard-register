@@ -23,7 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,8 +52,7 @@ import backyardRegister.supportClasses.SaleList;
 import backyardRegister.recyclerViewAdapters.SaleListListAdapter;
 import backyardRegister.StartMenuActivity;
 
-public class SaleListEditingSelectorActivity extends AppCompatActivity
-        implements SaleListListAdapter.ListClickListener {
+public class SaleListEditingSelectorActivity extends AppCompatActivity {
 
     private LinearLayout header;
     private Button backButton;
@@ -108,7 +107,7 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity
         saleListNamesList.setLayoutManager(layoutManager);
         saleListNamesList.setHasFixedSize(true);
 
-        adapter = new SaleListListAdapter(this, getApplicationContext());
+        adapter = new SaleListListAdapter(getApplicationContext());
         saleListNamesList.setAdapter(adapter);
 
         // Export button setup
@@ -117,7 +116,7 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity
             // The second time it's clicked, if any lists have been selected, sendFiles exports them to email
             sendFiles(adapter.changeMode());
             // If the adapter is in now in export mode,
-            if(adapter.getMode()) {
+            if(adapter.isInExportMode()) {
                 // Change the rest of the Activity to reflect export mode
                 exportButton.setText("Confirm");
                 header.setBackgroundColor(Color.parseColor("#48e497"/*green*/));
@@ -128,7 +127,7 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity
                 }
                 // Change the rest of the Activity to reflect selection mode
                 exportButton.setText("Export");
-                header.setBackgroundColor(Color.parseColor("#00574B")/*primary dark*/);
+                header.setBackgroundColor(Color.parseColor("#008577")/*primary*/);
             }
         };
         exportButton.setOnClickListener(exportListener);
@@ -179,14 +178,6 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity
             intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
             intent.setType("message/rfc822");
             startActivityForResult(Intent.createChooser(intent, "Choose an email client"), 12345);
-        }
-    }
-
-    @Override
-    public void onListClick(int clickedListIndex) {
-        if(!adapter.getMode()) {
-            DataStorage.setListInUse(clickedListIndex);
-            startActivity(new Intent(SaleListEditingSelectorActivity.this, SaleListEditorActivity.class));
         }
     }
 

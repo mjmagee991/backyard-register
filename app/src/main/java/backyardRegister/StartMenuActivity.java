@@ -4,15 +4,16 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import backyardRegister.fallfestregister.R;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import backyardRegister.editBranch.SaleListEditingSelectorActivity;
+import backyardRegister.fallfestregister.R;
 import backyardRegister.sellBranch.SaleListSelectionActivity;
 import backyardRegister.supportClasses.DataStorage;
 import backyardRegister.transactionHistoryBranch.TransactionHistoryActionActivity;

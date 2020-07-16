@@ -23,6 +23,8 @@ import backyardRegister.supportClasses.SaleList;
 
 public class ExportTransactionHistorySelectionActivity extends AppCompatActivity {
 
+    //TODO: Add line to top of exported TH with the labels for the columns
+
     private Button backButton;
     private RecyclerView saleRecords;
     private TransactionHistorySelectionAdapter adapter;
@@ -116,7 +118,6 @@ public class ExportTransactionHistorySelectionActivity extends AppCompatActivity
             for (int i = 0; i < selectedList.size(); i++) {
                 if (selectedList.get(i)) {
                     exportList.add(saleLists.get(i).getRecord());
-
                 }
             }
         } else {

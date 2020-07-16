@@ -26,10 +26,12 @@ public class SoldListAdapter extends RecyclerView.Adapter<SoldListAdapter.SoldVi
     private DecimalFormat onesMultiplicationFormat = new DecimalFormat("x   #");
     private DecimalFormat tensMultiplicationFormat = new DecimalFormat("x #");
 
-    private int numItems;
+    private int numItems; // Number of items in the RecyclerView
     private ArrayList<SaleItem> soldItems = new ArrayList<>();
     private double grandTotal;
 
+
+    // Constructor
     public SoldListAdapter() {
         for(SaleItem item : DataStorage.listInUse.getList()) {
             if(item.getCount() != 0) {
@@ -41,6 +43,7 @@ public class SoldListAdapter extends RecyclerView.Adapter<SoldListAdapter.SoldVi
     }
 
 
+    // Puts the layout into each ViewHolder when it is created
     @Override
     public SoldViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();
@@ -49,22 +52,31 @@ public class SoldListAdapter extends RecyclerView.Adapter<SoldListAdapter.SoldVi
         boolean shouldAttachToParentImmediately = false;
 
         View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
-        SoldViewHolder viewHolder = new SoldViewHolder(view);
-
-        return viewHolder;
+        return new SoldViewHolder(view);
     }
 
+    // Fills the ViewHolder with content after it has been created
     @Override
     public void onBindViewHolder(SoldListAdapter.SoldViewHolder holder, int pos) {
+        // Loads information into the ViewHolder
         holder.load(soldItems.get(pos));
     }
 
+    // Returns the number of items in the RecyclerView
+    // This method is used by the Adapter code in the imported library
     @Override
     public int getItemCount() {
         return numItems;
     }
 
 
+    // Returns the grand total for the order
+    public double getGrandTotal() {
+        return grandTotal;
+    }
+
+
+    // This class holds the Views that populate the RecyclerView
     class SoldViewHolder extends RecyclerView.ViewHolder {
 
         TextView priceTextView;
@@ -72,6 +84,7 @@ public class SoldListAdapter extends RecyclerView.Adapter<SoldListAdapter.SoldVi
         TextView multiplicationTextView;
         TextView itemTotalTextView;
 
+        // Constructor
         public SoldViewHolder(View itemView) {
             super(itemView);
 
@@ -85,38 +98,32 @@ public class SoldListAdapter extends RecyclerView.Adapter<SoldListAdapter.SoldVi
             double price = loadingItem.getPrice();
             int count = loadingItem.getCount();
             double total = loadingItem.getTotal();
-            String formattedCount;
-            String formattedTotal;
 
+            // Fills the price TextView with the correct format
             if (price >= 10) {
                 priceTextView.setText(tensFirstCurrencyFormat.format(price));
             } else {
                 priceTextView.setText(onesFirstCurrencyFormat.format(price));
             }
 
+            // Fills the item TextView
             itemTextView.setText(loadingItem.getName());
 
+            // Fills the multiplication TextView with the correct format
             if (count >= 10) {
-                formattedCount = tensMultiplicationFormat.format(count);
+                multiplicationTextView.setText(tensMultiplicationFormat.format(count));
             } else {
-                formattedCount = onesMultiplicationFormat.format(count);
+                multiplicationTextView.setText(onesMultiplicationFormat.format(count));
             }
 
-            multiplicationTextView.setText(formattedCount);
-
+            // Fills the item total TextView with the correct format
             if (total >= 100) {
-                formattedTotal = hundredsSecondCurrencyFormat.format(total);
+                itemTotalTextView.setText(hundredsSecondCurrencyFormat.format(total));
             } else if (total >= 10) {
-                formattedTotal = tensSecondCurrencyFormat.format(total);
+                itemTotalTextView.setText(tensSecondCurrencyFormat.format(total));
             } else {
-                formattedTotal = onesSecondCurrencyFormat.format(total);
+                itemTotalTextView.setText(onesSecondCurrencyFormat.format(total));
             }
-
-            itemTotalTextView.setText(formattedTotal);
         }
-    }
-
-    public double getGrandTotal() {
-        return grandTotal;
     }
 }

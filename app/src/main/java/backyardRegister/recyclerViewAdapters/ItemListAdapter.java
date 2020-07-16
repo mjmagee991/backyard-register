@@ -17,23 +17,14 @@ import backyardRegister.supportClasses.SaleItem;
 public class ItemListAdapter
         extends RecyclerView.Adapter<ItemListAdapter.SaleViewHolder> {
 
-    //Number Formatting
+    // Number Formatting
     private DecimalFormat onesCurrencyFormat = new DecimalFormat("$ #0.00");
     private DecimalFormat tensCurrencyFormat = new DecimalFormat("$#0.00");
 
-    private int numItems = DataStorage.listInUse.getList().size();
+    private int numItems = DataStorage.listInUse.getList().size(); // Number of items in the RecyclerView
 
 
-    public void resetCounts() {
-        // For each item in the RecyclerView
-        for(int pos = 0; pos < numItems; pos += 1) {
-            // Reset the count variable of the item
-            DataStorage.listInUse.getList().get(pos).reset();
-            notifyItemChanged(pos);
-        }
-    }
-
-
+    // Puts the layout into each ViewHolder when it is created
     @Override
     public SaleViewHolder  onCreateViewHolder(ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();
@@ -42,48 +33,58 @@ public class ItemListAdapter
         boolean shouldAttachToParentImmediately = false;
 
         View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
-        SaleViewHolder viewHolder = new SaleViewHolder(view);
-
-        return viewHolder;
+        return new SaleViewHolder(view);
     }
 
+    // Fills the ViewHolder with content after it has been created
     @Override
-    public void onBindViewHolder(ItemListAdapter.SaleViewHolder holder, int position) {
-        final int pos = position;
-
-        View.OnClickListener plusListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View plus) {
-                DataStorage.listInUse.getList().get(pos).addOne();
-                notifyItemChanged(pos);
-            }
+    public void onBindViewHolder(ItemListAdapter.SaleViewHolder holder, int pos) {
+        // Listener for the Plus Button
+        View.OnClickListener plusListener = plus -> {
+            DataStorage.listInUse.getList().get(pos).addOne();
+            notifyItemChanged(pos);
         };
-        View.OnClickListener minusListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View minus) {
-                DataStorage.listInUse.getList().get(pos).subtractOne();
-                notifyItemChanged(pos);
-            }
+        // Listener for the Minus Button
+        View.OnClickListener minusListener = minus -> {
+            DataStorage.listInUse.getList().get(pos).subtractOne();
+            notifyItemChanged(pos);
         };
-        holder.load(DataStorage.listInUse.getList().get(position));
+        // Loads information into the ViewHolder
+        holder.load(DataStorage.listInUse.getList().get(pos));
+        // Assigns the Listeners to the buttons
         holder.plusButton.setOnClickListener(plusListener);
         holder.minusButton.setOnClickListener(minusListener);
     }
 
+    // Returns the number of items in the RecyclerView
+    // This method is used by the Adapter code in the imported library
     @Override
     public int getItemCount() {
         return numItems;
     }
 
+
+    // Resets the counts of each SaleItem to 0
+    public void resetCounts() {
+        // For each item in the RecyclerView
+        for(int pos = 0; pos < numItems; pos++) {
+            // Reset the count variable of the item
+            DataStorage.listInUse.getList().get(pos).reset();
+            notifyItemChanged(pos);
+        }
+    }
+
+
+    // This class holds the Views that populate the RecyclerView
     class SaleViewHolder extends RecyclerView.ViewHolder {
 
-        private int itemNum;
         TextView priceTextView;
         TextView itemTextView;
         Button minusButton;
         TextView countTextView;
         Button plusButton;
 
+        // Constructor
         public SaleViewHolder(View itemView) {
 
             super(itemView);
@@ -96,6 +97,7 @@ public class ItemListAdapter
         }
 
         void load(SaleItem loadingItem) {
+            // Formats the text to fit best on the screen
             double price = loadingItem.getPrice();
             if(price >= 10) {
                 priceTextView.setText(tensCurrencyFormat.format(price));
@@ -103,16 +105,10 @@ public class ItemListAdapter
             else {
                 priceTextView.setText(onesCurrencyFormat.format(price));
             }
+
+            // Fills the Views
             itemTextView.setText(loadingItem.getName());
             countTextView.setText(String.valueOf(loadingItem.getCount()));
-        }
-
-        int getItemNum() {
-            return itemNum;
-        }
-
-        void setItemNum(int inNum) {
-            itemNum = inNum;
         }
     }
 }
