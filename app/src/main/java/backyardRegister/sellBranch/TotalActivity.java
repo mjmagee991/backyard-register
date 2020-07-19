@@ -37,8 +37,10 @@ public class TotalActivity extends AppCompatActivity {
     private String formattedTotal;
     private Toast notEnoughPaidToast;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Render the Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_total);
 
@@ -55,18 +57,14 @@ public class TotalActivity extends AppCompatActivity {
         header.setText(DataStorage.listInUse.getName());
 
         // Back button setup
-        View.OnClickListener backListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                back();
-            }
-        };
+        View.OnClickListener backListener = v -> back();
         backButton.setOnClickListener(backListener);
 
         // RecyclerView setup
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         soldList.setLayoutManager(layoutManager);
         soldList.setHasFixedSize(true);
+
         adapter = new SoldListAdapter();
         soldList.setAdapter(adapter);
 
@@ -85,45 +83,45 @@ public class TotalActivity extends AppCompatActivity {
         amountPaidEditText.setFilters(new InputFilter[]{new CurrencyDecimalInputFilter()});
 
         // Exact Change Button setup
-        View.OnClickListener exactListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TransactionRecord.setTotal(grandTotal);
-                TransactionRecord.setAmountPaid(grandTotal);
-                startActivity(new Intent(TotalActivity.this, ChangeActivity.class));
-            }
+        View.OnClickListener exactListener = v -> {
+            // Stores the total and amount paid in the Transaction Record
+            TransactionRecord.setTotal(grandTotal);
+            TransactionRecord.setAmountPaid(grandTotal);
+            // Moves to the change Activity
+            startActivity(new Intent(TotalActivity.this, ChangeActivity.class));
         };
         exactChangeButton.setOnClickListener(exactListener);
 
         // Calculate Change Button setup
-        View.OnClickListener calcListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                double amountPaid;
-                String amountPaidText = amountPaidEditText.getText().toString();
-                if(amountPaidText.equals("")) {
-                    amountPaid = 0;
-                } else {
-                    amountPaid = Double.parseDouble(amountPaidText);
+        View.OnClickListener calcListener = v -> {
+            // Gets the amount paid from the EditText
+            double amountPaid;
+            String amountPaidText = amountPaidEditText.getText().toString();
+            if(amountPaidText.equals("")) {
+                amountPaid = 0;
+            } else {
+                amountPaid = Double.parseDouble(amountPaidText);
+            }
+
+            // If the amount paid is enough money
+            if(amountPaid >= grandTotal) {
+                // Stores the total and amount paid in the Transaction Record
+                TransactionRecord.setTotal(grandTotal);
+                TransactionRecord.setAmountPaid(amountPaid);
+                // Moves to the change Activity
+                startActivity(new Intent(TotalActivity.this, ChangeActivity.class));
+            } else {
+                // If the toast already exists
+                if(notEnoughPaidToast != null) {
+                    // Cancel it
+                    notEnoughPaidToast.cancel();
                 }
-                if(amountPaid >= grandTotal) {
 
-                    TransactionRecord.setTotal(grandTotal);
-                    TransactionRecord.setAmountPaid(amountPaid);
-                    startActivity(new Intent(TotalActivity.this, ChangeActivity.class));
-
-                } else {
-
-                    if(notEnoughPaidToast != null) {
-                        notEnoughPaidToast.cancel();
-                    }
-                    notEnoughPaidToast = Toast.makeText(ItemSelectionActivity.getContext(),
-                            "Not enough paid",
-                            Toast.LENGTH_LONG);
-
-                    notEnoughPaidToast.show();
-
-                }
+                // Generate a new toast
+                notEnoughPaidToast = Toast.makeText(ItemSelectionActivity.getContext(),
+                        "Not enough paid",
+                        Toast.LENGTH_LONG);
+                notEnoughPaidToast.show();
             }
         };
         calculateChangeButton.setOnClickListener(calcListener);

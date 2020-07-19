@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class TransactionRecord {
 
     public static ArrayList<Integer> purchaseList;
-    public static String purchaseString;
     public static double total;
     public static double amountPaid;
 
@@ -13,7 +12,7 @@ public class TransactionRecord {
         purchaseList = inPurchases;
     }
     public static String getPurchases() {
-        purchaseString = "";
+        String purchaseString = "";
         for(int sale : purchaseList) {
             purchaseString += sale + "|";
         }

@@ -27,6 +27,7 @@ public class ResetTransactionHistorySelectionActivity extends AppCompatActivity 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Render the Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_transaction_history_selection);
 

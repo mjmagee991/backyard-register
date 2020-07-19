@@ -16,8 +16,7 @@ import backyardRegister.recyclerViewAdapters.SaleListListAdapter;
 import backyardRegister.StartMenuActivity;
 
 
-public class SaleListSelectionActivity extends AppCompatActivity
-        implements SaleListListAdapter.ListClickListener {
+public class SaleListSelectionActivity extends AppCompatActivity {
 
     private RecyclerView saleListNamesList;
     private SaleListListAdapter adapter;
@@ -26,6 +25,7 @@ public class SaleListSelectionActivity extends AppCompatActivity
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Render the Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sale_list_selection);
 
@@ -33,12 +33,7 @@ public class SaleListSelectionActivity extends AppCompatActivity
         backButton = findViewById(R.id.b_back);
 
         // Back button setup
-        View.OnClickListener backListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                back();
-            }
-        };
+        View.OnClickListener backListener = v -> back();
         backButton.setOnClickListener(backListener);
 
         // RecyclerView setup
@@ -46,17 +41,13 @@ public class SaleListSelectionActivity extends AppCompatActivity
         saleListNamesList.setLayoutManager(layoutManager);
         saleListNamesList.setHasFixedSize(true);
 
+        // This part has to be in a try-catch block because it calls getApplicationContext()
         try {
-            adapter = new SaleListListAdapter(this, getApplicationContext());
-        } catch(Exception e) {
+            adapter = new SaleListListAdapter(getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         saleListNamesList.setAdapter(adapter);
-    }
-
-    @Override
-    public void onListClick(int clickedListIndex) {
-        DataStorage.setListInUse(clickedListIndex);
-        startActivity(new Intent(SaleListSelectionActivity.this, ItemSelectionActivity.class));
     }
 
 

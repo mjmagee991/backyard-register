@@ -12,8 +12,7 @@ import backyardRegister.supportClasses.DataStorage;
 import backyardRegister.fallfestregister.R;
 import backyardRegister.recyclerViewAdapters.SaleListListAdapter;
 
-public class ViewTransactionHistorySelectionActivity extends AppCompatActivity
-        implements SaleListListAdapter.ListClickListener {
+public class ViewTransactionHistorySelectionActivity extends AppCompatActivity {
 
     private RecyclerView saleRecordNamesList;
     private SaleListListAdapter adapter;
@@ -21,6 +20,7 @@ public class ViewTransactionHistorySelectionActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Render the Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_transaction_history_selection);
 
@@ -41,14 +41,8 @@ public class ViewTransactionHistorySelectionActivity extends AppCompatActivity
         saleRecordNamesList.setLayoutManager(layoutManager);
         saleRecordNamesList.setHasFixedSize(true);
 
-        adapter = new SaleListListAdapter(this, getApplicationContext());
+        adapter = new SaleListListAdapter(getApplicationContext());
         saleRecordNamesList.setAdapter(adapter);
-    }
-
-    @Override
-    public void onListClick(int clickedListIndex) {
-        DataStorage.setListInUse(clickedListIndex);
-        startActivity(new Intent(ViewTransactionHistorySelectionActivity.this, ViewTransactionHistoryActivity.class));
     }
 
 

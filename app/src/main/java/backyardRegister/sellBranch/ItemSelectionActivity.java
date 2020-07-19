@@ -34,6 +34,7 @@ public class ItemSelectionActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Render the Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_selection);
 
@@ -48,12 +49,7 @@ public class ItemSelectionActivity extends AppCompatActivity {
         header.setText(DataStorage.listInUse.getName());
 
         // Back button setup
-        View.OnClickListener backListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                back();
-            }
-        };
+        View.OnClickListener backListener = v -> back();
         backButton.setOnClickListener(backListener);
 
         // RecyclerView setup
@@ -63,38 +59,35 @@ public class ItemSelectionActivity extends AppCompatActivity {
 
         adapter = new ItemListAdapter();
         saleList.setAdapter(adapter);
+        // Removes animations from the RecyclerView
         ((SimpleItemAnimator) saleList.getItemAnimator()).setSupportsChangeAnimations(false);
 
-
         // Reset button setup
-        View.OnClickListener resetListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                adapter.resetCounts();
-            }
-        };
+        View.OnClickListener resetListener = v -> adapter.resetCounts();
         resetButton.setOnClickListener(resetListener);
 
         // Done button setup
-        View.OnClickListener doneListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<SaleItem> listInUse = DataStorage.listInUse.getList();
-                ArrayList<Integer> purchases = new ArrayList<>();
-                for(int i = 0; i < listInUse.size(); i++) {
-                    purchases.add(listInUse.get(i).getCount());
-                }
-                TransactionRecord.setPurchases(purchases);
-                startActivity(new Intent(ItemSelectionActivity.this, TotalActivity.class));
+        View.OnClickListener doneListener = v -> {
+            // Encode the input purchases as an ArrayList of integers
+            ArrayList<SaleItem> listInUse = DataStorage.listInUse.getList();
+            ArrayList<Integer> purchases = new ArrayList<>();
+            for(int i = 0; i < listInUse.size(); i++) {
+                purchases.add(listInUse.get(i).getCount());
             }
+            // Store the purchases ArrayList in the Transaction Record
+            TransactionRecord.setPurchases(purchases);
+            // Moves to the total Activity
+            startActivity(new Intent(ItemSelectionActivity.this, TotalActivity.class));
         };
         doneButton.setOnClickListener(doneListener);
+
 
         // Reset the counts of the items upon opening
         adapter.resetCounts();
     }
 
 
+    // Returns the context
     public static Context getContext() {
         return context;
     }

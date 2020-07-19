@@ -18,6 +18,7 @@ public class TransactionHistoryActionActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Render the Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_history_action);
 

@@ -43,7 +43,6 @@ import backyardRegister.supportClasses.TransactionRecord;
 public class ChangeActivity extends AppCompatActivity
         implements ActivityCompat.OnRequestPermissionsResultCallback {
 
-    private Context context;
     private int STORAGE_PERMISSION_CODE = 1;
     private TextView header;
     private Button backButton;
@@ -56,17 +55,15 @@ public class ChangeActivity extends AppCompatActivity
     private EditText additionalDonationEditText;
     private Button startMenuButton;
     private Button newOrderButton;
-    private static final String SAVE_FILE_NAME = "record.txt";
     private DateFormat dateFormat = new SimpleDateFormat("MM-dd-yy|hh:mm:ss");
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Render the Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change);
 
-        context = getApplicationContext();
         header = findViewById(R.id.tv_header);
         backButton = findViewById(R.id.b_back);
         changeCalculation = findViewById(R.id.tv_change_calculation);
@@ -80,12 +77,7 @@ public class ChangeActivity extends AppCompatActivity
         header.setText(DataStorage.listInUse.getName());
 
         // Back button setup
-        View.OnClickListener backListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                back();
-            }
-        };
+        View.OnClickListener backListener = v -> back();
         backButton.setOnClickListener(backListener);
 
         // Change Calculation Setup
@@ -96,59 +88,33 @@ public class ChangeActivity extends AppCompatActivity
         changeCalculation.setText(changeCalculationText);
 
         // Keep the Change ToggleButton setup
-        CompoundButton.OnCheckedChangeListener keepTheChangeListener = new CompoundButton.OnCheckedChangeListener(){
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                keepTheChangeBoolean = isChecked;
-            }
-        };
+        CompoundButton.OnCheckedChangeListener keepTheChangeListener = (buttonView, isChecked) -> keepTheChangeBoolean = isChecked;
         keepTheChangeToggleButton.setOnCheckedChangeListener(keepTheChangeListener);
 
         // Additional Donation EditText setup
         additionalDonationEditText.setFilters(new InputFilter[]{new CurrencyDecimalInputFilter()}); // Allows only 2 decimal places
 
         // Start Menu button setup
-
-        View.OnClickListener startMenuListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // If permission has been granted
-                if(checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    // Run the save and move on
-                    save();
-                    startActivity(new Intent(ChangeActivity.this, StartMenuActivity.class));
-                } else {
-                    // Ask for permission
-                    requestStoragePermission();
-                }
-            }
+        View.OnClickListener startMenuListener = v -> {
+            // Save the transaction
+            save();
+            // Move to the start menu
+            startActivity(new Intent(ChangeActivity.this, StartMenuActivity.class));
         };
         startMenuButton.setOnClickListener(startMenuListener);
 
-
-
         // New Order button setup
-
-        View.OnClickListener newOrderListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // If permission has been granted
-                if(ContextCompat.checkSelfPermission(ChangeActivity.this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    // Run the save and move on
-                    save();
-                    startActivity(new Intent(ChangeActivity.this, ItemSelectionActivity.class));
-                } else {
-                    // Ask for permission
-                    requestStoragePermission();
-                }
-            }
+        View.OnClickListener newOrderListener = v -> {
+            // Save the transaction
+            save();
+            // Move to the item selection Activity
+            startActivity(new Intent(ChangeActivity.this, ItemSelectionActivity.class));
         };
         newOrderButton.setOnClickListener(newOrderListener);
-
     }
 
-    // Save sales setup
+
+    // Writes the transaction to the transaction history
     private void save() {
         String TAG = "Save";
 
@@ -161,9 +127,8 @@ public class ChangeActivity extends AppCompatActivity
             totalDonation = Double.parseDouble(additionalDonationString);
         }
 
-
+        // Format all strings needed for the final string that will be written to the file
         String date = dateFormat.format(Calendar.getInstance().getTime());
-        //String listName = DataStorage.listInUse.getName();
         String purchases = TransactionRecord.getPurchases();
         String total = currencyFormat.format(TransactionRecord.getTotal());
         if(keepTheChangeBoolean) {
@@ -174,7 +139,7 @@ public class ChangeActivity extends AppCompatActivity
         }
         String totalDonationString = currencyFormat.format(totalDonation);
 
-
+        // Combines all the individual strings into one larger string to be written to the file
         Log.d(TAG, dateFormat.format(Calendar.getInstance().getTime()));
         Log.d(TAG, DataStorage.listInUse.getName());
         Log.d(TAG, TransactionRecord.getPurchases());
@@ -184,10 +149,8 @@ public class ChangeActivity extends AppCompatActivity
         Log.d(TAG, "");
         String finalSaveString = date + "|" /*+ listName + "|"*/ + purchases + total + "|" + keepTheChangeString + "|" + totalDonationString + "\n";
 
-
-        if(isExternalStorageWritable() && checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-
+        // Checks
+        if(isExternalStorageWritable()) {
             // Save all the old data into a string
             StringBuilder sb = new StringBuilder();
             try {
@@ -227,52 +190,10 @@ public class ChangeActivity extends AppCompatActivity
         }
     }
 
+
+    // I'm not sure what this does, but I don't think it should be deleted
     private boolean isExternalStorageWritable() {
         return (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()));
-    }
-
-    public boolean checkPermission(String permission) {
-        int check = ContextCompat.checkSelfPermission(this, permission);
-        return (check == PackageManager.PERMISSION_GRANTED);
-    }
-
-
-    private void requestStoragePermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-            new AlertDialog.Builder(this)
-                    .setTitle("Permission needed")
-                    .setMessage("This permission is needed to save the data onto this phone.")
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions(ChangeActivity.this,
-                                    new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
-                        }
-                    })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .create().show();
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == STORAGE_PERMISSION_CODE)  {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Permission GRANTED", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
 

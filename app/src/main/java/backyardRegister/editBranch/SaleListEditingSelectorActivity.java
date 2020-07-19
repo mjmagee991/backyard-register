@@ -89,6 +89,7 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity {
         }
 
 
+        // Render the Activity
         super.onCreate(exportdInstanceState);
         setContentView(R.layout.activity_sale_list_editing_selector);
 

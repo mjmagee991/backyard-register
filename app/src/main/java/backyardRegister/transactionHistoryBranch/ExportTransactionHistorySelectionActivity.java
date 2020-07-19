@@ -32,6 +32,7 @@ public class ExportTransactionHistorySelectionActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Render the Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_export_transaction_history_selection);
 
