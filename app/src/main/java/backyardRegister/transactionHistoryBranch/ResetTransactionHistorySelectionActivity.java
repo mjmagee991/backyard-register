@@ -75,7 +75,7 @@ public class ResetTransactionHistorySelectionActivity extends AppCompatActivity 
         ArrayList<SaleList> saleLists = DataStorage.getSaleLists();
         for(int i = 0; i < resetSelections.size(); i++) {
             if(resetSelections.get(i)) {
-                saleLists.get(i).resetRecord();
+                saleLists.get(i).resetTransactionHistory();
                 numReset++;
             }
         }

@@ -191,7 +191,7 @@ public class ChangeActivity extends AppCompatActivity
             // Save all the old data into a string
             StringBuilder sb = new StringBuilder();
             try {
-                FileInputStream fis = new FileInputStream(DataStorage.listInUse.getRecord());
+                FileInputStream fis = new FileInputStream(DataStorage.listInUse.getTransactionHistoryFile());
                 DataInputStream in = new DataInputStream(fis);
                 BufferedReader br = new BufferedReader(new InputStreamReader(in));
                 String line;
@@ -208,10 +208,10 @@ public class ChangeActivity extends AppCompatActivity
 
             try {
                 // Overwrite the new data over the text file
-                fos = new FileOutputStream(DataStorage.listInUse.getRecord(), false);
+                fos = new FileOutputStream(DataStorage.listInUse.getTransactionHistoryFile(), false);
                 fos.write(finalSaveString.getBytes());
                 // Write the old data below the new data in the text file
-                fos = new FileOutputStream(DataStorage.listInUse.getRecord(), true);
+                fos = new FileOutputStream(DataStorage.listInUse.getTransactionHistoryFile(), true);
                 fos.write(sb.toString().getBytes());
             } catch (IOException e) {
                 e.printStackTrace();

@@ -8,7 +8,6 @@ import android.os.Environment;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import backyardRegister.editBranch.SaleListEditingSelectorActivity;
 import backyardRegister.editBranch.SaleListEditorActivity;
 import backyardRegister.fallfestregister.BuildConfig;
 import backyardRegister.supportClasses.DataStorage;
@@ -49,7 +47,7 @@ public class SaleListListAdapter
     @Override
     public SaleListNameViewHolder  onCreateViewHolder(ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();
-        int layoutIdForListItem = R.layout.rv_item_sale_list;
+        int layoutIdForListItem = R.layout.rv_item_simple_text;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
 
@@ -146,8 +144,8 @@ public class SaleListListAdapter
 
             super(itemView);
 
-            saleListName = itemView.findViewById(R.id.tv_sale_list_name);
-            rowLayout = itemView.findViewById(R.id.ll_rv_item_sale_list);
+            saleListName = itemView.findViewById(R.id.tv_simple);
+            rowLayout = itemView.findViewById(R.id.ll_rv_item_row);
 
             itemView.setOnClickListener(this);
         }

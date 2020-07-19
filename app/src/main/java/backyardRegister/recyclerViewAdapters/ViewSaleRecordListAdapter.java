@@ -19,10 +19,10 @@ import backyardRegister.fallfestregister.R;
 public class ViewSaleRecordListAdapter extends RecyclerView.Adapter<ViewSaleRecordListAdapter.SaleRecordViewHolder> {
 
     // TODO: Make the naming of the "saleRecord" more consistent with the rest of the app
-    private ArrayList<String> saleRecord = DataStorage.getSaleRecord();
-    private int numItems = saleRecord.size(); // Number of items in the RecyclerView
+    private ArrayList<String> transactionHistoryArrList = DataStorage.getTransactionHistoryArrList();
+    private int numItems = transactionHistoryArrList.size(); // Number of items in the RecyclerView
     private boolean voidMode = false;
-    private boolean[] voidSelections = new boolean[saleRecord.size()]; /* Stores booleans that correspond
+    private boolean[] voidSelections = new boolean[transactionHistoryArrList.size()]; /* Stores booleans that correspond
             with each transaction to keep track of whether or not it should be deleted*/
 
 
@@ -30,7 +30,7 @@ public class ViewSaleRecordListAdapter extends RecyclerView.Adapter<ViewSaleReco
     @Override
     public ViewSaleRecordListAdapter.SaleRecordViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();
-        int layoutIdForListItem = R.layout.rv_item_sale_record;
+        int layoutIdForListItem = R.layout.rv_item_simple_text;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
 
@@ -61,7 +61,7 @@ public class ViewSaleRecordListAdapter extends RecyclerView.Adapter<ViewSaleReco
 
             // Overwrite the text file with an empty string
             try {
-                fos = new FileOutputStream(DataStorage.listInUse.getRecord(), false);
+                fos = new FileOutputStream(DataStorage.listInUse.getTransactionHistoryFile(), false);
                 fos.write("".getBytes());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -81,8 +81,8 @@ public class ViewSaleRecordListAdapter extends RecyclerView.Adapter<ViewSaleReco
                 if(!voidSelections[i]) {
                     // Writes it onto the end of the text file
                     try {
-                        fos = new FileOutputStream(DataStorage.listInUse.getRecord(), true);
-                        fos.write((saleRecord.get(i) + "\n").getBytes());
+                        fos = new FileOutputStream(DataStorage.listInUse.getTransactionHistoryFile(), true);
+                        fos.write((transactionHistoryArrList.get(i) + "\n").getBytes());
                     } catch (IOException e) {
                         e.printStackTrace();
                     } finally {
@@ -115,15 +115,15 @@ public class ViewSaleRecordListAdapter extends RecyclerView.Adapter<ViewSaleReco
 
             super(itemView);
 
-            saleInfoTextView = itemView.findViewById(R.id.tv_sale_info);
-            rowLayout = itemView.findViewById(R.id.ll_rv_item);
+            saleInfoTextView = itemView.findViewById(R.id.tv_simple);
+            rowLayout = itemView.findViewById(R.id.ll_rv_item_row);
 
             itemView.setOnClickListener(this);
         }
 
         void load(int pos) {
             // Fills the sale information TextView
-            saleInfoTextView.setText(saleRecord.get(pos));
+            saleInfoTextView.setText(transactionHistoryArrList.get(pos));
             // Fills the selection list
             voidSelections[pos] = false;
         }

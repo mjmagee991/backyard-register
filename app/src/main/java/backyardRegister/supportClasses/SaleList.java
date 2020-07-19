@@ -12,24 +12,24 @@ public class SaleList {
 
     private String name;
     private ArrayList<SaleItem> list;
-    private File record;
+    private File transactionHistoryFile;
 
     public SaleList(SaleList other) {
-        name = new String(other.name);
+        name = other.name;
         list = new ArrayList<>(other.list);
         // Not sure if this matters
-        record = other.record;
+        transactionHistoryFile = other.transactionHistoryFile;
     }
 
     public SaleList(String inName, ArrayList<SaleItem> inList) {
         name = inName;
         list = inList;
-        record = new File(Environment.getExternalStorageDirectory(), "BReg" + /*File doesn't like slashes in the file location*/ name.replaceAll("/","") + "record.txt");
+        transactionHistoryFile = new File(Environment.getExternalStorageDirectory(), "BReg" + /*File doesn't like slashes in the file location*/ name.replaceAll("/","") + "TransactionHistory.txt");
     }
 
     public void setName(String n) {
         name = n;
-        record = new File(Environment.getExternalStorageDirectory(), "BReg" + /*File doesn't like slashes in the file location*/ name.replaceAll("/","") + "record.txt");
+        transactionHistoryFile = new File(Environment.getExternalStorageDirectory(), "BReg" + /*File doesn't like slashes in the file location*/ name.replaceAll("/","") + "TransactionHistory.txt");
     }
     public String getName() {
         return name;
@@ -39,15 +39,15 @@ public class SaleList {
         return list;
     }
 
-    public File getRecord() {
-        return record;
+    public File getTransactionHistoryFile() {
+        return transactionHistoryFile;
     }
 
-    public void resetRecord() {
+    public void resetTransactionHistory() {
         FileOutputStream fos = null;
 
         try {
-            fos = new FileOutputStream(record, false);
+            fos = new FileOutputStream(transactionHistoryFile, false);
             fos.write("".getBytes());
         } catch (IOException e) {
             e.printStackTrace();

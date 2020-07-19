@@ -8,7 +8,6 @@ import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -117,12 +116,12 @@ public class ExportTransactionHistorySelectionActivity extends AppCompatActivity
         if(onlySelected) {
             for (int i = 0; i < selectedList.size(); i++) {
                 if (selectedList.get(i)) {
-                    exportList.add(saleLists.get(i).getRecord());
+                    exportList.add(saleLists.get(i).getTransactionHistoryFile());
                 }
             }
         } else {
             for(SaleList saleList : saleLists) {
-                exportList.add(saleList.getRecord());
+                exportList.add(saleList.getTransactionHistoryFile());
             }
         }
         return exportList;

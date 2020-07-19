@@ -2,14 +2,13 @@ package backyardRegister.editBranch;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,7 +55,7 @@ public class SaleListEditorActivity extends AppCompatActivity {
                 .setPositiveButton("Delete", (dialog, which) -> {
                     SaleList saleList = DataStorage.listInUse;
                     // Delete transaction history
-                    saleList.getRecord().delete();
+                    saleList.getTransactionHistoryFile().delete();
                     // Delete the actual SaleList
                     DataStorage.getSaleLists().remove(saleList);
 
@@ -105,7 +104,7 @@ public class SaleListEditorActivity extends AppCompatActivity {
                 }
 
                 // Delete old history
-                saleList.resetRecord();
+                saleList.resetTransactionHistory();
 
                 // Set new name
                 saleList.setName(newName);

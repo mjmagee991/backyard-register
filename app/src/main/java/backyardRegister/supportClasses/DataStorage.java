@@ -2,7 +2,6 @@ package backyardRegister.supportClasses;
 
 
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -26,7 +25,6 @@ public class DataStorage {
 
     private static ArrayList<String> saleListNames;
 
-    private static String TAG = "Ok";
 
 
     public static void setListInUse(int pos) {
@@ -45,26 +43,26 @@ public class DataStorage {
         return saleListNames;
     }
 
-    public static ArrayList<String> getSaleRecord() {
+    public static ArrayList<String> getTransactionHistoryArrList() {
 
-        ArrayList<String> saleRecord = new ArrayList<>();
+        ArrayList<String> transactionHistoryArrList = new ArrayList<>();
 
         try {
-            FileInputStream fis = new FileInputStream(listInUse.getRecord());
+            FileInputStream fis = new FileInputStream(listInUse.getTransactionHistoryFile());
             DataInputStream in = new DataInputStream(fis);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line;
 
             while((line = br.readLine()) != null) {
                 // Adds line to
-                saleRecord.add(line);
+                transactionHistoryArrList.add(line);
             }
             in.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return saleRecord;
+        return transactionHistoryArrList;
     }
 
     public static void loadSaleLists(SharedPreferences sharedPreferences) {
@@ -77,42 +75,32 @@ public class DataStorage {
 
 
         if(saleLists == null) {
-            saleLists = new ArrayList<>();
-            saleLists = new ArrayList<>(Arrays.asList(new SaleList[]{
+            saleLists = new ArrayList<>(Arrays.asList(
                     new SaleList("Ethnic Food", new ArrayList<>(Arrays.asList(
-                            new SaleItem[]{
-                                    new SaleItem("Hamburger", 6),
-                                    new SaleItem("Cheeseburger", 7),
-                                    new SaleItem("Bean Burger", 10),
-                                    new SaleItem("Cheese Stick", 2),
-                                    new SaleItem("Chicken Breast", 8),
-                                    new SaleItem("Broccoli", 4),
-                                    new SaleItem("Chicken Tenders", 6),
-                                    new SaleItem("Steak Sandwich", 9.55),
-                                    new SaleItem("Cheesesteak", 10.55),
-                                    new SaleItem("Pork Chops", 9),
-                                    new SaleItem("Kielbasa", 7),
-                                    new SaleItem("Potato Pancakes", 5)
-                            }))),
+                            new SaleItem("Hamburger", 6),
+                            new SaleItem("Cheeseburger", 7),
+                            new SaleItem("Bean Burger", 10),
+                            new SaleItem("Cheese Stick", 2),
+                            new SaleItem("Chicken Breast", 8),
+                            new SaleItem("Broccoli", 4),
+                            new SaleItem("Chicken Tenders", 6),
+                            new SaleItem("Steak Sandwich", 9.55),
+                            new SaleItem("Cheesesteak", 10.55),
+                            new SaleItem("Pork Chops", 9),
+                            new SaleItem("Kielbasa", 7),
+                            new SaleItem("Potato Pancakes", 5)))),
                     new SaleList("Burgers / Hot Dogs", new ArrayList<>(Arrays.asList(
-                            new SaleItem[]{
-                                    new SaleItem("Hamburger", 3),
-                                    new SaleItem("Cheeseburger", 3.5),
-                                    new SaleItem("Hot Dog", 2),
-                                    new SaleItem("Cheese Dog", 2.5),
-                                    new SaleItem("Pulled Pork Sandwich", 4.5)
-                            }))),
+                            new SaleItem("Hamburger", 3),
+                            new SaleItem("Cheeseburger", 3.5),
+                            new SaleItem("Hot Dog", 2),
+                            new SaleItem("Cheese Dog", 2.5),
+                            new SaleItem("Pulled Pork Sandwich", 4.5)))),
                     new SaleList("Drink Stand", new ArrayList<>(Arrays.asList(
-                            new SaleItem[]{
-                                    new SaleItem("Tea", 5),
-                                    new SaleItem("Coffee", 6)
-                            }))),
+                            new SaleItem("Tea", 5),
+                            new SaleItem("Coffee", 6)))),
                     new SaleList("Taco Stand", new ArrayList<>(Arrays.asList(
-                            new SaleItem[]{
-                                    new SaleItem("Taco", 3),
-                                    new SaleItem("Walking Taco", 4)
-                            })))
-            }));
+                            new SaleItem("Taco", 3),
+                            new SaleItem("Walking Taco", 4))))));
         }
     }
 
