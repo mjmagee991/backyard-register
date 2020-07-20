@@ -27,7 +27,6 @@ public class ItemSelectionActivity extends AppCompatActivity {
     private TextView header;
     private Button backButton;
     private RecyclerView saleList;
-    private static Context context;
     private Button resetButton;
     private Button doneButton;
 
@@ -38,7 +37,6 @@ public class ItemSelectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_selection);
 
-        context = getApplicationContext();
         header = findViewById(R.id.tv_header);
         backButton = findViewById(R.id.b_back);
         saleList = findViewById(R.id.rv_sale_list);
@@ -57,7 +55,7 @@ public class ItemSelectionActivity extends AppCompatActivity {
         saleList.setLayoutManager(layoutManager);
         saleList.setHasFixedSize(true);
 
-        adapter = new ItemListAdapter();
+        adapter = new ItemListAdapter(getApplicationContext());
         saleList.setAdapter(adapter);
         // Removes animations from the RecyclerView
         ((SimpleItemAnimator) saleList.getItemAnimator()).setSupportsChangeAnimations(false);
@@ -84,12 +82,6 @@ public class ItemSelectionActivity extends AppCompatActivity {
 
         // Reset the counts of the items upon opening
         adapter.resetCounts();
-    }
-
-
-    // Returns the context
-    public static Context getContext() {
-        return context;
     }
 
 

@@ -15,28 +15,29 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+// Stores information needed across many different Activities of the app, so it can be easily accessed
 public class DataStorage {
 
-
-    public static SaleList listInUse;
-
+    public static SaleList listInUse; // References the SaleList currently being used
     private static ArrayList<SaleList> saleLists;
     private static String SALE_LIST_SAVE_STRING = "Sale Lists";
 
-    private static ArrayList<String> saleListNames;
 
-
-
+    // Sets the list in use
     public static void setListInUse(int pos) {
         listInUse = saleLists.get(pos);
     }
 
+    // Returns the list containing all the SaleLists of the app
     public static ArrayList<SaleList> getSaleLists() {
         return saleLists;
     }
 
+    // Returns a list containing the names of all the SaleLists
     public static ArrayList<String> getSaleListNames() {
-        saleListNames = new ArrayList<>();
+        // Makes a new list to hold the names
+        ArrayList<String> saleListNames = new ArrayList<>();
+        // Iterates through the SaleLists and adds their names to the list
         for(SaleList saleList : saleLists) {
             saleListNames.add(saleList.getName());
         }
@@ -44,17 +45,19 @@ public class DataStorage {
     }
 
     public static ArrayList<String> getTransactionHistoryArrList() {
-
+        // Makes a new list to hold the transactions
         ArrayList<String> transactionHistoryArrList = new ArrayList<>();
 
+        // Copies the transactions from the save file to the list
         try {
             FileInputStream fis = new FileInputStream(listInUse.getTransactionHistoryFile());
             DataInputStream in = new DataInputStream(fis);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line;
 
+            // Gets the next transaction and checks that it isn't null
             while((line = br.readLine()) != null) {
-                // Adds line to
+                // Adds the next transaction to the list
                 transactionHistoryArrList.add(line);
             }
             in.close();
@@ -65,15 +68,15 @@ public class DataStorage {
         return transactionHistoryArrList;
     }
 
-    public static void loadSaleLists(SharedPreferences sharedPreferences) {
 
+    public static void loadSaleLists(SharedPreferences sharedPreferences) {
+        // Gets the list of SaleLists from the JSON string saved in SharedPreferences
         Gson gson = new Gson();
         String json = sharedPreferences.getString(SALE_LIST_SAVE_STRING, null);
         Type type = new TypeToken<ArrayList<SaleList>>() {}.getType();
         saleLists = gson.fromJson(json, type);
 
-
-
+        // If there was nothing saved in SharedPreferences, use this pre-defined list of SaleLists
         if(saleLists == null) {
             saleLists = new ArrayList<>(Arrays.asList(
                     new SaleList("Ethnic Food", new ArrayList<>(Arrays.asList(
@@ -104,18 +107,26 @@ public class DataStorage {
         }
     }
 
-    public static void addSaleList(SaleList saleList, SharedPreferences sharedPreferences) {
-        saleLists.add(saleList);
-        saveSaleListList(sharedPreferences);
-    }
-
     public static void saveSaleListList(SharedPreferences sharedPreferences) {
+        // Set up the SharedPreferences editor
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
+
         try {
+            // Convert the current list of SaleLists to JSON
             String json = gson.toJson(saleLists);
+            // Write the JSON string into SharedPreferences
             editor.putString(SALE_LIST_SAVE_STRING, json);
             editor.apply();
-        } catch (Exception ignored) {}
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addSaleList(SaleList saleList, SharedPreferences sharedPreferences) {
+        // Add the SaleList to the list of SaleLists
+        saleLists.add(saleList);
+        // Save the new list of SaleLists
+        saveSaleListList(sharedPreferences);
     }
 }

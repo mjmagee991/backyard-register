@@ -21,8 +21,13 @@ public class ItemListAdapter
     private DecimalFormat onesCurrencyFormat = new DecimalFormat("$ #0.00");
     private DecimalFormat tensCurrencyFormat = new DecimalFormat("$#0.00");
 
+    private Context context;
     private int numItems = DataStorage.listInUse.getList().size(); // Number of items in the RecyclerView
 
+    // Constructor
+    public ItemListAdapter(Context inContext) {
+        context = inContext;
+    }
 
     // Puts the layout into each ViewHolder when it is created
     @Override
@@ -41,12 +46,12 @@ public class ItemListAdapter
     public void onBindViewHolder(ItemListAdapter.SaleViewHolder holder, int pos) {
         // Listener for the Plus Button
         View.OnClickListener plusListener = plus -> {
-            DataStorage.listInUse.getList().get(pos).addOne();
+            DataStorage.listInUse.getList().get(pos).addOne(context);
             notifyItemChanged(pos);
         };
         // Listener for the Minus Button
         View.OnClickListener minusListener = minus -> {
-            DataStorage.listInUse.getList().get(pos).subtractOne();
+            DataStorage.listInUse.getList().get(pos).subtractOne(context);
             notifyItemChanged(pos);
         };
         // Loads information into the ViewHolder

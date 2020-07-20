@@ -2,15 +2,14 @@ package backyardRegister.supportClasses;
 
 import java.util.ArrayList;
 
+// Holds information from the sale branch that needs to be carried from one Activity to the next
 public class TransactionRecord {
 
     public static ArrayList<Integer> purchaseList;
     public static double total;
     public static double amountPaid;
 
-    public static void setPurchases(ArrayList<Integer> inPurchases) {
-        purchaseList = inPurchases;
-    }
+    // Encodes the purchase list in a string of numbers that can be written into the transaction history
     public static String getPurchases() {
         String purchaseString = "";
         for(int sale : purchaseList) {
@@ -18,7 +17,12 @@ public class TransactionRecord {
         }
         return purchaseString;
     }
+    // Sets the purchase list
+    public static void setPurchases(ArrayList<Integer> inPurchases) {
+        purchaseList = inPurchases;
+    }
 
+    // Simple getters and setters
     public static void setTotal(double inTotal) {
         total = inTotal;
     }
