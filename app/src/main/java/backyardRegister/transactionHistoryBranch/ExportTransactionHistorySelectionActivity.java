@@ -24,11 +24,7 @@ public class ExportTransactionHistorySelectionActivity extends AppCompatActivity
 
     //TODO: Add line to top of exported TH with the labels for the columns
 
-    private Button backButton;
-    private RecyclerView saleRecords;
     private TransactionHistorySelectionAdapter adapter;
-    private Button exportSelectedButton;
-    private Button exportAllButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,18 +32,13 @@ public class ExportTransactionHistorySelectionActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_export_transaction_history_selection);
 
-        backButton = findViewById(R.id.b_back);
-        saleRecords = findViewById(R.id.rv_sale_record_names);
-        exportSelectedButton = findViewById(R.id.b_export_records);
-        exportAllButton = findViewById(R.id.b_export_all);
+        Button backButton = findViewById(R.id.b_back);
+        RecyclerView saleRecords = findViewById(R.id.rv_sale_record_names);
+        Button exportSelectedButton = findViewById(R.id.b_export_records);
+        Button exportAllButton = findViewById(R.id.b_export_all);
 
         // Back Button setup
-        View.OnClickListener backListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                back();
-            }
-        };
+        View.OnClickListener backListener = v -> back();
         backButton.setOnClickListener(backListener);
 
         // Export RecyclerView setup
@@ -59,24 +50,16 @@ public class ExportTransactionHistorySelectionActivity extends AppCompatActivity
         saleRecords.setAdapter(adapter);
 
         // Export Selected Button setup
-        View.OnClickListener exportSListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<File> exportList = getExportList(true);
-                if(exportList.size() > 0) {
-                    sendFiles(exportList);
-                }
+        View.OnClickListener exportSListener = v -> {
+            ArrayList<File> exportList = getExportList(true);
+            if(exportList.size() > 0) {
+                sendFiles(exportList);
             }
         };
         exportSelectedButton.setOnClickListener(exportSListener);
 
         // Export All Button setup
-        View.OnClickListener exportAListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendFiles(getExportList(false));
-            }
-        };
+        View.OnClickListener exportAListener = v -> sendFiles(getExportList(false));
         exportAllButton.setOnClickListener(exportAListener);
     }
 

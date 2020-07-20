@@ -21,9 +21,6 @@ import backyardRegister.transactionHistoryBranch.TransactionHistoryActionActivit
 
 public class StartMenuActivity extends AppCompatActivity {
 
-    private Button sellButton;
-    private Button createEditListsButton;
-    private Button transactionHistoryButton;
     int STORAGE_PERMISSION_CODE = 1; // Doesn't really do anything
 
     @Override
@@ -32,42 +29,33 @@ public class StartMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_menu);
 
-        sellButton = findViewById(R.id.b_sell);
-        createEditListsButton = findViewById(R.id.b_create_edit_lists);
-        transactionHistoryButton = findViewById(R.id.b_transaction_history);
+        Button sellButton = findViewById(R.id.b_sell);
+        Button createEditListsButton = findViewById(R.id.b_create_edit_lists);
+        Button transactionHistoryButton = findViewById(R.id.b_transaction_history);
 
         // Sell button setup
-        View.OnClickListener sellListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Checks permissions and goes to the start of the Sell Branch
-                if (getAllPermissions()) {
-                    startActivity(new Intent(StartMenuActivity.this, SaleListSelectionActivity.class));
-                }
+        View.OnClickListener sellListener = v -> {
+            // Checks permissions and goes to the start of the Sell Branch
+            if (getAllPermissions()) {
+                startActivity(new Intent(StartMenuActivity.this, SaleListSelectionActivity.class));
             }
         };
         sellButton.setOnClickListener(sellListener);
 
         // Create / Edit button setup
-        View.OnClickListener createEditListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Checks permissions and goes to the start of the Edit Branch
-                if(getAllPermissions()) {
-                    startActivity(new Intent(StartMenuActivity.this, SaleListEditingSelectorActivity.class));
-                }
+        View.OnClickListener createEditListener = v -> {
+            // Checks permissions and goes to the start of the Edit Branch
+            if(getAllPermissions()) {
+                startActivity(new Intent(StartMenuActivity.this, SaleListEditingSelectorActivity.class));
             }
         };
         createEditListsButton.setOnClickListener(createEditListener);
 
         // Transaction History button setup
-        View.OnClickListener transactionHistoryListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Checks permissions and goes to the start of the Transaction History Branch
-                if(getAllPermissions()) {
-                    startActivity(new Intent(StartMenuActivity.this, TransactionHistoryActionActivity.class));
-                }
+        View.OnClickListener transactionHistoryListener = v -> {
+            // Checks permissions and goes to the start of the Transaction History Branch
+            if(getAllPermissions()) {
+                startActivity(new Intent(StartMenuActivity.this, TransactionHistoryActionActivity.class));
             }
         };
         transactionHistoryButton.setOnClickListener(transactionHistoryListener);

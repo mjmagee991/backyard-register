@@ -14,7 +14,7 @@ public class CurrencyDecimalInputFilter implements InputFilter {
 
     public CurrencyDecimalInputFilter()
     {
-        pattern = Pattern.compile("(([1-9]{1}[0-9]{0," + 2 + "})?||[0]{1})((\\.[0-9]{0," + 2 + "})?)||(\\.)?");
+        pattern = Pattern.compile("(([1-9][0-9]{0," + 2 + "})?|[0])((\\.[0-9]{0," + 2 + "})?)|(\\.)?");
     }
 
     @Override public CharSequence filter(CharSequence source, int sourceStart, int sourceEnd, Spanned destination, int destinationStart, int destinationEnd)

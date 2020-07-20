@@ -3,7 +3,6 @@ package backyardRegister.supportClasses;
 import android.content.Context;
 import android.widget.Toast;
 
-import backyardRegister.sellBranch.ItemSelectionActivity;
 
 // Holds all the details and methods associated with a single item
 public class SaleItem {

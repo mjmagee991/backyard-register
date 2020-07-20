@@ -1,18 +1,9 @@
 package backyardRegister.sellBranch;
 
-import android.Manifest;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Environment;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
@@ -20,8 +11,10 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -29,32 +22,25 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.DecimalFormat;
-import java.util.Calendar;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
+import backyardRegister.StartMenuActivity;
+import backyardRegister.fallfestregister.R;
 import backyardRegister.supportClasses.CurrencyDecimalInputFilter;
 import backyardRegister.supportClasses.DataStorage;
-import backyardRegister.fallfestregister.R;
-import backyardRegister.StartMenuActivity;
 import backyardRegister.supportClasses.TransactionRecord;
 
 public class ChangeActivity extends AppCompatActivity
         implements ActivityCompat.OnRequestPermissionsResultCallback {
 
-    private int STORAGE_PERMISSION_CODE = 1;
-    private TextView header;
-    private Button backButton;
-    private TextView changeCalculation;
     private double change;
     private DecimalFormat currencyFormat = new DecimalFormat("$#0.00");
-    private ToggleButton keepTheChangeToggleButton;
     private boolean keepTheChangeBoolean;
-    private String keepTheChangeString;
     private EditText additionalDonationEditText;
-    private Button startMenuButton;
-    private Button newOrderButton;
+    @SuppressLint("SimpleDateFormat")
     private DateFormat dateFormat = new SimpleDateFormat("MM-dd-yy|hh:mm:ss");
 
 
@@ -64,13 +50,13 @@ public class ChangeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change);
 
-        header = findViewById(R.id.tv_header);
-        backButton = findViewById(R.id.b_back);
-        changeCalculation = findViewById(R.id.tv_change_calculation);
-        keepTheChangeToggleButton = findViewById(R.id.tb_keep_the_change);
+        TextView header = findViewById(R.id.tv_header);
+        Button backButton = findViewById(R.id.b_back);
+        TextView changeCalculation = findViewById(R.id.tv_change_calculation);
+        ToggleButton keepTheChangeToggleButton = findViewById(R.id.tb_keep_the_change);
         additionalDonationEditText = findViewById(R.id.et_additional_donation);
-        startMenuButton = findViewById(R.id.b_start_menu);
-        newOrderButton = findViewById(R.id.b_new_order);
+        Button startMenuButton = findViewById(R.id.b_start_menu);
+        Button newOrderButton = findViewById(R.id.b_new_order);
 
 
         // Header setup
@@ -131,6 +117,7 @@ public class ChangeActivity extends AppCompatActivity
         String date = dateFormat.format(Calendar.getInstance().getTime());
         String purchases = TransactionRecord.getPurchases();
         String total = currencyFormat.format(TransactionRecord.getTotal());
+        String keepTheChangeString;
         if(keepTheChangeBoolean) {
             totalDonation += change;
             keepTheChangeString = "Y";

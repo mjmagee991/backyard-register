@@ -1,6 +1,8 @@
 package backyardRegister.recyclerViewAdapters;
 
 import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -44,6 +46,7 @@ public class SoldListAdapter extends RecyclerView.Adapter<SoldListAdapter.SoldVi
 
 
     // Puts the layout into each ViewHolder when it is created
+    @NonNull
     @Override
     public SoldViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();

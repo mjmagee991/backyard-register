@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -44,10 +43,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import backyardRegister.supportClasses.DataStorage;
 import backyardRegister.fallfestregister.R;
-import backyardRegister.supportClasses.SaleItem;
 import backyardRegister.supportClasses.SaleList;
 import backyardRegister.recyclerViewAdapters.SaleListListAdapter;
 import backyardRegister.StartMenuActivity;
@@ -55,11 +54,9 @@ import backyardRegister.StartMenuActivity;
 public class SaleListEditingSelectorActivity extends AppCompatActivity {
 
     private LinearLayout header;
-    private Button backButton;
     private SaleListListAdapter adapter;
     private RecyclerView saleListNamesList;
     private Button exportButton;
-    private Button newListButton;
     private int INTERNET_PERMISSION_CODE = 1; // Doesn't really do anything
 
     @Override
@@ -83,6 +80,7 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity {
         } else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && intentType != null && getInternetPermission()) {
             ArrayList<Uri> fileUriList = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
 
+            assert fileUriList != null;
             for(Uri fileUri : fileUriList) {
                 saveListFromUri(fileUri);
             }
@@ -94,10 +92,10 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sale_list_editing_selector);
 
         header = findViewById(R.id.ll_common_header);
-        backButton = findViewById(R.id.b_back);
+        Button backButton = findViewById(R.id.b_back);
         saleListNamesList = findViewById(R.id.rv_sale_list_names);
         exportButton = findViewById(R.id.b_export);
-        newListButton = findViewById(R.id.b_new_list);
+        Button newListButton = findViewById(R.id.b_new_list);
 
         // Back button setup
         View.OnClickListener backListener = v -> back();
@@ -119,15 +117,15 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity {
             // If the adapter is in now in export mode,
             if(adapter.isInExportMode()) {
                 // Change the rest of the Activity to reflect export mode
-                exportButton.setText("Confirm");
+                exportButton.setText(R.string.export_button_confirm);
                 header.setBackgroundColor(Color.parseColor("#48e497"/*green*/));
             } else {
                 // Reset the color of each list back to white
                 for(int i = 0; i < adapter.getItemCount(); i++) {
-                    ((SaleListListAdapter.SaleListNameViewHolder) saleListNamesList.findViewHolderForAdapterPosition(i)).reset(i);
+                    ((SaleListListAdapter.SaleListNameViewHolder) Objects.requireNonNull(saleListNamesList.findViewHolderForAdapterPosition(i))).reset(i);
                 }
                 // Change the rest of the Activity to reflect selection mode
-                exportButton.setText("Export");
+                exportButton.setText(R.string.export_button_export);
                 header.setBackgroundColor(Color.parseColor("#008577")/*primary*/);
             }
         };
@@ -143,29 +141,21 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity {
                     .setTitle("Create New List")
                     .setMessage("Input name for the new list below")
                     .setView(newListNameEditText)
-                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            String newListName = newListNameEditText.getText().toString();
-                            // Check if name is same as others
-                            for(String saleListName : DataStorage.getSaleListNames()) {
-                                if(saleListName.replaceAll("/","").equals(newListName.replaceAll("/",""))) {
-                                    Toast.makeText(SaleListEditingSelectorActivity.this, "List must have a different name than all other lists", Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
+                    .setPositiveButton("Confirm", (dialog, which) -> {
+                        String newListName = newListNameEditText.getText().toString();
+                        // Check if name is same as others
+                        for(String saleListName : DataStorage.getSaleListNames()) {
+                            if(saleListName.replaceAll("/","").equals(newListName.replaceAll("/",""))) {
+                                Toast.makeText(SaleListEditingSelectorActivity.this, "List must have a different name than all other lists", Toast.LENGTH_SHORT).show();
+                                return;
                             }
-                            // Create and save a new list
-                            DataStorage.addSaleList(new SaleList(newListName, new ArrayList<SaleItem>()), getSharedPreferences("Sale Lists", MODE_PRIVATE));
-                            // Restart the Activity
-                            startActivity(new Intent(SaleListEditingSelectorActivity.this, SaleListEditingSelectorActivity.class).setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                         }
+                        // Create and save a new list
+                        DataStorage.addSaleList(new SaleList(newListName, new ArrayList<>()), getSharedPreferences("Sale Lists", MODE_PRIVATE));
+                        // Restart the Activity
+                        startActivity(new Intent(SaleListEditingSelectorActivity.this, SaleListEditingSelectorActivity.class).setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                     })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
+                    .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
                     .create().show();
         };
         newListButton.setOnClickListener(newListListener);
@@ -209,7 +199,7 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity {
 
                 final String id = DocumentsContract.getDocumentId(uri);
                 final Uri contentUri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/my_downloads"), Long.valueOf(id));
+                        Uri.parse("content://downloads/my_downloads"), Long.parseLong(id));
 
                 if(getDataColumn(context, contentUri, null, null) != null)
                     return getDataColumn(context, contentUri, null, null);
@@ -283,6 +273,7 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity {
                 return cursor.getString(index);
             }
         } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             if (cursor != null)
                 cursor.close();
@@ -358,14 +349,7 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity {
     }
 
     public static File getDocumentCacheDir(@NonNull Context context) {
-        File dir = new File(context.getCacheDir(), DOCUMENTS_DIR);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-//        logDir(context.getCacheDir());
-//        logDir(dir);
-
-        return dir;
+        return new File(context.getCacheDir(), DOCUMENTS_DIR);
     }
 
     @Nullable
@@ -415,7 +399,7 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity {
             is = context.getContentResolver().openInputStream(uri);
             bos = new BufferedOutputStream(new FileOutputStream(destinationPath, false));
             byte[] buf = new byte[1024];
-            is.read(buf);
+            assert is != null;
             do {
                 bos.write(buf);
             } while (is.read(buf) != -1);
@@ -434,7 +418,7 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity {
     private void saveListFromUri(Uri fileUri) {
 
         // Get the File from the given Uri
-        File saleListFile = new File(getPathFromUri(getApplicationContext(), fileUri));
+        File saleListFile = new File(Objects.requireNonNull(getPathFromUri(getApplicationContext(), fileUri)));
 
         // TODO: Deal with edge case when name of import is the same as a current List
 
@@ -464,17 +448,17 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity {
 
     // Gets rid of any characters not in the acceptableCharacters String
     String cleanString(String inString) {
-        String outStr = "";
+        StringBuilder outStr = new StringBuilder();
         String acceptableCharacters = "`1234567890-=~!@#$%^&*()_+qwertyuiop[]\\QWERTYUIOP{}|asdfghjkl;'ASDFGHJKL:\"zzzxcvbnmn,./ZXCVBNM<>? ";
         for(int i = 0; i < inString.length(); i++) {
             // Gets the character at position i
             String let = inString.substring(i, i + 1);
             // Adds the character to the output String if it is acceptable
             if(acceptableCharacters.contains(let)) {
-                outStr += let;
+                outStr.append(let);
             }
         }
-        return outStr;
+        return outStr.toString();
     }
 
 

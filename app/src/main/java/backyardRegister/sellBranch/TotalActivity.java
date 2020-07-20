@@ -23,18 +23,10 @@ import backyardRegister.supportClasses.TransactionRecord;
 
 public class TotalActivity extends AppCompatActivity {
 
-    private TextView header;
-    private Button backButton;
-    private SoldListAdapter adapter;
-    private RecyclerView soldList;
-    private TextView totalTextView;
     private EditText amountPaidEditText;
-    private Button exactChangeButton;
-    private Button calculateChangeButton;
     private DecimalFormat onesTotalCurrencyFormat = new DecimalFormat("Total:  $#0.00");
     private DecimalFormat tensTotalCurrencyFormat = new DecimalFormat("Total: $#0.00");
     private DecimalFormat hundredsTotalCurrencyFormat = new DecimalFormat("Total:$#0.00");
-    private String formattedTotal;
     private Toast notEnoughPaidToast;
 
 
@@ -44,13 +36,13 @@ public class TotalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_total);
 
-        header = findViewById(R.id.tv_header);
-        backButton = findViewById(R.id.b_back);
-        soldList = findViewById(R.id.rv_sold_list);
-        totalTextView = findViewById(R.id.tv_total);
+        TextView header = findViewById(R.id.tv_header);
+        Button backButton = findViewById(R.id.b_back);
+        RecyclerView soldList = findViewById(R.id.rv_sold_list);
+        TextView totalTextView = findViewById(R.id.tv_total);
         amountPaidEditText = findViewById(R.id.et_amount_paid);
-        exactChangeButton = findViewById(R.id.b_exact_change);
-        calculateChangeButton = findViewById(R.id.b_calculate_change);
+        Button exactChangeButton = findViewById(R.id.b_exact_change);
+        Button calculateChangeButton = findViewById(R.id.b_calculate_change);
 
 
         // Header setup
@@ -65,11 +57,12 @@ public class TotalActivity extends AppCompatActivity {
         soldList.setLayoutManager(layoutManager);
         soldList.setHasFixedSize(true);
 
-        adapter = new SoldListAdapter();
+        SoldListAdapter adapter = new SoldListAdapter();
         soldList.setAdapter(adapter);
 
         // Grand total formatting
         final double grandTotal = adapter.getGrandTotal();
+        String formattedTotal;
         if (grandTotal >= 100) {
             formattedTotal = hundredsTotalCurrencyFormat.format(grandTotal);
         } else if (grandTotal >= 10) {
@@ -118,7 +111,7 @@ public class TotalActivity extends AppCompatActivity {
                 }
 
                 // Generate a new toast
-                notEnoughPaidToast = Toast.makeText(ItemSelectionActivity.getContext(),
+                notEnoughPaidToast = Toast.makeText(getApplicationContext(),
                         "Not enough paid",
                         Toast.LENGTH_LONG);
                 notEnoughPaidToast.show();

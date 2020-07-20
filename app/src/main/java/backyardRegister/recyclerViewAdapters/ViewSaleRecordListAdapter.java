@@ -2,6 +2,8 @@ package backyardRegister.recyclerViewAdapters;
 
 import android.content.Context;
 import android.graphics.Color;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +29,7 @@ public class ViewSaleRecordListAdapter extends RecyclerView.Adapter<ViewSaleReco
 
 
     // Puts the layout into each ViewHolder when it is created
+    @NonNull
     @Override
     public ViewSaleRecordListAdapter.SaleRecordViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();

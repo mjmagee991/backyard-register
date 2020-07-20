@@ -2,6 +2,7 @@ package backyardRegister.recyclerViewAdapters;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.InputFilter;
 import android.view.LayoutInflater;
@@ -37,6 +38,7 @@ public class SaleListEditingAdapter
 
 
     // Puts the layout into each ViewHolder when it is created
+    @NonNull
     @Override
     public SaleItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();

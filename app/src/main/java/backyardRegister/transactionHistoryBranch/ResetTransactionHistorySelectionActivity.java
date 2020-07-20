@@ -1,7 +1,6 @@
 package backyardRegister.transactionHistoryBranch;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,10 +19,7 @@ import backyardRegister.supportClasses.SaleList;
 
 public class ResetTransactionHistorySelectionActivity extends AppCompatActivity {
 
-    private Button backButton;
     private TransactionHistorySelectionAdapter adapter;
-    private RecyclerView saleRecords;
-    private Button resetButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +27,9 @@ public class ResetTransactionHistorySelectionActivity extends AppCompatActivity 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_transaction_history_selection);
 
-        backButton = findViewById(R.id.b_back);
-        saleRecords = findViewById(R.id.rv_sale_record_names);
-        resetButton = findViewById(R.id.b_reset_records);
+        Button backButton = findViewById(R.id.b_back);
+        RecyclerView saleRecords = findViewById(R.id.rv_sale_record_names);
+        Button resetButton = findViewById(R.id.b_reset_records);
 
         // Back Button setup
         View.OnClickListener backListener = v -> back();
@@ -53,19 +49,11 @@ public class ResetTransactionHistorySelectionActivity extends AppCompatActivity 
         View.OnClickListener resetListener = v -> new AlertDialog.Builder(ResetTransactionHistorySelectionActivity.this)
                 .setTitle("Confirm Reset")
                 .setMessage("Are you sure you would like to reset the selected records?\nThis action cannot be undone.")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), resetRecords() + " records reset", Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(ResetTransactionHistorySelectionActivity.this, ResetTransactionHistorySelectionActivity.class).setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-                    }
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    Toast.makeText(getApplicationContext(), resetRecords() + " records reset", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(ResetTransactionHistorySelectionActivity.this, ResetTransactionHistorySelectionActivity.class).setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
                 .create().show();
         resetButton.setOnClickListener(resetListener);
     }

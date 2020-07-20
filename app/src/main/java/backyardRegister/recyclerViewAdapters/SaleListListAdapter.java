@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
+
+import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,6 +46,7 @@ public class SaleListListAdapter
 
 
     // Puts the layout into each ViewHolder when it is created
+    @NonNull
     @Override
     public SaleListNameViewHolder  onCreateViewHolder(ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();

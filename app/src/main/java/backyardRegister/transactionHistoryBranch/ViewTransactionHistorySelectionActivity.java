@@ -14,26 +14,17 @@ import backyardRegister.recyclerViewAdapters.SaleListListAdapter;
 
 public class ViewTransactionHistorySelectionActivity extends AppCompatActivity {
 
-    private RecyclerView saleRecordNamesList;
-    private SaleListListAdapter adapter;
-    private Button backButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Render the Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_transaction_history_selection);
 
-        saleRecordNamesList = findViewById(R.id.rv_sale_record_names);
-        backButton = findViewById(R.id.b_back);
+        RecyclerView saleRecordNamesList = findViewById(R.id.rv_sale_record_names);
+        Button backButton = findViewById(R.id.b_back);
 
         // Back button setup
-        View.OnClickListener backListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                back();
-            }
-        };
+        View.OnClickListener backListener = v -> back();
         backButton.setOnClickListener(backListener);
 
         // RecyclerView setup
@@ -41,7 +32,7 @@ public class ViewTransactionHistorySelectionActivity extends AppCompatActivity {
         saleRecordNamesList.setLayoutManager(layoutManager);
         saleRecordNamesList.setHasFixedSize(true);
 
-        adapter = new SaleListListAdapter(getApplicationContext());
+        SaleListListAdapter adapter = new SaleListListAdapter(getApplicationContext());
         saleRecordNamesList.setAdapter(adapter);
     }
 

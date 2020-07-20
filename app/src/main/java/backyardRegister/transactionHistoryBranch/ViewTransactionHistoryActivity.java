@@ -1,35 +1,28 @@
 package backyardRegister.transactionHistoryBranch;
 
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import backyardRegister.supportClasses.DataStorage;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import backyardRegister.fallfestregister.R;
 import backyardRegister.recyclerViewAdapters.ViewSaleRecordListAdapter;
+import backyardRegister.supportClasses.DataStorage;
 
 public class ViewTransactionHistoryActivity extends AppCompatActivity {
 
     private LinearLayout header;
-    private TextView headerTextView;
-    private Button backButton;
     private ViewSaleRecordListAdapter adapter;
-    private RecyclerView saleRecord;
     private Button voidButton;
     private boolean voidMode;
-    private static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +30,10 @@ public class ViewTransactionHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_history);
 
-        context = getApplicationContext();
         header = findViewById(R.id.ll_common_header);
-        headerTextView = findViewById(R.id.tv_header);
-        backButton = findViewById(R.id.b_back);
-        saleRecord = findViewById(R.id.rv_sale_record_list);
+        TextView headerTextView = findViewById(R.id.tv_header);
+        Button backButton = findViewById(R.id.b_back);
+        RecyclerView saleRecord = findViewById(R.id.rv_sale_record_list);
         voidButton = findViewById(R.id.b_void_sales);
 
         // Header setup
@@ -77,16 +69,11 @@ public class ViewTransactionHistoryActivity extends AppCompatActivity {
             } else {
                 adapter.changeMode();
                 voidMode = true;
-                voidButton.setText("Confirm Voids");
+                voidButton.setText(R.string.void_button_confirm);
                 header.setBackgroundColor(Color.parseColor("#eb5e5e"/*red*/));
             }
         };
         voidButton.setOnClickListener(voidListener);
-    }
-
-
-    public static Context getContext() {
-        return context;
     }
 
 

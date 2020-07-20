@@ -2,4 +2,7 @@
     <string name="app_name">Fall Fest Register</string>
     <string name="title_activity_total">TotalActivity</string>
     <string name="void_sales">Void Sales</string>
+    <string name="export_button_confirm">Confirm</string>
+    <string name="export_button_export">Export</string>
+    <string name="void_button_confirm">Confirm Voids</string>
 </resources>

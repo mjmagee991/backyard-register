@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import backyardRegister.supportClasses.DataStorage;
 import backyardRegister.recyclerViewAdapters.ItemListAdapter;
@@ -24,11 +25,6 @@ import backyardRegister.supportClasses.TransactionRecord;
 public class ItemSelectionActivity extends AppCompatActivity {
 
     private ItemListAdapter adapter;
-    private TextView header;
-    private Button backButton;
-    private RecyclerView saleList;
-    private Button resetButton;
-    private Button doneButton;
 
 
     @Override
@@ -37,11 +33,11 @@ public class ItemSelectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_selection);
 
-        header = findViewById(R.id.tv_header);
-        backButton = findViewById(R.id.b_back);
-        saleList = findViewById(R.id.rv_sale_list);
-        resetButton = findViewById(R.id.b_reset);
-        doneButton = findViewById(R.id.b_done);
+        TextView header = findViewById(R.id.tv_header);
+        Button backButton = findViewById(R.id.b_back);
+        RecyclerView saleList = findViewById(R.id.rv_sale_list);
+        Button resetButton = findViewById(R.id.b_reset);
+        Button doneButton = findViewById(R.id.b_done);
 
         // Header setup
         header.setText(DataStorage.listInUse.getName());
@@ -58,7 +54,7 @@ public class ItemSelectionActivity extends AppCompatActivity {
         adapter = new ItemListAdapter(getApplicationContext());
         saleList.setAdapter(adapter);
         // Removes animations from the RecyclerView
-        ((SimpleItemAnimator) saleList.getItemAnimator()).setSupportsChangeAnimations(false);
+        ((SimpleItemAnimator) Objects.requireNonNull(saleList.getItemAnimator())).setSupportsChangeAnimations(false);
 
         // Reset button setup
         View.OnClickListener resetListener = v -> adapter.resetCounts();

@@ -11,11 +11,11 @@ public class TransactionRecord {
 
     // Encodes the purchase list in a string of numbers that can be written into the transaction history
     public static String getPurchases() {
-        String purchaseString = "";
+        StringBuilder purchaseString = new StringBuilder();
         for(int sale : purchaseList) {
-            purchaseString += sale + "|";
+            purchaseString.append(sale).append("|");
         }
-        return purchaseString;
+        return purchaseString.toString();
     }
     // Sets the purchase list
     public static void setPurchases(ArrayList<Integer> inPurchases) {

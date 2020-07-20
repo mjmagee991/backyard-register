@@ -24,13 +24,9 @@ import backyardRegister.recyclerViewAdapters.SaleListEditingAdapter;
 
 public class SaleListEditorActivity extends AppCompatActivity {
 
-    private Button deleteListButton;
     private EditText headerEditText;
-    private Button backButton;
     private SaleListEditingAdapter adapter;
     private RecyclerView saleItemList;
-    private Button saveButton;
-    private Button newItemButton;
     private SaleList activeList;
     private ArrayList<Integer> removeList;
 
@@ -40,12 +36,12 @@ public class SaleListEditorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sale_list_editor);
 
-        deleteListButton = findViewById(R.id.b_delete_list);
+        Button deleteListButton = findViewById(R.id.b_delete_list);
         headerEditText = findViewById(R.id.et_header);
-        backButton = findViewById(R.id.b_back);
+        Button backButton = findViewById(R.id.b_back);
         saleItemList = findViewById(R.id.rv_sale_item_list);
-        saveButton = findViewById(R.id.b_save);
-        newItemButton = findViewById(R.id.b_new_item);
+        Button saveButton = findViewById(R.id.b_save);
+        Button newItemButton = findViewById(R.id.b_new_item);
         activeList = new SaleList(DataStorage.listInUse); // Creates a copy of the SaleList being edited, so edits can be canceled
         removeList = new ArrayList<>(); // Stores positions of all removed items for reference when saving changes
 
@@ -123,6 +119,7 @@ public class SaleListEditorActivity extends AppCompatActivity {
                 // Iterate through the RecyclerView ViewHolders to set the names and prices of the itemList for the list being edited
                 for(int i = 0; i < adapter.getItemCount(); i ++) {
                     SaleListEditingAdapter.SaleItemViewHolder holder = (SaleListEditingAdapter.SaleItemViewHolder) saleItemList.findViewHolderForAdapterPosition(i);
+                    assert holder != null;
                     itemArrayList.get(i).setName(holder.getName());
                     itemArrayList.get(i).setPrice(holder.getPrice());
                 }
@@ -147,7 +144,7 @@ public class SaleListEditorActivity extends AppCompatActivity {
     }
 
     public void deleteViewHolder(int pos) {
-        // Adds the item to the removeList to be confirmed when saved lateer
+        // Adds the item to the removeList to be confirmed when saved later
         removeList.add(pos);
         // Removes the item from the instance of the list
         activeList.getList().remove(pos);

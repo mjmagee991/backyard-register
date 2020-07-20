@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class TransactionHistorySelectionAdapter
 
 
     // Puts the layout into each ViewHolder when it is created
+    @NonNull
     @Override
     public TransactionHistoryNameViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();

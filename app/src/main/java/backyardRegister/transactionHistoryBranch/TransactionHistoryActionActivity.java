@@ -11,56 +11,31 @@ import backyardRegister.StartMenuActivity;
 
 public class TransactionHistoryActionActivity extends AppCompatActivity {
 
-    private Button backButton;
-    private Button viewButton;
-    private Button resetButton;
-    private Button exportButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Render the Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction_history_action);
 
-        backButton = findViewById(R.id.b_back);
-        viewButton = findViewById(R.id.b_view);
-        resetButton = findViewById(R.id.b_reset);
-        exportButton = findViewById(R.id.b_export);
+        Button backButton = findViewById(R.id.b_back);
+        Button viewButton = findViewById(R.id.b_view);
+        Button resetButton = findViewById(R.id.b_reset);
+        Button exportButton = findViewById(R.id.b_export);
 
         // Back button setup
-        View.OnClickListener backListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                back();
-            }
-        };
+        View.OnClickListener backListener = v -> back();
         backButton.setOnClickListener(backListener);
 
         // View button setup
-        View.OnClickListener viewListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(TransactionHistoryActionActivity.this, ViewTransactionHistorySelectionActivity.class));
-            }
-        };
+        View.OnClickListener viewListener = v -> startActivity(new Intent(TransactionHistoryActionActivity.this, ViewTransactionHistorySelectionActivity.class));
         viewButton.setOnClickListener(viewListener);
 
         // Delete button setup
-        View.OnClickListener resetListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(TransactionHistoryActionActivity.this, ResetTransactionHistorySelectionActivity.class));
-            }
-        };
+        View.OnClickListener resetListener = v -> startActivity(new Intent(TransactionHistoryActionActivity.this, ResetTransactionHistorySelectionActivity.class));
         resetButton.setOnClickListener(resetListener);
 
         // Export button setup
-        View.OnClickListener exportListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(TransactionHistoryActionActivity.this, ExportTransactionHistorySelectionActivity.class));
-            }
-        };
+        View.OnClickListener exportListener = v -> startActivity(new Intent(TransactionHistoryActionActivity.this, ExportTransactionHistorySelectionActivity.class));
         exportButton.setOnClickListener(exportListener);
     }
 
