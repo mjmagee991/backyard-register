@@ -20,7 +20,7 @@ import backyardRegister.recyclerViewAdapters.TransactionHistorySelectionAdapter;
 import backyardRegister.supportClasses.DataStorage;
 import backyardRegister.supportClasses.SaleList;
 
-public class ExportTransactionHistorySelectionActivity extends AppCompatActivity {
+public class ExportTransactionHistoryActivity extends AppCompatActivity {
 
     //TODO: Add line to top of exported transaction history with the labels for the columns
     private TransactionHistorySelectionAdapter adapter;
@@ -75,7 +75,7 @@ public class ExportTransactionHistorySelectionActivity extends AppCompatActivity
         // Gets the URIs for the selected transaction histories' text files
         ArrayList<Uri> uriList = new ArrayList<>();
         for(int i = 0; i < records.size(); i++) {
-            uriList.add(FileProvider.getUriForFile(ExportTransactionHistorySelectionActivity.this, BuildConfig.APPLICATION_ID + ".provider", records.get(i)));
+            uriList.add(FileProvider.getUriForFile(ExportTransactionHistoryActivity.this, BuildConfig.APPLICATION_ID + ".provider", records.get(i)));
         }
         // Adds the text files to the email intent
         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
@@ -122,6 +122,6 @@ public class ExportTransactionHistorySelectionActivity extends AppCompatActivity
 
     // Moves to the previous Activity in the hierarchy
     private void back() {
-        startActivity(new Intent(ExportTransactionHistorySelectionActivity.this, TransactionHistoryActionActivity.class));
+        startActivity(new Intent(ExportTransactionHistoryActivity.this, TransactionHistoryActionActivity.class));
     }
 }

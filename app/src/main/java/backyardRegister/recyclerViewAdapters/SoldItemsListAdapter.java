@@ -18,7 +18,7 @@ import backyardRegister.fallfestregister.R;
 import backyardRegister.supportClasses.SaleItem;
 
 
-public class SoldListAdapter extends RecyclerView.Adapter<SoldListAdapter.SoldViewHolder> {
+public class SoldItemsListAdapter extends RecyclerView.Adapter<SoldItemsListAdapter.SoldViewHolder> {
 
     private DecimalFormat onesFirstCurrencyFormat = new DecimalFormat("$  #0.00");
     private DecimalFormat tensFirstCurrencyFormat = new DecimalFormat("$#0.00");
@@ -34,7 +34,7 @@ public class SoldListAdapter extends RecyclerView.Adapter<SoldListAdapter.SoldVi
 
 
     // Constructor
-    public SoldListAdapter() {
+    public SoldItemsListAdapter() {
         for(SaleItem item : DataStorage.listInUse.getList()) {
             if(item.getCount() != 0) {
                 numItems += 1;
@@ -60,7 +60,7 @@ public class SoldListAdapter extends RecyclerView.Adapter<SoldListAdapter.SoldVi
 
     // Fills the ViewHolder with content after it has been created
     @Override
-    public void onBindViewHolder(SoldListAdapter.SoldViewHolder holder, int pos) {
+    public void onBindViewHolder(SoldItemsListAdapter.SoldViewHolder holder, int pos) {
         // Loads information into the ViewHolder
         holder.load(soldItems.get(pos));
     }

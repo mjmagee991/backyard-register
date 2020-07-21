@@ -2,7 +2,7 @@ package backyardRegister.supportClasses;
 
 import java.util.ArrayList;
 
-// Holds information from the sale branch that needs to be carried from one Activity to the next
+// Holds information about a single transaction from the sale branch that needs to be carried from one Activity to the next
 public class TransactionRecord {
 
     public static ArrayList<Integer> purchaseList;

@@ -31,11 +31,11 @@ public class TransactionHistoryActionActivity extends AppCompatActivity {
         viewButton.setOnClickListener(viewListener);
 
         // Delete button setup
-        View.OnClickListener resetListener = v -> startActivity(new Intent(TransactionHistoryActionActivity.this, ResetTransactionHistorySelectionActivity.class));
+        View.OnClickListener resetListener = v -> startActivity(new Intent(TransactionHistoryActionActivity.this, ResetTransactionHistoryActivity.class));
         resetButton.setOnClickListener(resetListener);
 
         // Export button setup
-        View.OnClickListener exportListener = v -> startActivity(new Intent(TransactionHistoryActionActivity.this, ExportTransactionHistorySelectionActivity.class));
+        View.OnClickListener exportListener = v -> startActivity(new Intent(TransactionHistoryActionActivity.this, ExportTransactionHistoryActivity.class));
         exportButton.setOnClickListener(exportListener);
     }
 

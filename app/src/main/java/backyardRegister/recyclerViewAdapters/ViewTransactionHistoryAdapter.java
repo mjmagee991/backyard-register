@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import backyardRegister.supportClasses.DataStorage;
 import backyardRegister.fallfestregister.R;
 
-public class ViewTransactionHistoryListAdapter extends RecyclerView.Adapter<ViewTransactionHistoryListAdapter.TransactionHistoryViewHolder> {
+public class ViewTransactionHistoryAdapter extends RecyclerView.Adapter<ViewTransactionHistoryAdapter.TransactionHistoryViewHolder> {
 
     private ArrayList<String> transactionHistoryArrList = DataStorage.getTransactionHistoryArrList();
     private int numItems = transactionHistoryArrList.size(); // Number of items in the RecyclerView

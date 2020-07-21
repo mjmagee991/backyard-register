@@ -31,9 +31,9 @@
             android:screenOrientation="portrait" />
         <activity android:name="backyardRegister.transactionHistoryBranch.ViewTransactionHistorySelectionActivity"
             android:screenOrientation="portrait" />
-        <activity android:name="backyardRegister.transactionHistoryBranch.ResetTransactionHistorySelectionActivity"
+        <activity android:name="backyardRegister.transactionHistoryBranch.ResetTransactionHistoryActivity"
             android:screenOrientation="portrait" />
-        <activity android:name="backyardRegister.transactionHistoryBranch.ExportTransactionHistorySelectionActivity"
+        <activity android:name="backyardRegister.transactionHistoryBranch.ExportTransactionHistoryActivity"
             android:screenOrientation="portrait" />
         <activity android:name="backyardRegister.transactionHistoryBranch.TransactionHistoryActionActivity"
             android:screenOrientation="portrait" />

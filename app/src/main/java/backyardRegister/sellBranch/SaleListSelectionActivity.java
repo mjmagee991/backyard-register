@@ -11,16 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import backyardRegister.StartMenuActivity;
 import backyardRegister.fallfestregister.R;
-import backyardRegister.recyclerViewAdapters.SaleListListAdapter;
+import backyardRegister.recyclerViewAdapters.SaleListSelectionAdapter;
 import backyardRegister.supportClasses.DataStorage;
-import backyardRegister.transactionHistoryBranch.ViewTransactionHistoryActivity;
-import backyardRegister.transactionHistoryBranch.ViewTransactionHistorySelectionActivity;
 
 
 public class SaleListSelectionActivity extends AppCompatActivity
-        implements SaleListListAdapter.ListClickListener {
+        implements SaleListSelectionAdapter.ListClickListener {
 
-    private SaleListListAdapter adapter;
+    private SaleListSelectionAdapter adapter;
 
 
     @Override
@@ -43,7 +41,7 @@ public class SaleListSelectionActivity extends AppCompatActivity
 
         // This part has to be in a try-catch block because it calls getApplicationContext()
         try {
-            adapter = new SaleListListAdapter(this, getApplicationContext());
+            adapter = new SaleListSelectionAdapter(this, getApplicationContext());
         } catch (Exception e) {
             e.printStackTrace();
         }

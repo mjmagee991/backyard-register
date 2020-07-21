@@ -17,7 +17,7 @@ import backyardRegister.recyclerViewAdapters.TransactionHistorySelectionAdapter;
 import backyardRegister.supportClasses.DataStorage;
 import backyardRegister.supportClasses.SaleList;
 
-public class ResetTransactionHistorySelectionActivity extends AppCompatActivity {
+public class ResetTransactionHistoryActivity extends AppCompatActivity {
 
     private TransactionHistorySelectionAdapter adapter;
 
@@ -45,7 +45,7 @@ public class ResetTransactionHistorySelectionActivity extends AppCompatActivity 
         saleRecords.setAdapter(adapter);
 
         // Reset Button setup
-        View.OnClickListener resetListener = v -> new AlertDialog.Builder(ResetTransactionHistorySelectionActivity.this)
+        View.OnClickListener resetListener = v -> new AlertDialog.Builder(ResetTransactionHistoryActivity.this)
                 //Creates a popup to confirm that the user wants to reset the transaction histories
                 .setTitle("Confirm Reset")
                 .setMessage("Are you sure you would like to reset the selected transaction histories?\nThis action cannot be undone.")
@@ -53,7 +53,7 @@ public class ResetTransactionHistorySelectionActivity extends AppCompatActivity 
                     // Reset the transaction histories and tell the user how many were reset
                     Toast.makeText(getApplicationContext(), resetRecords() + " transaction histories reset", Toast.LENGTH_LONG).show();
                     // Restart the Activity
-                    startActivity(new Intent(ResetTransactionHistorySelectionActivity.this, ResetTransactionHistorySelectionActivity.class).setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+                    startActivity(new Intent(ResetTransactionHistoryActivity.this, ResetTransactionHistoryActivity.class).setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                 })
                 .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
                 .create().show();
@@ -87,6 +87,6 @@ public class ResetTransactionHistorySelectionActivity extends AppCompatActivity 
 
     // Moves to the previous Activity in the hierarchy
     private void back() {
-        startActivity(new Intent(ResetTransactionHistorySelectionActivity.this, TransactionHistoryActionActivity.class));
+        startActivity(new Intent(ResetTransactionHistoryActivity.this, TransactionHistoryActionActivity.class));
     }
 }

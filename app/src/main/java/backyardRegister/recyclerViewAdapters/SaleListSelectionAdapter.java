@@ -1,7 +1,6 @@
 package backyardRegister.recyclerViewAdapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
@@ -23,13 +22,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import backyardRegister.editBranch.SaleListEditorActivity;
 import backyardRegister.fallfestregister.BuildConfig;
 import backyardRegister.supportClasses.DataStorage;
 import backyardRegister.fallfestregister.R;
 
-public class SaleListListAdapter
-        extends RecyclerView.Adapter<SaleListListAdapter.SaleListNameViewHolder>  {
+public class SaleListSelectionAdapter
+        extends RecyclerView.Adapter<SaleListSelectionAdapter.SaleListNameViewHolder>  {
 
     private ArrayList<String> saleListNames = DataStorage.getSaleListNames();
     private int numItems = saleListNames.size(); // Number of items in the RecyclerView
@@ -41,7 +39,7 @@ public class SaleListListAdapter
 
 
     // Constructor
-    public SaleListListAdapter(ListClickListener listener, Context inContext) {
+    public SaleListSelectionAdapter(ListClickListener listener, Context inContext) {
         listClickListener = listener;
         context = inContext;
     }
@@ -66,7 +64,7 @@ public class SaleListListAdapter
 
     // Fills the ViewHolder with content after it has been created
     @Override
-    public void onBindViewHolder(SaleListListAdapter.SaleListNameViewHolder holder, int pos) {
+    public void onBindViewHolder(SaleListSelectionAdapter.SaleListNameViewHolder holder, int pos) {
         // Loads information into the ViewHolder
         holder.load(pos);
     }

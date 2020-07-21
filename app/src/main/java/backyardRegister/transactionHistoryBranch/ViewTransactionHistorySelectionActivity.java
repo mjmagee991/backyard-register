@@ -8,14 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
-import backyardRegister.editBranch.SaleListEditingSelectorActivity;
-import backyardRegister.editBranch.SaleListEditorActivity;
 import backyardRegister.supportClasses.DataStorage;
 import backyardRegister.fallfestregister.R;
-import backyardRegister.recyclerViewAdapters.SaleListListAdapter;
+import backyardRegister.recyclerViewAdapters.SaleListSelectionAdapter;
 
 public class ViewTransactionHistorySelectionActivity extends AppCompatActivity
-        implements SaleListListAdapter.ListClickListener {
+        implements SaleListSelectionAdapter.ListClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +33,7 @@ public class ViewTransactionHistorySelectionActivity extends AppCompatActivity
         saleRecordNamesList.setLayoutManager(layoutManager);
         saleRecordNamesList.setHasFixedSize(true);
 
-        SaleListListAdapter adapter = new SaleListListAdapter(this, getApplicationContext());
+        SaleListSelectionAdapter adapter = new SaleListSelectionAdapter(this, getApplicationContext());
         saleRecordNamesList.setAdapter(adapter);
     }
 

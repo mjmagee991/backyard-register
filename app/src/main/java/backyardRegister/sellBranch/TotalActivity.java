@@ -17,7 +17,7 @@ import java.text.DecimalFormat;
 import backyardRegister.supportClasses.CurrencyDecimalInputFilter;
 import backyardRegister.supportClasses.DataStorage;
 import backyardRegister.fallfestregister.R;
-import backyardRegister.recyclerViewAdapters.SoldListAdapter;
+import backyardRegister.recyclerViewAdapters.SoldItemsListAdapter;
 import backyardRegister.supportClasses.TransactionRecord;
 
 
@@ -57,7 +57,7 @@ public class TotalActivity extends AppCompatActivity {
         soldList.setLayoutManager(layoutManager);
         soldList.setHasFixedSize(true);
 
-        SoldListAdapter adapter = new SoldListAdapter();
+        SoldItemsListAdapter adapter = new SoldItemsListAdapter();
         soldList.setAdapter(adapter);
 
         // Grand total formatting

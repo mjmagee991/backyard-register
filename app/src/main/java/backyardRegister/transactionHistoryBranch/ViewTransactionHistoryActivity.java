@@ -14,13 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import backyardRegister.fallfestregister.R;
-import backyardRegister.recyclerViewAdapters.ViewTransactionHistoryListAdapter;
+import backyardRegister.recyclerViewAdapters.ViewTransactionHistoryAdapter;
 import backyardRegister.supportClasses.DataStorage;
 
 public class ViewTransactionHistoryActivity extends AppCompatActivity {
 
     private LinearLayout header;
-    private ViewTransactionHistoryListAdapter adapter;
+    private ViewTransactionHistoryAdapter adapter;
     private Button voidButton;
     private boolean voidMode;
 
@@ -49,7 +49,7 @@ public class ViewTransactionHistoryActivity extends AppCompatActivity {
         saleRecord.setLayoutManager(layoutManager);
         saleRecord.setHasFixedSize(true);
 
-        adapter = new ViewTransactionHistoryListAdapter();
+        adapter = new ViewTransactionHistoryAdapter();
         saleRecord.setAdapter(adapter);
 
         // Void Button setup

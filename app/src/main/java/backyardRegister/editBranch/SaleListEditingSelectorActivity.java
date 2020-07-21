@@ -48,14 +48,14 @@ import java.util.Objects;
 import backyardRegister.supportClasses.DataStorage;
 import backyardRegister.fallfestregister.R;
 import backyardRegister.supportClasses.SaleList;
-import backyardRegister.recyclerViewAdapters.SaleListListAdapter;
+import backyardRegister.recyclerViewAdapters.SaleListSelectionAdapter;
 import backyardRegister.StartMenuActivity;
 
 public class SaleListEditingSelectorActivity extends AppCompatActivity
-        implements SaleListListAdapter.ListClickListener {
+        implements SaleListSelectionAdapter.ListClickListener {
 
     private LinearLayout header;
-    private SaleListListAdapter adapter;
+    private SaleListSelectionAdapter adapter;
     private RecyclerView saleListNamesList;
     private Button exportButton;
     private int INTERNET_PERMISSION_CODE = 1; // Doesn't really do anything
@@ -107,7 +107,7 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity
         saleListNamesList.setLayoutManager(layoutManager);
         saleListNamesList.setHasFixedSize(true);
 
-        adapter = new SaleListListAdapter(this, getApplicationContext());
+        adapter = new SaleListSelectionAdapter(this, getApplicationContext());
         saleListNamesList.setAdapter(adapter);
 
         // Export button setup
@@ -123,7 +123,7 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity
             } else {
                 // Reset the color of each list back to white
                 for(int i = 0; i < adapter.getItemCount(); i++) {
-                    ((SaleListListAdapter.SaleListNameViewHolder) Objects.requireNonNull(saleListNamesList.findViewHolderForAdapterPosition(i))).reset(i);
+                    ((SaleListSelectionAdapter.SaleListNameViewHolder) Objects.requireNonNull(saleListNamesList.findViewHolderForAdapterPosition(i))).reset(i);
                 }
                 // Change the rest of the Activity to reflect selection mode
                 exportButton.setText(R.string.export_button_export);
