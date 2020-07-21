@@ -51,7 +51,8 @@ import backyardRegister.supportClasses.SaleList;
 import backyardRegister.recyclerViewAdapters.SaleListListAdapter;
 import backyardRegister.StartMenuActivity;
 
-public class SaleListEditingSelectorActivity extends AppCompatActivity {
+public class SaleListEditingSelectorActivity extends AppCompatActivity
+        implements SaleListListAdapter.ListClickListener {
 
     private LinearLayout header;
     private SaleListListAdapter adapter;
@@ -106,7 +107,7 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity {
         saleListNamesList.setLayoutManager(layoutManager);
         saleListNamesList.setHasFixedSize(true);
 
-        adapter = new SaleListListAdapter(getApplicationContext());
+        adapter = new SaleListListAdapter(this, getApplicationContext());
         saleListNamesList.setAdapter(adapter);
 
         // Export button setup
@@ -160,6 +161,17 @@ public class SaleListEditingSelectorActivity extends AppCompatActivity {
         };
         newListButton.setOnClickListener(newListListener);
     }
+
+    @Override
+    public void onListClick(int clickedPos) {
+        // If the adapter is not in export mode
+        if(!adapter.isInExportMode()) {
+            // Moves to the next Activity with the selected SaleList
+            DataStorage.setListInUse(clickedPos);
+            startActivity(new Intent(SaleListEditingSelectorActivity.this, SaleListEditorActivity.class));
+        }
+    }
+
 
     void sendFiles(ArrayList<Uri> uriList) {
         if(uriList != null) {

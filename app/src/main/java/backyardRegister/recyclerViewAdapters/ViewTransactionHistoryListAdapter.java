@@ -18,9 +18,8 @@ import java.util.ArrayList;
 import backyardRegister.supportClasses.DataStorage;
 import backyardRegister.fallfestregister.R;
 
-public class ViewSaleRecordListAdapter extends RecyclerView.Adapter<ViewSaleRecordListAdapter.SaleRecordViewHolder> {
+public class ViewTransactionHistoryListAdapter extends RecyclerView.Adapter<ViewTransactionHistoryListAdapter.TransactionHistoryViewHolder> {
 
-    // TODO: Make the naming of the "saleRecord" more consistent with the rest of the app
     private ArrayList<String> transactionHistoryArrList = DataStorage.getTransactionHistoryArrList();
     private int numItems = transactionHistoryArrList.size(); // Number of items in the RecyclerView
     private boolean voidMode = false;
@@ -31,19 +30,19 @@ public class ViewSaleRecordListAdapter extends RecyclerView.Adapter<ViewSaleReco
     // Puts the layout into each ViewHolder when it is created
     @NonNull
     @Override
-    public ViewSaleRecordListAdapter.SaleRecordViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public TransactionHistoryViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();
-        int layoutIdForListItem = R.layout.rv_item_simple_text;
+        int layoutIdForListItem = R.layout.rv_item_transaction;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
 
         View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
-        return new SaleRecordViewHolder(view);
+        return new TransactionHistoryViewHolder(view);
     }
 
     // Fills the ViewHolder with content after it has been created
     @Override
-    public void onBindViewHolder(ViewSaleRecordListAdapter.SaleRecordViewHolder holder, int pos) {
+    public void onBindViewHolder(TransactionHistoryViewHolder holder, int pos) {
         // Loads information into the ViewHolder
         holder.load(pos);
     }
@@ -107,18 +106,18 @@ public class ViewSaleRecordListAdapter extends RecyclerView.Adapter<ViewSaleReco
 
 
     // This class holds the Views that populate the RecyclerView
-    class SaleRecordViewHolder extends RecyclerView.ViewHolder
+    class TransactionHistoryViewHolder extends RecyclerView.ViewHolder
         implements View.OnClickListener {
 
         TextView saleInfoTextView;
         LinearLayout rowLayout;
 
         // Constructor
-        public SaleRecordViewHolder(View itemView) {
+        public TransactionHistoryViewHolder(View itemView) {
 
             super(itemView);
 
-            saleInfoTextView = itemView.findViewById(R.id.tv_simple);
+            saleInfoTextView = itemView.findViewById(R.id.tv_transaction);
             rowLayout = itemView.findViewById(R.id.ll_rv_item_row);
 
             itemView.setOnClickListener(this);

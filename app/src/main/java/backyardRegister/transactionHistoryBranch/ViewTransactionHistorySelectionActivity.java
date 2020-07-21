@@ -8,11 +8,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 
+import backyardRegister.editBranch.SaleListEditingSelectorActivity;
+import backyardRegister.editBranch.SaleListEditorActivity;
 import backyardRegister.supportClasses.DataStorage;
 import backyardRegister.fallfestregister.R;
 import backyardRegister.recyclerViewAdapters.SaleListListAdapter;
 
-public class ViewTransactionHistorySelectionActivity extends AppCompatActivity {
+public class ViewTransactionHistorySelectionActivity extends AppCompatActivity
+        implements SaleListListAdapter.ListClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +35,16 @@ public class ViewTransactionHistorySelectionActivity extends AppCompatActivity {
         saleRecordNamesList.setLayoutManager(layoutManager);
         saleRecordNamesList.setHasFixedSize(true);
 
-        SaleListListAdapter adapter = new SaleListListAdapter(getApplicationContext());
+        SaleListListAdapter adapter = new SaleListListAdapter(this, getApplicationContext());
         saleRecordNamesList.setAdapter(adapter);
     }
 
+    @Override
+    public void onListClick(int clickedPos) {
+        // Moves to the next Activity with the selected SaleList
+        DataStorage.setListInUse(clickedPos);
+        startActivity(new Intent(ViewTransactionHistorySelectionActivity.this, ViewTransactionHistoryActivity.class));
+    }
 
     // Sets the back button on the bottom of the screen to do the same thing as my back button
     @Override

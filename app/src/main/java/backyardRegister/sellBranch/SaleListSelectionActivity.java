@@ -12,9 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import backyardRegister.StartMenuActivity;
 import backyardRegister.fallfestregister.R;
 import backyardRegister.recyclerViewAdapters.SaleListListAdapter;
+import backyardRegister.supportClasses.DataStorage;
+import backyardRegister.transactionHistoryBranch.ViewTransactionHistoryActivity;
+import backyardRegister.transactionHistoryBranch.ViewTransactionHistorySelectionActivity;
 
 
-public class SaleListSelectionActivity extends AppCompatActivity {
+public class SaleListSelectionActivity extends AppCompatActivity
+        implements SaleListListAdapter.ListClickListener {
 
     private SaleListListAdapter adapter;
 
@@ -39,11 +43,18 @@ public class SaleListSelectionActivity extends AppCompatActivity {
 
         // This part has to be in a try-catch block because it calls getApplicationContext()
         try {
-            adapter = new SaleListListAdapter(getApplicationContext());
+            adapter = new SaleListListAdapter(this, getApplicationContext());
         } catch (Exception e) {
             e.printStackTrace();
         }
         saleListNamesList.setAdapter(adapter);
+    }
+
+    @Override
+    public void onListClick(int clickedPos) {
+        // Moves to the next Activity with the selected SaleList
+        DataStorage.setListInUse(clickedPos);
+        startActivity(new Intent(SaleListSelectionActivity.this, ItemSelectionActivity.class));
     }
 
 

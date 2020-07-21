@@ -33,6 +33,7 @@ public class SaleListListAdapter
 
     private ArrayList<String> saleListNames = DataStorage.getSaleListNames();
     private int numItems = saleListNames.size(); // Number of items in the RecyclerView
+    final private ListClickListener listClickListener;
     private  Context context;
     private boolean exportMode = false;
     private boolean[] exportSelections = new boolean[saleListNames.size()]; /* Stores booleans that correspond
@@ -40,8 +41,13 @@ public class SaleListListAdapter
 
 
     // Constructor
-    public SaleListListAdapter(Context inContext) {
+    public SaleListListAdapter(ListClickListener listener, Context inContext) {
+        listClickListener = listener;
         context = inContext;
+    }
+
+    public interface ListClickListener {
+        void onListClick(int clickedPos);
     }
 
 
@@ -50,7 +56,7 @@ public class SaleListListAdapter
     @Override
     public SaleListNameViewHolder  onCreateViewHolder(ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();
-        int layoutIdForListItem = R.layout.rv_item_simple_text;
+        int layoutIdForListItem = R.layout.rv_item_sale_list;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
 
@@ -147,7 +153,7 @@ public class SaleListListAdapter
 
             super(itemView);
 
-            saleListName = itemView.findViewById(R.id.tv_simple);
+            saleListName = itemView.findViewById(R.id.tv_sale_list);
             rowLayout = itemView.findViewById(R.id.ll_rv_item_row);
 
             itemView.setOnClickListener(this);
@@ -164,6 +170,7 @@ public class SaleListListAdapter
         @Override
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
+            listClickListener.onListClick(clickedPosition);
 
             // If it's in export mode
             if(exportMode) {
@@ -178,10 +185,6 @@ public class SaleListListAdapter
                     // Turns the row white
                     rowLayout.setBackgroundColor(Color.parseColor("#FAFAFA"/*white*/));
                 }
-            } else {
-                // Moves to the Editor Activity with the selected SaleList
-                DataStorage.setListInUse(clickedPosition);
-                context.startActivity(new Intent(context, SaleListEditorActivity.class));
             }
         }
 

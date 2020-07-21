@@ -37,7 +37,7 @@ public class TransactionHistorySelectionAdapter
     @Override
     public TransactionHistoryNameViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();
-        int layoutIdForListItem = R.layout.rv_item_simple_text;
+        int layoutIdForListItem = R.layout.rv_item_sale_list;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
 
@@ -78,7 +78,7 @@ public class TransactionHistorySelectionAdapter
 
             super(itemView);
 
-            transactionHistoryName = itemView.findViewById(R.id.tv_simple);
+            transactionHistoryName = itemView.findViewById(R.id.tv_sale_list);
             rowLayout = itemView.findViewById(R.id.ll_rv_item_row);
 
             itemView.setOnClickListener(this);
