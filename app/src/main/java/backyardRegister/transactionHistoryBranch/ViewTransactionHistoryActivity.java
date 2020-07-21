@@ -24,6 +24,7 @@ public class ViewTransactionHistoryActivity extends AppCompatActivity {
     private Button voidButton;
     private boolean voidMode;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Render the Activity
@@ -59,7 +60,9 @@ public class ViewTransactionHistoryActivity extends AppCompatActivity {
                         .setTitle("Confirm Voids")
                         .setMessage("Are you sure you would like to void the selected data?\nThis action cannot be undone.")
                         .setPositiveButton("Yes", (dialog, which) -> {
+                            // Voids the selected transactions
                             adapter.changeMode();
+                            // Restarts the Activity without an animation
                             Intent intent = new Intent(ViewTransactionHistoryActivity.this, ViewTransactionHistoryActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                             startActivity(intent);
@@ -67,8 +70,10 @@ public class ViewTransactionHistoryActivity extends AppCompatActivity {
                         .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
                         .create().show();
             } else {
-                adapter.changeMode();
+                // Changes to void mode
                 voidMode = true;
+                adapter.changeMode();
+                // Changes the rest of the Activity to reflect void mode
                 voidButton.setText(R.string.void_button_confirm);
                 header.setBackgroundColor(Color.parseColor("#eb5e5e"/*red*/));
             }

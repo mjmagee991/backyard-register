@@ -21,6 +21,7 @@ public class ResetTransactionHistorySelectionActivity extends AppCompatActivity 
 
     private TransactionHistorySelectionAdapter adapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Render the Activity
@@ -35,8 +36,6 @@ public class ResetTransactionHistorySelectionActivity extends AppCompatActivity 
         View.OnClickListener backListener = v -> back();
         backButton.setOnClickListener(backListener);
 
-
-
         // Reset RecyclerView setup
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         saleRecords.setLayoutManager(layoutManager);
@@ -47,10 +46,13 @@ public class ResetTransactionHistorySelectionActivity extends AppCompatActivity 
 
         // Reset Button setup
         View.OnClickListener resetListener = v -> new AlertDialog.Builder(ResetTransactionHistorySelectionActivity.this)
+                //Creates a popup to confirm that the user wants to reset the transaction histories
                 .setTitle("Confirm Reset")
-                .setMessage("Are you sure you would like to reset the selected records?\nThis action cannot be undone.")
+                .setMessage("Are you sure you would like to reset the selected transaction histories?\nThis action cannot be undone.")
                 .setPositiveButton("Yes", (dialog, which) -> {
-                    Toast.makeText(getApplicationContext(), resetRecords() + " records reset", Toast.LENGTH_LONG).show();
+                    // Reset the transaction histories and tell the user how many were reset
+                    Toast.makeText(getApplicationContext(), resetRecords() + " transaction histories reset", Toast.LENGTH_LONG).show();
+                    // Restart the Activity
                     startActivity(new Intent(ResetTransactionHistorySelectionActivity.this, ResetTransactionHistorySelectionActivity.class).setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                 })
                 .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
@@ -58,16 +60,21 @@ public class ResetTransactionHistorySelectionActivity extends AppCompatActivity 
         resetButton.setOnClickListener(resetListener);
     }
 
+
     int resetRecords() {
+        // Gets the boolean list of selected transaction histories
         ArrayList<Boolean> resetSelections = adapter.getSelected();
-        int numReset = 0;
         ArrayList<SaleList> saleLists = DataStorage.getSaleLists();
+        int numReset = 0;
+
+        // Resets the selected transaction histories
         for(int i = 0; i < resetSelections.size(); i++) {
             if(resetSelections.get(i)) {
                 saleLists.get(i).resetTransactionHistory();
                 numReset++;
             }
         }
+        // Returns the number of transaction histories reset
         return numReset;
     }
 

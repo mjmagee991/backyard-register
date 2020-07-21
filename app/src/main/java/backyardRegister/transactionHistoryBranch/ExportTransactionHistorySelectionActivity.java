@@ -22,9 +22,9 @@ import backyardRegister.supportClasses.SaleList;
 
 public class ExportTransactionHistorySelectionActivity extends AppCompatActivity {
 
-    //TODO: Add line to top of exported TH with the labels for the columns
-
+    //TODO: Add line to top of exported transaction history with the labels for the columns
     private TransactionHistorySelectionAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,59 +51,61 @@ public class ExportTransactionHistorySelectionActivity extends AppCompatActivity
 
         // Export Selected Button setup
         View.OnClickListener exportSListener = v -> {
+            // Gets the list of all transaction histories selected to be exported
             ArrayList<File> exportList = getExportList(true);
+            // If some transaction histories were selected
             if(exportList.size() > 0) {
+                // Export them
                 sendFiles(exportList);
             }
         };
         exportSelectedButton.setOnClickListener(exportSListener);
 
         // Export All Button setup
-        View.OnClickListener exportAListener = v -> sendFiles(getExportList(false));
+        View.OnClickListener exportAListener = v -> sendFiles(getExportList(false)); // Export all transaction histories
         exportAllButton.setOnClickListener(exportAListener);
     }
 
+
     void sendFiles(ArrayList<File> records) {
-        //String[] recipientList = {recipient};
-        String subject = "Sales Data";
-        //String message = "Test";
-
+        // Creates the email intent
         Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-        //intent.putExtra(Intent.EXTRA_EMAIL, recipientList);
-        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        //intent.putExtra(Intent.EXTRA_TEXT, message);
-        //intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Sales Data");
 
-        /*
-        String targetFilePath = Environment.getExternalStorageDirectory().getPath() + File.separator + "tmp" + File.separator + "record.txt";
-        Uri attachmentUri = Uri.parse(targetFilePath);
-        intent.putExtra(android.content.Intent.EXTRA_STREAM, Uri.parse("file://" + attachmentUri));
-         */
+        // Gets the URIs for the selected transaction histories' text files
         ArrayList<Uri> uriList = new ArrayList<>();
         for(int i = 0; i < records.size(); i++) {
-            //intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(ExportTransactionHistorySelectionActivity.this, BuildConfig.APPLICATION_ID + ".provider", records.get(i)));
-            //uriList.add(Uri.fromFile(records.get(i)));
             uriList.add(FileProvider.getUriForFile(ExportTransactionHistorySelectionActivity.this, BuildConfig.APPLICATION_ID + ".provider", records.get(i)));
         }
+        // Adds the text files to the email intent
         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList);
 
+        // Defines the type of intent
         intent.setType("message/rfc822");
 
+        // Opens the email client chooser
         startActivityForResult(Intent.createChooser(intent, "Choose an email client"), 12345);
     }
 
-
+    // Returns references to the files for all the transaction histories that should be exported
     ArrayList<File> getExportList(boolean onlySelected) {
-        ArrayList<Boolean> selectedList = adapter.getSelected();
         ArrayList<SaleList> saleLists = DataStorage.getSaleLists();
         ArrayList<File> exportList = new ArrayList<>();
+
+        // If the user only wants to export the transaction histories that they selected
         if(onlySelected) {
+            // Get the boolean list of selected transaction histories
+            ArrayList<Boolean> selectedList = adapter.getSelected();
+            // For each SaleList
             for (int i = 0; i < selectedList.size(); i++) {
+                // If it was selected
                 if (selectedList.get(i)) {
+                    // Add the text file to the export list
                     exportList.add(saleLists.get(i).getTransactionHistoryFile());
                 }
             }
         } else {
+            // Add all SaleLists' text files to the export list
             for(SaleList saleList : saleLists) {
                 exportList.add(saleList.getTransactionHistoryFile());
             }
